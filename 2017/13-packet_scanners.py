@@ -25,10 +25,9 @@ def severity(layers, delay):
 
 
 with open('input.txt') as f:
-    FIREWALL = f.read()
+    firewall = f.read()
     delay = 0
-    while severity(FIREWALL, delay) is None:
+    while severity(firewall, delay) is None:
         delay += 1
     print('The smallest delay that would mean bypassing the firewall'
           ' successfully is ' + str(delay) + ' picoseconds.')
-   

@@ -62,11 +62,11 @@ def dance(moves, dances):
 
 
 with open('input.txt') as f:
-    MOVES = f.read()
+    moves = f.read()
 
     #Challenge 1 Answer
-    print('Position after first dance: ' + str(dance(MOVES, 1)))
+    print('Position after first dance: ' + str(dance(moves, 1)))
 
     # Challenge 2 Answer
     print('Position after billionth dance: '
-          + str(dance(MOVES, 1000000000)))
+          + str(dance(moves, 1000000000)))

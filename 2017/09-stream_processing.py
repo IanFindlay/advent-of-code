@@ -45,5 +45,5 @@ def clean(stream):
 
 
 with open('input.txt') as f:
-    STREAM = f.read()
-    clean(STREAM)
+    stream = f.read()
+    clean(stream)

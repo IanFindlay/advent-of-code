@@ -51,7 +51,6 @@ def hashed(lengths):
     return notches[0] * notches[1]
 
 
-#puzzle_input = [3, 4, 1, 5]
 PUZZLE_INPUT = [230, 1, 2, 221, 97, 252, 168, 169, 57, 99, 0, 254, 181,
                 255, 235, 167]
 

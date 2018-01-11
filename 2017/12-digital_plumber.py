@@ -50,5 +50,5 @@ def pipes(links, seed):
 
 
 with open('input.txt') as f:
-    SURVEY = f.read()
-    pipes(SURVEY, '0')
+    survey = f.read()
+    pipes(survey, '0')

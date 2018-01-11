@@ -44,9 +44,9 @@ def mem_stats(num_list, cycle_count=None):
             configs.append(tuple(current))
 
 
-puzzle_input = '10	3	15	10	5	15	5	15	9	2	5	8	5	2	3	6'
+PUZZLE_INPUT = '10	3	15	10	5	15	5	15	9	2	5	8	5	2	3	6'
 # Challenge 1 Answer
-print(mem_stats(puzzle_input))
+print(mem_stats(PUZZLE_INPUT))
 
 # Challenge 2 Answer
-print(mem_stats(puzzle_input, cycle_count='yes'))
+print(mem_stats(PUZZLE_INPUT, cycle_count='yes'))

@@ -81,5 +81,5 @@ def duet(directions):
 
 
 with open('input.txt') as f:
-    INSTR = f.read()
-    duet(INSTR)
+    instructions = f.read()
+    duet(instructions)
