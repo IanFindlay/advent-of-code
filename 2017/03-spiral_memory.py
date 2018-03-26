@@ -12,19 +12,16 @@ def distance(target):
         number += 2
         line_max = number * number
         layers += 1
-    print('Line max = ' + str(line_max))
 
     # Calculate all four mid points of layer
     mid_values = [line_max - layers, line_max - layers * 3,
                   line_max - layers * 5, line_max - layers * 7]
-    print(mid_values)
 
     # Find nearest mid point to target number and the distance to it
     mid_distance = number
     for value in mid_values:
         if abs(target - value) < mid_distance:
             mid_distance = abs(target - value)
-    print(mid_distance)
 
     # Return value of distance to middle + layers
     return mid_distance + layers
@@ -33,7 +30,36 @@ def distance(target):
 # Challenge 1 Answer
 print(distance(361527))
 
+
 # Challenge 2
 """Form a spiral from the centre by adding its neighbouring squares."""
 
-# Answer from OEIS = 363010 but coding this one might be beyond me
+def next_coords(x, y):
+    """Return the next coordinate pair of an anticlockwise spiral."""
+    if y == 0 and x == 0:
+        coords = (1, 0)
+    elif y > -x and x > y:
+        coords = (x, y + 1)
+    elif y > -x and y >= x:
+        coords = (x - 1, y)
+    elif y <= -x and x >= y:
+        coords = (x + 1, y)
+    elif y <= -x and x < y:
+        coords = (x, y - 1)
+    
+    return coords
+
+puzzle_input = 361527
+# Initial Coordinates and Values Dictionary
+x, y = 0, 0
+values = { (0, 0): 1 }
+
+while values[(x, y)] <= puzzle_input:
+    x, y = next_coords(x, y)
+    offsets = [-1, 0, 1]
+    values[(x, y)] = (sum(values.get((x + i, y + j), 0)
+                          for i in offsets for j in offsets))
+
+# Challenge 2 Answer
+print("Answer Coordinate = ({},{})".format(x, y))
+print("Answer Value = " + str(values[(x, y)]))
