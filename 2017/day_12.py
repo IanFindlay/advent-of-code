@@ -1,4 +1,4 @@
-"""Answers to Advent of Code Day 12."""
+"""Advent of Code Day 12 - Digital Plumber"""
 
 import re
 
@@ -45,10 +45,11 @@ def pipes(links, seed):
 
         cycles += 1
 
-    # Challenge 1 Answer
-    print(len(set(grouped)))
+    return len(set(grouped))
 
 
 with open('input.txt') as f:
     survey = f.read()
-    pipes(survey, '0')
+
+# Answer One
+print("Number of programs in group 0", pipes(survey, '0'))

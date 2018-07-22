@@ -1,4 +1,5 @@
-"""Answers to Advent of Code Day 13."""
+"""Advent of Code Day 15 - Dueling Generators"""
+
 
 def judgement(seed_a, seed_b):
     """Return amount of times last 16 binary digits of generators match."""
@@ -70,9 +71,8 @@ def aligned(seed_a, seed_b):
     return count
 
 
+# Answer One
+print("Final count:", judgement(116, 299))
 
-# Challenge 1 Answer
-print(judgement(116, 299))
-
-#Challenge 2 Answer
-print(aligned(116, 299))
+# Answer Two
+print("Final count when the generators are aligned:", aligned(116, 299))

@@ -1,4 +1,4 @@
-"""Answers to Advent of Code Day 13."""
+"""Advent of Code Day 13 - Packet Scanners"""
 
 
 def severity(layers, delay):
@@ -26,8 +26,10 @@ def severity(layers, delay):
 
 with open('input.txt') as f:
     firewall = f.read()
-    delay = 0
-    while severity(firewall, delay) is None:
-        delay += 1
-    print('The smallest delay that would mean bypassing the firewall'
-          ' successfully is ' + str(delay) + ' picoseconds.')
+
+delay = 0
+while severity(firewall, delay) is None:
+    delay += 1
+
+# Answer One
+print('The smallest delay that would bypass the firewall is:', delay, 'picoseconds.')

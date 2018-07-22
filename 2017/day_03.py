@@ -1,7 +1,6 @@
-"""Answers to Advent of Code Day 3."""
+"""Advent of Code Day 3 - Spiral Memory"""
 
 
-# Challenge 1
 def distance(target):
     """Find how far input is away from the centre of a number spiral."""
     # Find which odd square layer contains the input
@@ -27,13 +26,6 @@ def distance(target):
     return mid_distance + layers
 
 
-# Challenge 1 Answer
-print(distance(361527))
-
-
-# Challenge 2
-"""Form a spiral from the centre by adding its neighbouring squares."""
-
 def next_coords(x, y):
     """Return the next coordinate pair of an anticlockwise spiral."""
     if y == 0 and x == 0:
@@ -46,8 +38,9 @@ def next_coords(x, y):
         coords = (x + 1, y)
     elif y <= -x and x < y:
         coords = (x, y - 1)
-    
+
     return coords
+
 
 puzzle_input = 361527
 # Initial Coordinates and Values Dictionary
@@ -60,6 +53,8 @@ while values[(x, y)] <= puzzle_input:
     values[(x, y)] = (sum(values.get((x + i, y + j), 0)
                           for i in offsets for j in offsets))
 
-# Challenge 2 Answer
-print("Answer Coordinate = ({},{})".format(x, y))
-print("Answer Value = " + str(values[(x, y)]))
+# Answer One
+print("Steps required:", distance(361527))
+
+# Answer Two
+print("Answer value: " + str(values[(x, y)]))

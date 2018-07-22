@@ -1,4 +1,4 @@
-"""Answers to Advent of Code Day 7."""
+"""Advent of Code Day 8 - I Heard You Like Registers"""
 
 import re
 import pyperclip
@@ -81,8 +81,6 @@ def run_register(instructions, highest_ever=None):
             else:
                 valid = False
 
-        # If True carry out the instruction
-
         if valid is True:
 
             if parsed.group(3) == 'inc':
@@ -109,9 +107,9 @@ def run_register(instructions, highest_ever=None):
         return(registers[highest])
 
 
-# Challenge 1 Answer:
-print('Highest value at end = ' + str(run_register(pyperclip.paste())))
+# Answer One:
+print('Highest value at end: ' + str(run_register(pyperclip.paste())))
 
-# Challenge 2 Answer:
-print('Highest value reached = ' + str(run_register(pyperclip.paste(),
+# Answer Two:
+print('Highest value reached: ' + str(run_register(pyperclip.paste(),
       highest_ever=True)))

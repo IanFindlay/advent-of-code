@@ -1,4 +1,4 @@
-"""Answers to Advent of Code Day 11."""
+"""Advent of Code Day 11 - Hex Ed"""
 
 
 def path(steps_string):
@@ -44,10 +44,10 @@ def path(steps_string):
     # Find biggest cube coordinate (shortest path)
     shortest_path = max(x, y, z)
 
-    # Challenge Answer 1
+    # Answer One
     print('The shortest path is', shortest_path, 'step long.')
 
-    # Challenge Answer 2
+    # Answer Two
     print('The furthest from the centre reached was', furthest, 'steps away.')
 
 

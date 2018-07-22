@@ -1,4 +1,4 @@
-"""Answers to Advent of Code Day 5."""
+"""Advent of Code Day 5 - A Maze of Twisty Trampolines, All Alike"""
 
 
 import pyperclip
@@ -45,8 +45,8 @@ def jumps_taken(offsets):
     return steps
 
 
-# Challenge 1 Answer
-print(steps_taken(pyperclip.paste()))
+# Answer One
+print("Number of steps to reach the exit:", steps_taken(pyperclip.paste()))
 
-# Challenge 2 Answer
-print(jumps_taken(pyperclip.paste()))
+# Answer Two
+print("Number of steps to reach the exit:", jumps_taken(pyperclip.paste()))

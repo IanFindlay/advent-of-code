@@ -1,4 +1,4 @@
-"""Answers to Advent of Code Day 10."""
+"""Advent of Code Day 10 - Knot Hash"""
 
 
 def hashed(lengths):
@@ -54,4 +54,5 @@ def hashed(lengths):
 PUZZLE_INPUT = [230, 1, 2, 221, 97, 252, 168, 169, 57, 99, 0, 254, 181,
                 255, 235, 167]
 
-print(hashed(PUZZLE_INPUT))
+# Answer One
+print("Product of first two numbers in hash:", hashed(PUZZLE_INPUT))

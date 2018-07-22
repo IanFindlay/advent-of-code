@@ -1,4 +1,4 @@
-"""Answers to Advent of Code Day 18."""
+"""Advent of Code Day 18 - Duet"""
 
 
 def duet(directions):
@@ -77,9 +77,11 @@ def duet(directions):
 
         count += 1
 
-    print('First Non-Zero Recovered Frequency: ' + str(recovered))
+    return recovered
 
 
 with open('input.txt') as f:
     instructions = f.read()
-    duet(instructions)
+
+# Answer One
+print("First non-zero recovered frequency:", duet(instructions))

@@ -1,4 +1,4 @@
-"""Answers to Advent of Code Day 17."""
+"""Advent of Code Day 17 - Spinlock"""
 
 def spinlock():
     """Find the value adjacent to a spinlocks final insertion."""
@@ -56,12 +56,12 @@ def spinlock_sequel():
         buffer_length += 1
         to_insert += 1
         insertions -= 1
-    
+
     return adjacent
 
 
-# Challenge 1 Answer
-print(spinlock())
+# Answer One
+print("Value after 2017:", spinlock())
 
-#Challenge 2 Answer
-print(spinlock_sequel())
+# Answer Two
+print("Value after 0 once 50000000 is inserted:", spinlock_sequel())

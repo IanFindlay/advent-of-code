@@ -1,10 +1,10 @@
-"""Answers to Advent of Code Day 7."""
+"""Advent of Code Day 7 - Recursive Circus"""
 
 import re
 import pyperclip
 
 
-def tower_info(structure, balance_fix=None):
+def tower_info(structure, balance_fix=False):
     """Find base program of structure and how to fix the tower imbalance."""
     # Isolate the program names
     names_regex = re.compile(r'[^0-9\s()->]\w*')
@@ -18,8 +18,8 @@ def tower_info(structure, balance_fix=None):
             base = program
 
     # Return Base Program
-    if balance_fix is None:
-        return('Base program = ' + str(base))
+    if not balance_fix:
+        return base
 
     # Split structure into program name: weight dictionary
     dict_regex = re.compile(r'([^0-9\s()->]\w*)\s\((\d*)')
@@ -32,8 +32,8 @@ def tower_info(structure, balance_fix=None):
     print(prog_weight)
 
 
-# Challenge 1 Answer
-# print(tower_info(pyperclip.paste()))
+# Answer One
+print("Base Program:", tower_info(pyperclip.paste()))
 
-# Challenge 2 Answer
+# Answer Two
 print(tower_info(pyperclip.paste(), balance_fix='yes'))

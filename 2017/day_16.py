@@ -1,4 +1,4 @@
-"""Answers to Advent of Code Day 13."""
+"""Advent of Code Day 16 - Permutation Promenade"""
 
 
 def dance(moves, dances):
@@ -64,9 +64,9 @@ def dance(moves, dances):
 with open('input.txt') as f:
     moves = f.read()
 
-    #Challenge 1 Answer
-    print('Position after first dance: ' + str(dance(moves, 1)))
+# Answer One
+print('Position after first dance: ' + str(dance(moves, 1)))
 
-    # Challenge 2 Answer
-    print('Position after billionth dance: '
-          + str(dance(moves, 1000000000)))
+# Answer Two
+print('Position after billionth dance: '
+        + str(dance(moves, 1000000000)))

@@ -1,4 +1,4 @@
-"""Answers to Advent of Code Day 9."""
+"""Advent of Code Day 9 - Stream Processing"""
 
 
 def clean(stream):
@@ -16,32 +16,32 @@ def clean(stream):
     for character in stream:
         # If currently within a garbage phase i.e. < previously reached
         if garbage:
-            if skip:           # If ! previously then skip this character
+            if skip:
                 skip = False
 
-            elif character == '!':     # Turn on skip for !
+            elif character == '!':
                 skip = True
 
-            elif character == '>':     # End of garbage phase reached
+            elif character == '>':
                 garbage = False
 
-            else:                # Track other characters remove from garbage
+            else:
                 cleaned += 1
 
         # Not in garbage phase so looking for depth of groups
         else:
-            if character == '{':       # Start of group - level increased
+            if character == '{':
                 level += 1
 
-            elif character == '}':   # End of group so update total with level
+            elif character == '}':
                 total += level
                 level -= 1
 
-            elif character == '<':       # Start of garbage phase reached
+            elif character == '<':
                 garbage = True
 
-    print('Challenge 1 Answer = ', total)
-    print('Challenge 2 Answer = ', cleaned)
+    print('Answer One:', total)
+    print('Answer Two:', cleaned)
 
 
 with open('input.txt') as f:

@@ -1,4 +1,4 @@
-"""Redistribute memory bank blocks until an infinite loop state is reached."""
+"""Advent of Code Day 6 - Memory Reallocation"""
 
 
 def mem_stats(num_list, cycle_count=None):
@@ -45,8 +45,9 @@ def mem_stats(num_list, cycle_count=None):
 
 
 PUZZLE_INPUT = '10	3	15	10	5	15	5	15	9	2	5	8	5	2	3	6'
-# Challenge 1 Answer
-print(mem_stats(PUZZLE_INPUT))
 
-# Challenge 2 Answer
-print(mem_stats(PUZZLE_INPUT, cycle_count='yes'))
+# Answer One
+print("Number of redistribution cycles:", mem_stats(PUZZLE_INPUT))
+
+# Answer Two
+print("Number of loops between repetitions:", mem_stats(PUZZLE_INPUT, cycle_count='yes'))

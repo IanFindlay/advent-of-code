@@ -1,9 +1,8 @@
-"""Answers to Advent of Code Day 2."""
+"""Advent of Code Day 2 - Corruption Checksum"""
 
 import pyperclip
 
 
-# Challenge 1
 def difference_checksum(string):
     """Take number rows and return the sum of each rows high/low difference."""
     total = 0
@@ -23,7 +22,6 @@ def difference_checksum(string):
     return total
 
 
-# Challenge 2
 def divisible_cheksum(string):
     """Take rows of numbers and return the sum of their divisible pairs."""
     total = 0
@@ -49,13 +47,13 @@ def divisible_cheksum(string):
     return total
 
 
-# Challenge 1 Answer
+# Answer One
 try:
     print(difference_checksum(pyperclip.paste()))
 except ValueError:
     print('Invalid input, try copying the table data again')
 
-# Challenge 2 Answer
+# Answer Two
 try:
     print(divisible_cheksum(pyperclip.paste()))
 except ValueError:

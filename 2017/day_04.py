@@ -1,4 +1,4 @@
-"""Answers to Advent of Code Day 4."""
+"""Advent of Code Day 4 - High-Entropy Passphrases"""
 
 import os
 
@@ -8,7 +8,6 @@ lines = pass_txt.read()
 pass_list = lines.split('\n')
 
 
-# Challenge 1 - only passphrases with no duplicates are valid
 def dupe_check(passphrase):
     """Return only if input has no duplicate words in it."""
     words = passphrase.split(' ')
@@ -17,7 +16,6 @@ def dupe_check(passphrase):
         return len(words) == len(unique)
 
 
-# Challenge 2 - only passphrases with no anagram pairs are valid
 def anagram_check(passphrase):
     """Return only if input has no anagram pairs in it."""
     words = passphrase.split(' ')
@@ -32,18 +30,18 @@ def anagram_check(passphrase):
         return len(words) == len(unique)
 
 
-# Challenge 1 Answer
+# Answer One
 dupeless = 0
 for passphrase in pass_list:
     if dupe_check(passphrase):
         dupeless += 1
 
-print(dupeless)
+print("Number of passwords without duplicates:", dupeless)
 
-# Challenge 2 Answer
+# Answer Two
 anagramless = 0
 for passphrase in pass_list:
     if anagram_check(passphrase):
         anagramless += 1
 
-print(anagramless)
+print("Number of passwords without anagram pairs:", anagramless)
