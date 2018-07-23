@@ -1,58 +1,50 @@
 """Advent of Code Day 10 - Knot Hash"""
 
 
-def hashed(lengths):
+def hashed(lengths, rounds):
     """Carry out a simulation of a knot tying hash given length inputs. """
+    notches = list(range(256))
     skip = 0
     pos = 0
+    for __ in range(rounds):
+        for length in lengths:
+            to_rev = []
+            for i in range(length):
+                to_rev.append(notches[(pos + i) % 256])
 
-    notches = list(range(256))
+            for j in range(length):
+                notches[(pos + j) % 256] = to_rev.pop()
+            pos += skip + length
+            skip += 1
 
-    for length in lengths:
-
-        if length + pos < len(notches):
-            notches[pos: pos + length] = reversed(notches[pos: pos + length])
-
-        # For cases that span over the end of the knot range
-        else:
-            value = length
-            to_reverse = []
-
-            # Seperate affected notches into their own list
-            for notch in notches[pos: pos + length]:
-                to_reverse.append(notch)
-
-            overlap = (pos + length) % len(notches)
-
-            count = 0
-            while overlap > 0:
-                to_reverse.append(notches[count])
-                count += 1
-                overlap -= 1
-
-            # Replace affected notches in 'notches' with 'reversed' ones
-            count = 0
-            while count + pos < len(notches):
-                notches[pos + count] = to_reverse[-(count + 1)]
-                count += 1
-                value -= 1
-
-            # End flip done
-            count_2 = 0
-            while value > 0:
-                notches[0 + count_2] = to_reverse[-(count + 1)]
-                count += 1
-                count_2 += 1
-                value -= 1
-
-        pos = (pos + length + skip) % len(notches)
-        skip += 1
-
-    return notches[0] * notches[1]
+    return notches
 
 
-PUZZLE_INPUT = [230, 1, 2, 221, 97, 252, 168, 169, 57, 99, 0, 254, 181,
-                255, 235, 167]
+def dense(sparse):
+    """Turn a sparse hash into a dense hash by XORing 16 digit blocks."""
+    dense = []
+    position = 0
+    while position + 16 <= len(sparse):
+        total = sparse[position]
+        for pos in range(position + 1, position + 16):
+            total = total ^ sparse[pos]
+        dense.append(total)
+        position += 16
 
-# Answer One
-print("Product of first two numbers in hash:", hashed(PUZZLE_INPUT))
+    return dense
+
+
+if __name__ == '__main__':
+
+    puzzle_input = '230,1,2,221,97,252,168,169,57,99,0,254,181,255,235,167'
+    puzzle_list = [int(x) for x in puzzle_input.split(',')]
+    ascii_input = [ord(c) for c in ''.join(puzzle_input)]
+    [ascii_input.append(length) for length in (17, 31, 73, 47, 23)]
+
+    # Answer One
+    notches = hashed(puzzle_list, 1)
+    print("Product of first two numbers in hash:", notches[0] * notches[1])
+
+    # Answer Two
+    hexed = "".join([format(num, '02x') for num in dense(hashed(ascii_input, 64))])
+    print("Knot hash:", hexed)
