@@ -3,53 +3,47 @@
 import re
 
 
-def pipes(links, seed):
-    """Return the group size of all pipes with a connection to 0."""
-    # Split input into list of pipes and their connections
-    link_list = links.strip().split('\n')
+def make_dict():
+    """Create a dictionary of pipes and their connections."""
+    with open('input.txt') as f:
+        survey = [line for line in f.readlines()]
+    pipes = {}
+    for info in survey:
+        pipe, *connections = re.findall(r'\d+', info)
+        pipes[pipe] = connections
 
-    # Create regex to isolate pipe name from its connections
-    pipe_regex = re.compile(r'(\d*)\s*<->\s*(.*)')
-
-    grouped = [seed]
-
-    # Brute force cycling to get all connections because I'm shit at coding
-    cycles = 0
-    while cycles < 10:
-        for pipe in link_list:
-            pipe_num = pipe_regex.search(pipe).group(1)
-            pipe_links = pipe_regex.search(pipe).group(2)
-
-            links_split = re.split(', |, ', pipe_links)
-
-            # Check if pipe_num is already in group and append its links if so
-            if pipe_num in grouped:
-
-                for number in links_split:
-                    strip_num = number.strip()
-                    grouped.append(strip_num)
-                    pipe = ''
-
-            else:
-                # Check if any of the links are in the group
-                for number in links_split:
-                    strip_num = number.strip()
-
-                    if strip_num in grouped:
-                        grouped.append(pipe_num)
-                        pipe = ''
-
-                        for number in links_split:
-                            strip_num = number.strip()
-                            grouped.append(strip_num)
-
-        cycles += 1
-
-    return len(set(grouped))
+    return pipes
 
 
-with open('input.txt') as f:
-    survey = f.read()
+def find_groups(pipe_list, part_two=False):
+    """Use connection information to form and count groups."""
+    groups = 0
+    while pipe_list:
+        to_process = []
+        to_process.append(pipe_list[0])
+        members = set()
+        while to_process:
+            connects = pipes[to_process.pop()]
+            for connect in connects:
+                if connect not in members:
+                    to_process.append(connect)
+                    members.add(connect)
 
-# Answer One
-print("Number of programs in group 0", pipes(survey, '0'))
+        if not part_two and '0' in members:
+            return len(members)
+        [pipe_list.remove(member) for member in members]
+        groups += 1
+
+    return groups
+
+
+if __name__ == '__main__':
+
+    pipes = make_dict()
+    pipe_list = [pipe for pipe in pipes]
+
+    # Answer One
+    print("Number of programs in group containing 0:", find_groups(pipe_list))
+
+    # Answer Two
+    print("Number of groups:", find_groups(pipe_list, part_two=True))
