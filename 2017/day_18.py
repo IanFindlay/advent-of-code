@@ -15,7 +15,6 @@ def is_num(string):
 
 def duet(instructions, registers, position, part_two=False, program_id=None):
     """Return the final recovered note of a list of instructions."""
-
     sent = 0
     sound = 0
     recovered = 0
