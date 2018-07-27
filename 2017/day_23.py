@@ -2,6 +2,7 @@
 
 import re
 import collections
+import math
 
 
 def is_num(string):
@@ -19,7 +20,6 @@ def coprocessor(instructions):
     i = 0
     while i < len(instructions):
         instruction = instructions[i]
-        print(instruction)
         mod, target, *change = re.findall(r'-?\w+', instruction)
 
         if mod == 'set':
@@ -75,4 +75,22 @@ if __name__ == '__main__':
 
     print("Number of times 'mul' is invoked:", coprocessor(data))
 
-    # Part Two - Need to find out what the code is doing/what pattern lay underneath it
+    # Part Two
+    """
+    Line 29 is the only exit point and g must equal 0 for it to occur
+    Above only happens when b and c are the same value at line 27/28
+    If g isn't 0 b increments (only time it does) by the suspiciously prime 17
+    h only increases if f == 0 at line 25
+    So h is essentially counting the non-primes between initial b and c
+    b initialises to 107900 and c to 124900 (17000 higher i.e. 1000 times 17 inc)
+    """
+
+    composites = 0
+    for num in range(107900, 124900 + 1, 17):
+        for i in range(2, int(math.sqrt(num)) + 1):
+            if num % i == 0:
+                composites += 1
+                break
+
+# Answer Two
+print("Value of register h with debug mode off:", composites)
