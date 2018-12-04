@@ -1,17 +1,7 @@
 """Advent of Code Day 4 - Repose Record"""
 
 import collections
-import datetime as dt
 import re
-
-
-def make_datetime(record):
-    """Parse record and return timestamp converted to datetime object."""
-    date_regex = re.compile(r'1518-(\d+)-(\d+) (\d+):(\d+)')
-    month, day , hour, minutes = re.search(date_regex, record).groups()
-    datetimed = dt.datetime(1518, int(month), int(day),
-                            hour=int(hour), minute=int(minutes))
-    return datetimed
 
 
 def track_time(ordered_records):
@@ -83,13 +73,11 @@ def consistent_sleeper(sleep_tracker):
 if __name__ == '__main__':
 
     with open('input.txt') as f:
-        records = f.readlines()
-
-    # Order records
-    ordered_records = sorted(records, key=make_datetime)
+        records = f.read().split('\n')
+        records.sort()
 
     # Map each day to a guard and track the guards actions each minute
-    guard_tracker = track_time(ordered_records)
+    guard_tracker = track_time(records)
 
     # Associate sleeping minutes with each guards ID
     sleep_tracker = track_sleep(guard_tracker)
