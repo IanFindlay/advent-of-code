@@ -1,4 +1,4 @@
-"""Advent of Code Day 2 - No Matter How You Slice It"""
+"""Advent of Code Day 3 - No Matter How You Slice It"""
 
 import re
 
