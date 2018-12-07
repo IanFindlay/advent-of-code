@@ -1,7 +1,6 @@
 """Advent of Code Day 8 - I Heard You Like Registers"""
 
 import re
-import pyperclip
 
 
 def run_register(instructions, highest_ever=None):
@@ -107,9 +106,11 @@ def run_register(instructions, highest_ever=None):
         return(registers[highest])
 
 
+with open('input.txt') as f:
+    registers = f.read()
+
 # Answer One:
-print('Highest value at end: ' + str(run_register(pyperclip.paste())))
+print('Highest value at end: ' + str(run_register(registers)))
 
 # Answer Two:
-print('Highest value reached: ' + str(run_register(pyperclip.paste(),
-      highest_ever=True)))
+print('Highest value: ' + str(run_register(registers, highest_ever=True)))

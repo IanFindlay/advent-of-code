@@ -1,9 +1,6 @@
 """Advent of Code Day 5 - A Maze of Twisty Trampolines, All Alike"""
 
 
-import pyperclip
-
-
 def steps_taken(offsets):
     """Calculate the steps needed to traverse an offset maze."""
     # Put the offsets in a list
@@ -13,7 +10,7 @@ def steps_taken(offsets):
     list_position = 0
     steps = 0
 
-    while list_position > 0 and list_position < len(value_list):
+    while list_position < len(value_list):
         offset = int(value_list[list_position])
         value_list[list_position] = int(value_list[list_position]) + 1
         steps += 1
@@ -31,7 +28,7 @@ def jumps_taken(offsets):
     list_position = 0
     steps = 0
 
-    while list_position > 0 and list_position < len(value_list):
+    while list_position < len(value_list):
         offset = int(value_list[list_position])
         # Change offset ot the appropriate new value
         if offset < 3:
@@ -45,8 +42,12 @@ def jumps_taken(offsets):
     return steps
 
 
+with open('input.txt') as f:
+    offsets = f.read()
+
+
 # Answer One
-print("Number of steps to reach the exit:", steps_taken(pyperclip.paste()))
+print("Number of steps to reach the exit:", steps_taken(offsets))
 
 # Answer Two
-print("Number of steps to reach the exit:", jumps_taken(pyperclip.paste()))
+print("Number of steps to reach the exit:", jumps_taken(offsets))

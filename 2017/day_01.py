@@ -1,7 +1,5 @@
 """Advent of Code Day 1 - Inverse Captcha"""
 
-import pyperclip
-
 
 def captcha_dupes(numbers):
     """Sum only the digits that match the one next in a cyclic string."""
@@ -22,17 +20,11 @@ def captcha_halfway(numbers):
     return total * 2
 
 
-# Paste the string then run it through the function and print the answer
-captcha = pyperclip.paste()
+with open('input.txt') as f:
+    captcha = f.read().strip()
 
 # Answer One
-try:
-    print(captcha_dupes(captcha))
-except ValueError:
-    print('The string in your clipboard isn\'t just digits')
+print("Captcha:", captcha_dupes(captcha))
 
 # Answer Two
-try:
-    print(captcha_halfway(captcha))
-except ValueError:
-    print('The string in your clipboard isn\'t just digits')
+print("Second Captcha:", captcha_halfway(captcha))
