@@ -56,9 +56,8 @@ while len(carts) > 1:
                 part_one = False
 
             # Find crashed cart and remove it, skip adding this one to new
-            if (y, x) in cart_check:
-                carts = [cart for cart in carts if cart[0] != (y, x)]
-                new_carts = [cart for cart in new_carts if cart[0] != (y, x)]
+            carts = [cart for cart in carts if cart[0] != (y, x)]
+            new_carts = [cart for cart in new_carts if cart[0] != (y, x)]
             continue
 
         new_carts.append(((y, x), direction, turn))
