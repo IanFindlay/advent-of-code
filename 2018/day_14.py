@@ -22,11 +22,11 @@ while not part_one or not part_two:
             found += 1
             if found == len(make_list):
                 # Answer Two
-                print("Recipies before:", num_recipies)
+                print("Recipies before:", num_recipies - len(to_make))
                 part_two = True
                 break
         else:
-            found = 0
+            found = 1 if recipie == make_list[0] else 0
 
     elf_1 = (elf_1 + recipies[elf_1] + 1) % num_recipies
     elf_2 = (elf_2 + recipies[elf_2] + 1) % num_recipies
