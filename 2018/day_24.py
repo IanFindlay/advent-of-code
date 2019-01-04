@@ -186,7 +186,7 @@ def main():
 
     # Answer One
     units_left = sum([group[1] for group in post_fight])
-    print("Units of winning army left", units_left)
+    print("Units of winning army left:", units_left)
 
     while True:
         boosted = []
