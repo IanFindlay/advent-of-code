@@ -1,21 +1,22 @@
 """Advent of Code Day 15 - Beverage Bandits"""
 
 
-def build_units(to_open, elf_power):
+def build_units(elf_power):
     """Build Unit objects for units in arena and place them in the arena."""
-    with open(to_open) as f:
+    with open('input-15.txt') as f:
         arena = [list(row.strip()) for row in f.readlines()]
+
     units = []
-    for row in range(len(arena)):
-        for col in range(len(arena[0])):
-            if arena[row][col] == 'E':
-                unit = Unit('E', (row, col), elf_power)
+    for y, row in enumerate(arena):
+        for x, __ in enumerate(row):
+            if arena[y][x] == 'E':
+                unit = Unit('E', (y, x), elf_power)
                 units.append(unit)
-                arena[row][col] = unit
-            elif arena[row][col] == 'G':
-                unit = Unit('G', (row, col), 3)
+                arena[y][x] = unit
+            elif arena[y][x] == 'G':
+                unit = Unit('G', (y, x), 3)
                 units.append(unit)
-                arena[row][col] = unit
+                arena[y][x] = unit
 
     return (arena, units)
 
@@ -30,6 +31,9 @@ class Unit:
         self.health = 200
         self.attack = attack
 
+    def __repr__(self):
+        return self.race
+
     def update_coords(self, new_coords, arena):
         """Update a unit's coordinates and move them in the arena."""
         row, col = self.coords
@@ -38,29 +42,21 @@ class Unit:
         arena[new_row][new_col] = self
         self.coords = new_coords
 
-    def get_open(self, arena):
-        """Check adjacent spaces of unit and return any open spaces."""
+    def check_adjacent(self, arena, enemy_check=False):
+        """Check adjacent spaces of unit and return open spaces or enemies."""
         open_spaces = set()
-        row, col = self.coords
-        adjacent = [(row-1, col), (row+1, col), (row, col-1), (row, col+1)]
-        for space in adjacent:
-            value = arena[space[0]][space[1]]
-            if value == '.':
-                open_spaces.add(space)
-
-        return open_spaces
-
-    def check_attack(self, arena):
-        """Check adjacent spaces of unit and return coords of any enemies."""
         enemies = []
         row, col = self.coords
         adjacent = [(row-1, col), (row+1, col), (row, col-1), (row, col+1)]
         for space in adjacent:
             value = arena[space[0]][space[1]]
-            if type(value) is Unit and value.race != self.race:
-                enemies.append(value)
+            if enemy_check:
+                if isinstance(value, Unit) and value.race != self.race:
+                    enemies.append(value)
+            elif value == '.':
+                open_spaces.add(space)
 
-        return enemies
+        return enemies if enemy_check else open_spaces
 
     def take_damage(self, damage):
         """Decrease health by damage amount."""
@@ -70,103 +66,6 @@ class Unit:
         """Remove unit from the arena map as it has been killed."""
         row, col = self.coords
         arena[row][col] = '.'
-
-
-def make_attack(attackable, attacker):
-    """Choose best target from attackable, attack then return if killed."""
-    # Sort units by reading order
-    attackable.sort(key=lambda unit: (unit.coords[0], unit.coords[1]))
-
-    lowest = (201, None)
-    for unit in attackable:
-        if unit.health < lowest[0]:
-            lowest = (unit.health, unit)
-        # Ties go to previous due to sorting by reading order
-
-    to_attack = lowest[1]
-    to_attack.take_damage(attacker.attack)
-
-    return to_attack if to_attack.health <= 0 else False
-
-
-def make_move(start, open_spaces, arena):
-    """Dijkstra to find closest open space(s) then sorting to find move."""
-    visited = set()
-    distances = {}
-    first_steps = {}
-    for i in range(len(arena)):
-        for j in range(len(arena[0])):
-            distances[(i, j)] = (float('inf'))
-            first_steps[(i, j)] = []
-
-    distances[start] = 0
-    shortest = []
-    nearest = None
-    node = (start, None)
-    while True:
-        node_coords, node_first_step = node
-        row, col = node_coords
-        adjacent = [(row-1, col), (row+1, col), (row, col-1), (row, col+1)]
-        for square in adjacent:
-            if square in visited:
-                continue
-
-            if arena[square[0]][square[1]] != '.':
-                continue
-
-            first_step = node_first_step if node_first_step else square
-            current_distance = distances[square]
-            new_distance = distances[node_coords] + 1
-            if new_distance < current_distance:
-                distances[square] = new_distance
-                first_steps[square] = [first_step]
-
-            elif new_distance == current_distance:
-                first_steps[square].append(first_step)
-
-        visited.add(node)
-
-        # Construct new potential nodes from distances, creating a new
-        # node for each first step listed in first_steps under that
-        # coordinate as each is as valid as the other as distance is same
-        nodes = []
-        for coords in distances:
-            for step in first_steps[coords]:
-                new_node = (coords, step)
-                if new_node not in visited:
-                    nodes.append(new_node)
-
-        if not nodes:
-            break
-
-        nodes.sort(key=lambda new_node: distances[new_node[0]], reverse=True)
-        node = nodes.pop()
-        new_coords, first_step = node
-
-        if nearest and distances[new_coords] > nearest:
-            break
-        if distances[new_coords] == float('inf'):
-            break
-
-        if new_coords in open_spaces:
-            if not shortest:
-                shortest = [(new_coords, first_step)]
-            else:
-                shortest.append((new_coords, first_step))
-            nearest = distances[new_coords]
-
-    if not shortest:
-        return False
-
-    # Sort by target square (in reading order)
-    shortest.sort(key=lambda x: (x[0][0], x[0][1]))
-    target = shortest[0][0]
-    # Filter out all other targets and extract first_steps list for sorting
-    to_target = [x[1] for x in shortest if x[0] == target]
-    to_target.sort(key=lambda x: (x[0], x[1]))
-    move = to_target[0]
-
-    return move
 
 
 def battle(arena, units, part_two=False):
@@ -188,7 +87,7 @@ def battle(arena, units, part_two=False):
                 break
 
             # Check for enemies and attack if found
-            attackable = unit.check_attack(arena)
+            attackable = unit.check_adjacent(arena, enemy_check=True)
             if attackable:
                 unit_killed = make_attack(attackable, unit)
 
@@ -197,7 +96,7 @@ def battle(arena, units, part_two=False):
                 open_spaces = set()
                 for other in units:
                     if other.race != unit.race and other.health > 0:
-                        open_spaces = open_spaces | other.get_open(arena)
+                        open_spaces = open_spaces | other.check_adjacent(arena)
 
                 if not open_spaces:
                     continue
@@ -209,7 +108,7 @@ def battle(arena, units, part_two=False):
 
                 unit.update_coords(move, arena)
 
-                attackable = unit.check_attack(arena)
+                attackable = unit.check_adjacent(arena, enemy_check=True)
                 if attackable:
                     unit_killed = make_attack(attackable, unit)
                 else:
@@ -229,14 +128,102 @@ def battle(arena, units, part_two=False):
 
         rounds += 1
 
+        print_arena(rounds, arena)
+
     remaining_health = sum([unit.health for unit in units if unit.health > 0])
     return rounds * remaining_health
 
 
+def make_attack(attackable, attacker):
+    """Choose best target from attackable, attack then return if killed."""
+    # Sort units by health then reading order
+    attackable.sort(
+        key=lambda unit: (unit.health, unit.coords[0], unit.coords[1])
+    )
+    to_attack = attackable[0]
+    to_attack.take_damage(attacker.attack)
+
+    return to_attack if to_attack.health <= 0 else False
+
+
+def make_move(start, open_spaces, arena):
+    """Dijkstra to find closest open space that is first in reading order"""
+    visited = set()
+    distances = {start: (0, None)}
+    shortest = None
+    nearest = None
+    node = (start, None)
+    while True:
+        node_coords, node_first_step = node
+        row, col = node_coords
+        adjacent = [(row-1, col), (row+1, col), (row, col-1), (row, col+1)]
+        for square in adjacent:
+            if square in visited:
+                continue
+
+            if arena[square[0]][square[1]] != '.':
+                continue
+
+            first_step = node_first_step if node_first_step else square
+            current_distance = distances.get(square, (1000, None))[0]
+            new_distance = distances[node_coords][0] + 1
+            if new_distance < current_distance:
+                distances[square] = (new_distance, first_step)
+
+            elif new_distance == current_distance:
+                reading_order = [distances[square][1], first_step]
+                reading_order.sort(key=lambda coords: (coords[0], coords[1]))
+                distances[square] = (new_distance, reading_order[0])
+
+        visited.add(node[0])
+
+        # Create nodes from distances filter out visited
+        nodes = [(x, distances[x][1]) for x in distances if x not in visited]
+
+        if not nodes:
+            break
+        # Choose node with smallest distance
+        nodes.sort(key=lambda node: distances[node[0]][0], reverse=True)
+        node = nodes.pop()
+
+        new_coords, first_step = node
+
+        if nearest and distances[new_coords][0] > nearest:
+            break
+
+        if new_coords in open_spaces:
+            if not shortest:
+                shortest = (new_coords, first_step)
+            else:
+                # Keep first_step that's earliest in reading order
+                reading_order = [shortest, (new_coords, first_step)]
+                reading_order.sort(
+                    key=lambda coords: (coords[1][0], coords[1][1])
+                )
+                shortest = reading_order[0]
+            nearest = distances[new_coords][0]
+
+    if not shortest:
+        return False
+
+    return shortest[1]
+
+
+def print_arena(rounds, arena):
+    """Print the arena with race, health info for units at the side."""
+    print("Round {}:".format(rounds))
+    for row in arena:
+        arena_row = ''.join([str(x) for x in row])
+        units = ''
+        for col in row:
+            if isinstance(col, Unit):
+                units += "({}: {}), ".format(col.race, col.health)
+        print(arena_row, units.strip(', '))
+
+
 def main():
     """Find outcome of battle then attack boosted one where no elves die."""
-    to_open = 'input.txt'
-    arena, units = build_units(to_open, 3)
+    arena, units = build_units(3)
 
     # Answer One
     outcome = battle(arena, units)
@@ -244,7 +231,7 @@ def main():
 
     attack_power = 4
     while True:
-        arena, units = build_units(to_open, attack_power)
+        arena, units = build_units(attack_power)
         outcome = battle(arena, units, part_two=True)
         if outcome:
             break
