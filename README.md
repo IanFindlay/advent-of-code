@@ -11,3 +11,5 @@
 * #### [2017](https://adventofcode.com/2017) - Stars Collected (50/50)
 
 * #### [2018](https://adventofcode.com/2018) - Stars Collected (50/50)
+
+* #### [2019](https://adventofcode.com/2019) - Stars Collected (02/02)
