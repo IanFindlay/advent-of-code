@@ -130,4 +130,5 @@ lcm = 1
 for factor, power in lcm_factors.items():
     lcm *= factor * power
 
-print("Number of cycles until previous state reached", lcm)
+# Answer Two
+print("Number of cycles until previous state reached:", lcm)
