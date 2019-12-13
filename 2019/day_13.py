@@ -59,7 +59,7 @@ class ArcadeCabinet:
                     self.code[param_1] = self.inputs.pop(0)
                     pointer += 2
                 else:
-                    yield
+                    yield "Waiting on input"
 
             elif opcode == 4:   # output
                 pointer += 2
@@ -111,6 +111,27 @@ def parse_instruction(value):
     return (opcode, list(reversed(modes)))
 
 
+def move_paddle(tiles_dict):
+    """Input move that brings the paddle closer to the ball if both found."""
+    paddle_x = 'Missing'
+    ball_x = 'Missing'
+    for coords, tile in tiles_dict.items():
+        if tile == 3:
+            paddle_x = coords[0]
+        elif tile == 4:
+            ball_x = coords[0]
+
+    if paddle_x == 'Missing' or ball_x == 'Missing':
+        return
+    if paddle_x > ball_x:
+        cabinet.inputs.append(-1)
+    elif paddle_x < ball_x:
+        cabinet.inputs.append(1)
+    else:
+        cabinet.inputs.append(0)
+    return
+
+
 intcode_dict = defaultdict(int)
 with open('input.txt', 'r') as f:
     i = 0
@@ -127,14 +148,13 @@ while True:
         break
 
 num_outputs = len(outputs)
-tile_ids = {0: 'empty', 1: 'wall', 2: 'block', 3: 'paddle', 4: 'ball'}
 tiles = {}
 block_count = 0
 i = 0
 while i < num_outputs:
-    tile_id = tile_ids[outputs[i+2]]
+    tile_id = outputs[i+2]
     tiles[(outputs[i], outputs[i+1])] = tile_id
-    if tile_id == 'block':
+    if tile_id == 2:
         block_count += 1
     i += 3
 
@@ -144,3 +164,30 @@ print("Number of block tiles:", block_count)
 game_2_code = intcode_dict.copy()
 game_2_code[0] = 2
 
+cabinet = ArcadeCabinet(game_2_code, [])
+game_2 = cabinet.run_intcode()
+
+score = 0
+tiles = {}
+while True:
+    try:
+        output = []
+        for _ in range(3):
+            output.append(next(game_2))
+
+        x, y, tile_id = output
+        if x == -1 and y == 0:
+            score = tile_id
+        elif "Waiting on input" in output:
+            move_paddle(tiles)
+        else:
+            tiles[(x, y)] = tile_id
+
+        if tile_id == 4:
+            move_paddle(tiles)
+
+    except StopIteration:
+        break
+
+# Answer Two
+print("Final Score:", score)
