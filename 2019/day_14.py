@@ -1,27 +1,31 @@
 """Advent of Code 2019 Day 14 - Space Stoichiometry"""
 
 from collections import defaultdict
+import math
 
 
 def create_fuel(reactions, fuel_wanted):
-    """Return amount of ore needed to create wanted amount of fuel."""
-    extra_materials = defaultdict(int)
-    ore_needed = 0
-    build_queue = [(fuel_wanted, 'FUEL')]
-    while build_queue:
-        quantity_needed, target = build_queue.pop()
+    """Create wanted amount of fuel from reactions, return material dict."""
+    needed = defaultdict(int)
+    needed['FUEL'] = fuel_wanted
+    queue = ['FUEL']
+    while queue:
+        target = queue.pop()
+
         for product, reactants in reactions.items():
             if product[1] == target:
-                while extra_materials[target] < quantity_needed:
-                    for reactant in reactants:
-                        if reactant[1] == 'ORE':
-                            ore_needed += reactant[0]
-                        build_queue.append(reactant)
-                    extra_materials[target] += product[0]
+                quantity_produced = product[0]
+                required = math.ceil(needed[target] / quantity_produced)
 
-                extra_materials[target] -= quantity_needed
+                for reactant in reactants:
+                    needed[reactant[1]] += required * reactant[0]
 
-    return ore_needed
+                    if needed[target] > 0:
+                        queue.append(reactant[1])
+
+                needed[target] -= required * product[0]
+
+    return needed
 
 
 with open('input.txt') as f:
@@ -42,5 +46,23 @@ for recipie in recipies:
     reactions[product] = reactants_list
 
 # Answer One
-ore_needed = create_fuel(reactions, 1)
+ore_needed = create_fuel(reactions, 1)['ORE']
 print("Minimum amount of ore:", ore_needed)
+
+# Binary search for maxiumum fuel amount
+trillion_ore = 10 ** 12
+low = trillion_ore // ore_needed
+high = trillion_ore - 1
+while low <= high:
+    mid = (low + high) // 2
+    if low == mid:
+        break
+
+    ore_needed = create_fuel(reactions, mid)['ORE']
+    if ore_needed < trillion_ore:
+        low = mid + 1
+    else:
+        high = mid - 1
+
+# Answer Two
+print("Most fuel that can be made from 1 trillion ore:", low)
