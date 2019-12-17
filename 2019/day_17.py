@@ -135,9 +135,6 @@ while True:
     except StopIteration:
         break
 
-for row in scaffolds:
-    print("".join(row))
-
 intersections = []
 for y in range(len(scaffolds)):
     for x in range(len(scaffolds[0])):
@@ -158,3 +155,30 @@ for y in range(len(scaffolds)):
 # Answer One
 print("Alignment sum:", sum([a * b for a,b in intersections]))
 
+# Print scaffolds and calculate route by hand
+for row in scaffolds:
+    print("".join(row))
+
+main = "B,C,B,A,C,A,C,A,B,A\n"
+a = "R,12,L,10,L,6,R,10\n"
+b = "R,12,L,6,R,12\n"
+c = "L,8,L,6,L,10\n"
+camera = "n\n"
+
+inputs = main + a + b + c + camera
+changed_intcode = intcode_dict.copy()
+changed_intcode[0] = 2
+aft_2 = VacuumCameras(changed_intcode)
+aft_2_run = aft_2.run_intcode()
+while True:
+    try:
+        space_dust = next(aft_2_run)
+        if space_dust == "Waiting on input":
+            aft_2.inputs.append(ord(inputs[0]))
+            inputs = inputs[1:]
+
+    except StopIteration:
+        break
+
+# Answer Two
+print("Amount of space dust collected:", space_dust)
