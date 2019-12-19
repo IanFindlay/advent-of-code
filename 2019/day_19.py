@@ -111,6 +111,13 @@ def parse_instruction(value):
     return (opcode, list(reversed(modes)))
 
 
+def reset_drone(drone_instance, code, coords):
+    """Reset member of Drone class to start with coords as input."""
+    drone_instance.inputs = coords
+    drone_instance.code = code.copy()
+    drone_instance.pointer = 0
+
+
 intcode_dict = defaultdict(int)
 with open('input.txt') as f:
     i = 0
@@ -118,16 +125,33 @@ with open('input.txt') as f:
         intcode_dict[i] = int(instruction)
         i += 1
 
+drone = Drone(intcode_dict)
+drone_run = drone.run_intcode()
 drone_readouts = {}
+start = None
 for x in range(50):
     for y in range(50):
-        drone = Drone(intcode_dict.copy())
-        drone.inputs = [x, y]
-        drone_run = drone.run_intcode()
-        try:
-            drone_readouts[(x, y)] = next(drone_run)
-        except StopIteration:
-            pass
+        reset_drone(drone, intcode_dict, [x, y])
+        drone_readouts[(x, y)] = next(drone_run)
+        if not start and y != 0 and drone_readouts[(x, y)] == 1:
+            start = (x, y)
 
 # Answer One
 print("Drones affected by tractor beam:", sum(drone_readouts.values()))
+
+# Start from start (due to diagonal making some early rows erroneously empty)
+x, y = start
+while True:
+    reset_drone(drone, intcode_dict, [x, y])
+    bl_corner = next(drone_run)
+    if bl_corner:
+        reset_drone(drone, intcode_dict, [x + 99, y - 99])
+        tr_corner = next(drone_run)
+        if tr_corner:
+            break
+        y += 1
+    else:
+        x += 1
+
+# Answer Two
+print("First 100x100 tractor beam square value:", x * 10000 + y - 99)
