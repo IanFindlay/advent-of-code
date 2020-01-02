@@ -4,46 +4,57 @@
 from collections import defaultdict, deque
 
 
-def maze_bfs(maze, start, end, portals):
+def maze_bfs(maze, start, end, portals, recursive=False):
     """BFS from entrance to exit of maze with portals.
 
         Args:
-            maze (dict): Coords: Value dictionary representing the maze.
+            maze (dict): {Coords: Value} dictionary representing the maze.
             entrance (str): Coords of entrance (x, y).
             exit (str): Coords of exit (x, y).
             portals (dict): Dictionary mapping portals to their destinations.
+            recursive (bool): Treat portals like recursive mazes.
 
         Returns:
-            Length of the shortest path (int)
+            Length of the shortest path (int).
 
     """
+    x_edges = (2, max([x for x, y in maze.keys()]) - 2)
+    y_edges = (2, max([y for x, y in maze.keys()]) - 2)
     visited = set()
-    visited.add(start)
+    visited.add((start, 0))
     queue = deque()
-    queue.append((start, 0))
+    queue.append((start, 0, 0))
     while queue:
-        coords, steps = queue.popleft()
+        coords, steps, level = queue.popleft()
 
         if coords in portals:
             warp_to = portals[coords]
-            if warp_to not in visited:
-                visited.add(warp_to)
-                queue.append((warp_to, steps + 1))
+            if coords[0] in x_edges or coords[1] in y_edges:
+                new_level = level - 1
+            else:
+                new_level = level + 1
+
+            if (warp_to, new_level) not in visited and new_level >= 0:
+                visited.add((warp_to, new_level))
+                queue.append((warp_to, steps + 1, new_level))
 
         x, y = coords
         next_nodes = [(x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)]
         for node in next_nodes:
-            if node in visited:
+            if (node, level) in visited:
                 continue
 
             if node == end:
-                return steps + 1
+                if not recursive or level == 0:
+                    return steps + 1
+                else:
+                    queue.append((node, steps + 1, level))
 
             tile_value = maze.get(node)
 
             if tile_value == '.':
-                visited.add(node)
-                queue.append((node, steps + 1))
+                visited.add((node, level))
+                queue.append((node, steps + 1, level))
 
     return False
 
@@ -112,4 +123,8 @@ for code, coords in portal_locations.items():
 
 # Answer One
 fewest_steps = maze_bfs(maze_dict, entrance, maze_exit, portal_links)
-print("Fewest steps required to exit the maze:", fewest_steps)
+print("Fewest steps required to navigate the maze:", fewest_steps)
+
+# Answer Two
+fewest_steps = maze_bfs(maze_dict, entrance, maze_exit, portal_links, True)
+print("Fewest steps required to navigate the recursive maze:", fewest_steps)
