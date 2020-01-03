@@ -121,10 +121,7 @@ with open('input.txt') as f:
 bot = SpringDroid(intcode_dict.copy())
 assess_hull = bot.run_intcode()
 
-# NOT C T - If 3rd space is a hole prepare to jump with temp
-# AND D T - Unless 4th space is a hole
-# NOT A J - If 1st tile is a hole then jump
-# OR T J - If temp or jump true then jump
+# Jump if 1st or third tile are holes and 4th is ground
 
 instructions = """NOT C T
     AND D T
@@ -143,4 +140,34 @@ while True:
         break
 
 # Answer One
-print("Reported hull damage:", output)
+print("Hull damage reported:", output)
+
+run_bot = SpringDroid(intcode_dict.copy())
+fully_assess_hull = run_bot.run_intcode()
+
+# Jump if A, B or C is a hole if D is ground + E (step) or H (jump) is ground
+
+instructions = """NOT A J
+    NOT B T
+    OR T J
+    NOT C T
+    OR T J
+    AND D J
+    NOT E T
+    NOT T T
+    OR H T
+    AND T J
+    RUN
+
+"""
+
+run_bot.inputs = list(map(ord, instructions))
+while True:
+    try:
+        output = next(fully_assess_hull)
+        print(chr(output), end='')
+    except ValueError:
+        break
+
+# Answer Two
+print("Full hull damage reported:", output)
