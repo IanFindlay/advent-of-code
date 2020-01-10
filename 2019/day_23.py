@@ -11,6 +11,8 @@ class Computer:
         """Initialises intcode (dict) and an input list."""
         self.code = code
         self.inputs = deque()
+        self.halted = False
+        self.stalling_packet_streak = 0
         self.outputs = []
         self.pointer = 0
 
@@ -57,7 +59,15 @@ class Computer:
 
             elif opcode == 3:   # input
                 if self.inputs:
-                    self.code[param_1] = self.inputs.popleft()
+                    new_value = self.inputs.popleft()
+                    if new_value == -1:
+                        self.stalling_packet_streak += 1
+                        if self.stalling_packet_streak > 1:
+                            self.halted = True
+                    else:
+                        self.stalling_packet_streak = 0
+                        self.halted = False
+                    self.code[param_1] = new_value
                     self.pointer += 2
                 else:
                     yield "Waiting on input"
@@ -145,3 +155,38 @@ while not first_y_255:
 
 # Answer One
 print("Y value of first packet sent to address 255:", first_y_255)
+
+computers = {}
+for address in range(50):
+    computers[address] = [Computer(intcode_dict.copy())]
+    computers[address][0].inputs.append(address)
+    computers[address].append(computers[address][0].run_intcode())
+
+last_nat = None
+repeated = False
+while not repeated:
+    for computer, program in computers.values():
+        output = next(program)
+        if type(output) is str:
+            computer.inputs.append(-1)
+
+            if all(machine[0].halted for machine in computers.values()):
+                if nat == last_nat:
+                    repeated = True
+                    break
+
+                computers[0][0].inputs.extend(nat)
+                computers[0][0].halted = False
+                last_nat = nat
+
+        else:
+            destination, x, y = output
+
+            if destination == 255:
+                nat = [x, y]
+                continue
+
+            computers[destination][0].inputs.extend([x, y])
+
+# Answer Two
+print("Y value of first consecutive identical NAT packets:", nat[1])
