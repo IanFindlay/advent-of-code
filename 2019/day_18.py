@@ -34,7 +34,7 @@ def path_to_key(area_map, start, target_key):
 
 
 def navigate_tunnels(start, key_paths):
-    """Use key paths to dfs collecting all keys and return fewest steps."""
+    """Use key paths to DFS collecting all keys and return fewest steps."""
     num_keys = len(key_paths) - 1
     shortest = None
     seen = set()
@@ -73,6 +73,51 @@ def navigate_tunnels(start, key_paths):
     return shortest
 
 
+def navigate_split(key_paths):
+    """DFS to return fewest steps needed to collect all keys in split maze."""
+    num_keys = len(key_paths) - 4
+    shortest = None
+    seen = set()
+    seen_steps = {}
+    stack = [(('0', '1', '2', '3'), set(), 0)]
+    while stack:
+        robots, keys, steps = stack.pop()
+
+        if shortest and steps >= shortest:
+            continue
+
+        cache = (robots, frozenset(keys))
+        if cache in seen and seen_steps[cache] <= steps:
+            continue
+        seen.add(cache)
+        seen_steps[cache] = steps
+
+        for pos in range(4):
+            for path in key_paths[robots[pos]]:
+                key_name, distance, doors = path
+
+                if doors & keys != doors:
+                    continue
+
+                if key_name in keys:
+                    continue
+
+                if len(keys) == num_keys - 1:
+                    if not shortest or steps + distance < shortest:
+                        shortest = steps + distance
+
+                keys_copy = keys.copy()
+                keys_copy.add(key_name)
+
+                new_robots = list(robots)
+                new_robots[pos] = key_name
+                new_robots = tuple(new_robots)
+
+                stack.append((new_robots, keys_copy, steps + distance))
+
+    return shortest
+
+
 with open('input.txt') as f:
     input_map = [[value for value in row.strip()] for row in f.read().split()]
 
@@ -89,10 +134,40 @@ for y in range(len(input_map)):
 
 key_paths = defaultdict(list)
 for key in keys:
-    for i, key_name in enumerate(keys):
+    for key_name in keys:
         if key == key_name or key_name == '@':
             continue
         key_paths[key].append((path_to_key(scan, key_coords[key], key_name)))
 
 # Answer One
 print("Fewest steps needed to get all keys:", navigate_tunnels('@', key_paths))
+
+x, y = key_coords['@']
+dx = [-1, 0, 1]
+dy = [-1, 0, 1]
+robot_num = 0
+for col in dx:
+    for row in dy:
+        new_coords = (x + col, y + row)
+        if (col, row) in ((-1, -1), (1, -1), (-1, 1), (1, 1)):
+            scan[new_coords] = str(robot_num)
+            key_coords[str(robot_num)] = new_coords
+            robot_num += 1
+        else:
+            scan[new_coords] = '#'
+
+key_paths = defaultdict(list)
+keys = 'abcdefghijklmnopqrstuvwxyz0123'
+for key in keys:
+    for key_name in keys:
+        if key == key_name or key_name in ('0', '1', '2', '3'):
+            continue
+        try:
+            paths = path_to_key(scan, key_coords[key], key_name)
+            if paths:
+                key_paths[key].append(paths)
+        except KeyError:
+            pass
+
+# Answer Two
+print("Fewest steps to get keys in split tunnels:", navigate_split(key_paths))
