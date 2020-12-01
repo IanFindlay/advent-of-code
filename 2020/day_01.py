@@ -11,3 +11,19 @@ for entry in entries:
 
 # Answer One
 print("Two entries that add to 2020", answer_one)
+
+for entry in entries:
+    target = 2020 - entry
+    for entry_2 in entries:
+        answer_two = False
+        if entry_2 == entry:
+            pass
+        if target - entry_2 in entries:
+            answer_two = entry * entry_2 * (target - entry_2)
+            break
+
+    if answer_two:
+        break
+
+# Answer Two
+print("Three entries that add to 2020", answer_two)
