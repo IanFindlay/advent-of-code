@@ -24,7 +24,7 @@ for line in lines:
     # Part Two
     if password[first_num - 1] == char and password[second_num - 1] != char:
         part_two_valid += 1
-    elif password[first_num - 1] != char and password[second_num -1] == char:
+    elif password[first_num - 1] != char and password[second_num - 1] == char:
         part_two_valid += 1
 
 # Answer One
