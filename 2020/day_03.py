@@ -46,6 +46,5 @@ product_of_trees *= count_trees_on_slope(rows, 5, 1)
 product_of_trees *= count_trees_on_slope(rows, 7, 1)
 product_of_trees *= count_trees_on_slope(rows, 1, 2)
 
-
 # Answer Two
 print("Product of trees encountered on 5 different slopes:", product_of_trees)
