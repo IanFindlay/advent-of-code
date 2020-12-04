@@ -5,34 +5,38 @@
 import re
 
 
-with open ('input.txt', 'r') as batch_file:
-    passports = [passport for passport in batch_file.read().split('\n\n')]
+def validate_field(field: str, value: str) -> bool:
+    """."""
+    if field == "byr" and validate_date_field(value, 1920, 2002):
+        return True
 
-required_fields = {"byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid"}
+    elif field == "iyr" and validate_date_field(value, 2010, 2020):
+        return True
 
-valid = 0
-passport_regex = re.compile('\w*:\S*')
-for passport in passports:
-    fields = set()
-    for data in passport_regex.findall(passport):
-        fields.add(data.split(':')[0])
+    elif field == "eyr" and validate_date_field(value, 2020, 2030):
+        return True
 
-    if required_fields - fields == set():
-        valid += 1
+    elif field == "hgt" and validate_height_field(value):
+        return True
 
-# Answer One
-print("Number of valid passports:", valid)
+    elif field == "hcl" and validate_hair_field(value):
+        return True
 
-# Part Two
+    elif field == "ecl" and validate_eye_field(value):
+        return True
 
-def validate_date_field(value: str, min: int, max: int) -> bool:
+    elif field == "pid" and validate_pid_field(value):
+        return True
+
+
+def validate_date_field(value: str, min_date: int, max_date: int) -> bool:
     """."""
     try:
         value = int(value)
     except ValueError:
         return False
 
-    if value >= min and value <= max:
+    if value >= min_date and value <= max_date:
         return True
     else:
         return False
@@ -85,34 +89,30 @@ def validate_pid_field(value: str) -> bool:
     else:
         return False
 
-valid_and_verified = 0
+
+with open ('input.txt', 'r') as batch_file:
+    passports = [passport for passport in batch_file.read().split('\n\n')]
+
+required_fields = {"byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid"}
+valid = valid_and_verified = 0
 passport_regex = re.compile('\w*:\S*')
 for passport in passports:
     fields = set()
+    verified_fields = set()
     for data in passport_regex.findall(passport):
         field, value = data.split(':')
-        if field == "byr" and validate_date_field(value, 1920, 2002):
-            fields.add(field)
-
-        elif field == "iyr" and validate_date_field(value, 2010, 2020):
-            fields.add(field)
-
-        elif field == "eyr" and validate_date_field(value, 2020, 2030):
-            fields.add(field)
-
-        elif field == "hgt" and validate_height_field(value):
-            fields.add(field)
-
-        elif field == "hcl" and validate_hair_field(value):
-            fields.add(field)
-
-        elif field == "ecl" and validate_eye_field(value):
-            fields.add(field)
-
-        elif field == "pid" and validate_pid_field(value):
-            fields.add(field)
+        fields.add(field)
+        if validate_field(field, value):
+            verified_fields.add(field)
 
     if required_fields - fields == set():
+        valid += 1
+
+    if required_fields - verified_fields == set():
         valid_and_verified += 1
 
+# Answer One
+print("Number of valid passports:", valid)
+
+# Answer Two
 print("Number of valid, verified passwords:", valid_and_verified)
