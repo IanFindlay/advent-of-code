@@ -8,7 +8,7 @@ def decode_binary_space_partition(code: str) -> tuple:
 
     Args:
         code: A 9 character code - The first 7 characters are each either
-              "F"orward or "B"ack and the last 3 are either "L"eft or "R"ight.
+              "F"ront or "B"ack and the last 3 are either "L"eft or "R"ight.
 
     Returns:
         tuple consisting of two integers representing row and column.
