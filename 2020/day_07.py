@@ -59,3 +59,17 @@ while True:
 # Answer One
 print("Number of bag colours that can eventually contain shiny:",
        bags_that_can_contain_shiny)
+
+bags_within_gold = 0
+bags_to_explore = [('shiny gold', 1)]
+while bags_to_explore:
+    current_bag, multi = bags_to_explore.pop()
+    inner_bags = bags[current_bag].contents.items()
+    for inner_bag in inner_bags:
+        colour, num_bags = inner_bag
+        num_this_colour = num_bags * multi
+        bags_within_gold += num_this_colour
+        bags_to_explore.append((colour, num_this_colour))
+
+# Answer Two
+print("Number of bags required inside shiny gold bag:", bags_within_gold)
