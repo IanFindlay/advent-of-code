@@ -3,86 +3,63 @@
 """Advent of Code 2020 Day 08 - Handheld Halting."""
 
 
-def acc(argument: int, index: int, accumulator: int) -> int:
-    """."""
-    accumulator += argument
-    return (index + 1, accumulator)
+def run_boot_code(instructions: list) -> tuple:
+    """Run boot code in instructions list.
 
+        Args:
+            instructions: List of boot code instruction strings in the format
+            "operation argument".
 
-def jmp(argument: int, index: int) -> int:
-    """."""
-    return index + argument
-
-
-def nop(index: int) -> int:
-    """."""
-    return index + 1
-
-
-with open ('input.txt', 'r') as f:
-    instructions = [instruction.strip() for instruction in f.readlines()]
-
-accumulator = 0
-visited_indicies = set([0])
-current_index = 0
-while True:
-    operation, argument = instructions[current_index].split()
-    argument = int(argument)
-    if operation == "acc":
-        current_index, accumulator = acc(argument, current_index, accumulator)
-    elif operation == 'jmp':
-        current_index = jmp(argument, current_index)
-    elif operation == 'nop':
-        current_index = nop(current_index)
-
-    if current_index in visited_indicies:
-        break
-    visited_indicies.add(current_index)
-
-# Answer One
-print("Value in the accumulator before infinite loop:", accumulator)
-
-
-def run_until_infinite_or_stopped(instructions: list) -> tuple:
-    """."""
+        Returns:
+            Tuple of (accumulator, boolean). The boolean represents whether
+            the code ran to completion - indicatd by trying to access an
+            index beyond the instruction list - or not. The accumulator is the
+            value of the accumulator at completion or, in the case of an
+            infinite loop, prior to entering the loop.
+    """
     accumulator = 0
     visited_indicies = set([0])
     current_index = 0
-    infinite = False
     while True:
         try:
             operation, argument = instructions[current_index].split()
         except IndexError:
+            # Indicates program ran to completion
             return (accumulator, True)
+
         argument = int(argument)
         if operation == "acc":
-            current_index, accumulator = acc(argument, current_index, accumulator)
+            current_index += 1
+            accumulator += argument
         elif operation == 'jmp':
-            current_index = jmp(argument, current_index)
+            current_index += argument
         elif operation == 'nop':
-            current_index = nop(current_index)
+            current_index += 1
 
         if current_index in visited_indicies:
             return (accumulator, False)
-            break
         visited_indicies.add(current_index)
 
 
+with open ('input.txt', 'r') as boot_code:
+    instructions = [instruction for instruction in boot_code.readlines()]
 
-changed_indicies = set()
+# Answer One
+print("Value in the accumulator before infinite loop:",
+      run_boot_code(instructions)[0])
+
 current_index = 0
 while True:
     operation, argument = instructions[current_index].split()
-    if current_index not in changed_indicies and operation != 'acc':
+    if operation in ('jmp', 'nop'):
         mod_instructions = instructions.copy()
-        changed_indicies.add(current_index)
         if operation == 'jmp':
             mod_instructions[current_index] = "{} {}".format('nop', argument)
         elif operation == 'nop':
             mod_instructions[current_index] = "{} {}".format('jmp', argument)
 
-        accumulator, fixed = run_until_infinite_or_stopped(mod_instructions)
-        if fixed:
+        accumulator, program_fixed = run_boot_code(mod_instructions)
+        if program_fixed:
             break
 
     current_index += 1
