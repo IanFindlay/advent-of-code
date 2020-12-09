@@ -18,3 +18,28 @@ for index, number in enumerate(numbers[25:], 25):
 # Answer One
 print("First number that is not the sum of two numbers in the previous 25:",
       numbers[index])
+
+target_number = numbers[index]
+weakness_found = False
+starting_index = 0
+while True:
+    current_sum = summed_nums = 0
+    for number in numbers[starting_index:]:
+        current_sum += number
+        summed_nums += 1
+        if current_sum > target_number:
+            break
+        if current_sum == target_number:
+            weakness_found = True
+            break
+
+    if weakness_found:
+        break
+
+    starting_index += 1
+
+contiguous_nums = numbers[starting_index: starting_index + summed_nums]
+encryption_weakness = min(contiguous_nums) + max(contiguous_nums)
+
+# Answer Two
+print("Encryption weakness:", encryption_weakness)
