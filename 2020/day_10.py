@@ -44,3 +44,16 @@ for adapter, connected_to in joltage_dict.items():
 
 # Answer One
 print("1-jolt multiplied by 3-jolt differences:", diff_of_one * diff_of_three)
+
+del outputs[-1]  # Remove 0 from output options
+adapter_paths = {}
+adapter_paths[0] = 1
+for adapter in sorted(outputs):
+    paths_to = 0
+    for n in (1, 2, 3):
+        paths_to += adapter_paths.get(adapter - n, 0)
+    adapter_paths[adapter] = paths_to
+
+# Answer Two
+print("Number of ways to arrange adapters to connect outlet to device:",
+      adapter_paths[outputs[-1]])
