@@ -6,29 +6,33 @@
 with open ('input.txt', 'r') as f:
     floorplan = [row.strip() for row in f.readlines()]
 
+num_rows = len(floorplan)
+num_cols = len(floorplan[0])
 floorplan_dict = {}
-for row in range(len(floorplan)):
-    for col in range(len(floorplan[0])):
+for row in range(num_rows):
+    for col in range(num_cols):
         floorplan_dict[(row, col)] = floorplan[row][col]
+
+floorplan_dict_copy = floorplan_dict.copy()
 
 while True:
     new_states = {}
     for coords, state in floorplan_dict.items():
-        row, col = coords
-        adjacent = [
-                (row, col - 1), (row, col + 1),
-                (row - 1, col), (row + 1,  col),
-                (row - 1, col - 1), (row - 1,  col + 1),
-                (row + 1, col + 1), (row + 1,  col - 1)
-        ]
+        if state == '.':
+            new_states[coords] = state
+            continue
+
+        adjacent = [(0, -1), (0, 1), (-1, 0), (1, 0),
+                    (-1, -1), (-1, 1), (1, 1), (1, -1)]
         occupied = 0
         for seat in adjacent:
-            if floorplan_dict.get(seat, '.') == '#':
+            new_coords = (coords[0] + seat[0], coords[1] + seat[1])
+            if floorplan_dict.get(new_coords, '.') == '#':
                 occupied += 1
 
-        if state == 'L' and occupied == 0:
+        if  occupied == 0 and state == 'L':
             new_states[coords] = '#'
-        elif state == '#' and occupied >= 4:
+        elif occupied >= 4 and state == '#':
             new_states[coords] = 'L'
         else:
             new_states[coords] = state
@@ -38,22 +42,19 @@ while True:
 
     floorplan_dict = new_states
 
-occupied = 0
-for state in new_states.values():
-    if state == '#':
-        occupied += 1
+occupied = sum(1 for value in new_states.values() if value == '#')
 
 # Answer One
 print("Number of seats that end up occupied:", occupied)
 
-floorplan_dict = {}
-for row in range(len(floorplan)):
-    for col in range(len(floorplan[0])):
-        floorplan_dict[(row, col)] = floorplan[row][col]
-
+floorplan_dict = floorplan_dict_copy
 while True:
     new_states = {}
     for coords, state in floorplan_dict.items():
+        if state == '.':
+            new_states[coords] = state
+            continue
+
         adjacent = [(0, -1), (0, 1), (-1, 0), (1, 0),
                     (-1, -1), (-1, 1), (1, 1), (1, -1)]
 
@@ -62,12 +63,12 @@ while True:
             new_coords = coords
             while True:
                 new_coords = (new_coords[0] + seat[0], new_coords[1] + seat[1])
-                adj_state = floorplan_dict.get(new_coords, '.')
                 if new_coords[0] < 0 or new_coords[1] < 0:
                     break
-                if (new_coords[0] == len(floorplan)
-                    or new_coords[1] == len(floorplan[0])):
+                if new_coords[0] == num_rows or new_coords[1] == num_cols:
                     break
+
+                adj_state = floorplan_dict.get(new_coords, '.')
                 if adj_state == 'L':
                     break
 
@@ -75,11 +76,9 @@ while True:
                     occupied += 1
                     break
 
-                continue
-
-        if state == 'L' and occupied == 0:
+        if occupied == 0 and state == 'L':
             new_states[coords] = '#'
-        elif state == '#' and occupied >= 5:
+        elif occupied >= 5 and state == '#':
             new_states[coords] = 'L'
         else:
             new_states[coords] = state
@@ -89,10 +88,7 @@ while True:
 
     floorplan_dict = new_states
 
-occupied = 0
-for state in new_states.values():
-    if state == '#':
-        occupied += 1
+occupied = sum(1 for value in new_states.values() if value == '#')
 
 # Answer Two
 print("Number of seats that end up occupied:", occupied)
