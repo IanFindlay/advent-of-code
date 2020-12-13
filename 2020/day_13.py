@@ -21,3 +21,20 @@ for bus_id in bus_ids:
 # Answer One
 print("Product of bus ID and wait:",
       (closest_departure[0] - earliest_depart) * closest_departure[1])
+
+time = 1
+interval = 1
+for index, bus in enumerate(rows[1].split(',')):
+    if bus == 'x':
+        continue
+
+    bus = int(bus)
+
+    while True:
+        if (time + index) % bus == 0:
+            interval *= bus
+            break
+        time += interval
+
+# Answer Two
+print("Earliest time where bus departure offsets match their indicies:", time)
