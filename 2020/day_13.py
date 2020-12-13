@@ -6,30 +6,21 @@
 with open ('input.txt', 'r') as f:
     rows = [row.strip() for row in f.readlines()]
 
-earliest_depart = int(rows[0])
-bus_ids = [int(x) for x in rows[1].split(',') if x != "x"]
+early_time = int(rows[0])
+bus_ids = rows[1].split(',')
 
-closest_departure = None
-for bus_id in bus_ids:
-    departure_time = bus_id
-    while departure_time < earliest_depart:
-            departure_time += bus_id
-
-    if closest_departure is None or departure_time < closest_departure[0]:
-        closest_departure = (departure_time, bus_id)
+shortest_wait = None
+for bus_id in [int(x) for x in bus_ids if x != 'x']:
+    difference = ((early_time // bus_id + 1) * bus_id) - early_time
+    if shortest_wait is None or difference < shortest_wait[0]:
+        shortest_wait = (difference, bus_id)
 
 # Answer One
-print("Product of bus ID and wait:",
-      (closest_departure[0] - earliest_depart) * closest_departure[1])
+print("Product of bus ID and wait:", shortest_wait[0] * shortest_wait[1])
 
 time = 1
 interval = 1
-for index, bus in enumerate(rows[1].split(',')):
-    if bus == 'x':
-        continue
-
-    bus = int(bus)
-
+for index, bus in enumerate([int(x) if x != 'x' else 1 for x in bus_ids]):
     while True:
         if (time + index) % bus == 0:
             interval *= bus
