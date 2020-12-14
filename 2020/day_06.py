@@ -20,16 +20,10 @@ print("Sum of all groups yes counts:", overall_yes)
 
 overall_group_yes = 0
 for group in groups:
-    group_yes = set()
-    set_initialised = False
-    for member_yes in group.split('\n'):
-        member_yes_set = set([char for char in member_yes])
-
-        if not set_initialised:
-            group_yes = member_yes_set
-            set_initialised = True
-        else:
-            group_yes = member_yes_set.intersection(group_yes)
+    members = group.split('\n')
+    group_yes = set([char for char in members[0]])
+    for member in members[1:]:
+        group_yes = set([char for char in member]).intersection(group_yes)
 
     overall_group_yes += len(group_yes)
 
