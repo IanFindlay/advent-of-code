@@ -8,7 +8,7 @@ spoken_dict = {}
 spoken_set = set()
 last_spoken = None
 turn = 1
-while turn <= 2020:
+while turn <= 30000000:
 
     if starting_numbers:
         number = starting_numbers[0]
@@ -37,5 +37,9 @@ while turn <= 2020:
     last_spoken = number
     turn += 1
 
-# Answer One
-print("2020th Number spoken:", last_spoken)
+    if turn == 2021:
+        # Answer One
+        print("2020th Number spoken:", last_spoken)
+
+# Answer Two
+print("30000000th Number spoken:", last_spoken)
