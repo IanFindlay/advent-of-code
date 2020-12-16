@@ -14,7 +14,7 @@ def number_valid(rules_dict: dict, number: int) -> bool:
 
 
 def potential_fields(rules_dict: dict, number: int) -> set:
-    """."""
+    """Check number against each field and return set of valid ones."""
     valid_fields = set()
     for field, range_tuples in rules_dict.items():
         for num_range in range_tuples:
@@ -28,6 +28,7 @@ def potential_fields(rules_dict: dict, number: int) -> set:
 with open('input.txt', 'r') as f:
     rules, my_ticket, nearby = [row.strip() for row in f.read().split('\n\n')]
 
+# Parse Field Rules
 rules_dict = {}
 for rule in rules.split('\n'):
     field, num_ranges = rule.split(':')
@@ -38,47 +39,59 @@ for rule in rules.split('\n'):
         range_tuples.append((int(lower), int(upper)))
     rules_dict[field] = range_tuples
 
+# Parse Nearby Tickets
 numbers = [[int(x) for x in row.split(',')] for row in nearby.split('\n')[1:]]
+
 invalid = 0
+valid_tickets = []
 for number_row in numbers:
+    ticket_valid = True
     for number in number_row:
         if not number_valid(rules_dict, number):
             invalid += number
+            ticket_valid = False
+    if ticket_valid:
+        valid_tickets.append(number_row)
 
 # Answer One
 print("Ticket scanning error rate:", invalid)
 
-valid_tickets = []
-for number_row in numbers:
-    ticked_valid = True
-    for number in number_row:
-        if not number_valid(rules_dict, number):
-            ticked_valid = False
-            break
-    if ticked_valid:
-        valid_tickets.append(number_row)
-
-my_fields = [set()] * len(rules_dict)
+num_fields = len(rules_dict)
+my_fields = [set()] * num_fields
 assigned_fields = set()
+num_assigned = 0
+all_assigned = False
 while True:
     for number_row in valid_tickets:
         for index, number in enumerate(number_row):
             valid_fields = potential_fields(rules_dict, number)
-            if len(my_fields[index]) != 1:
+            prev_fields = my_fields[index]
+            if len(prev_fields) != 1:
                 valid_fields = valid_fields.difference(assigned_fields)
-            if not my_fields[index]:
-                my_fields[index] = valid_fields
+            if not prev_fields:
+                prev_fields = valid_fields
             else:
-                my_fields[index] = my_fields[index].intersection(valid_fields)
+                prev_fields = prev_fields.intersection(valid_fields)
 
-            if len(my_fields[index]) == 1:
-                assigned_fields.update(my_fields[index])
-    if len(assigned_fields) == len(my_fields):
+            my_fields[index] = prev_fields
+
+            if len(prev_fields) == 1:
+                field = list(prev_fields).pop()
+                if field not in assigned_fields:
+                    assigned_fields.update(prev_fields)
+                    num_assigned += 1
+
+            if num_assigned == num_fields:
+                all_assigned = True
+                break
+
+    if all_assigned:
         break
 
-
 my_fields = [list(x)[0] for x in my_fields]
-my_ticket = [[int(x) for x in row.split(',')] for row in my_ticket.split('\n')[1:]][0]
+my_ticket = [[int(x) for x in row.split(',')]
+              for row in my_ticket.split('\n')[1:]][0]
+
 departure_product = 1
 for index, field in enumerate(my_fields):
     if field.startswith('departure'):
