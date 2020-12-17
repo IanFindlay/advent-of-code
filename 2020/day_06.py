@@ -3,7 +3,7 @@
 """Advent of Code 2020 Day 06 - Custom Customs."""
 
 
-with open ('input.txt', 'r') as forms:
+with open ('inputs/2020_06.txt', 'r') as forms:
     groups = [group_answers.strip() for group_answers in forms.read().split('\n\n')]
 
 overall_yes = 0

@@ -90,7 +90,7 @@ def validate_pid_field(value: str) -> bool:
         return False
 
 
-with open ('input.txt', 'r') as batch_file:
+with open ('inputs/2020_04.txt', 'r') as batch_file:
     passports = [passport for passport in batch_file.read().split('\n\n')]
 
 required_fields = {"byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid"}

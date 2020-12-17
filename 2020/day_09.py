@@ -6,7 +6,7 @@
 from itertools import combinations
 
 
-with open ('input.txt', 'r') as xmas:
+with open ('inputs/2020_09.txt', 'r') as xmas:
     numbers = [int(number.strip()) for number in xmas.readlines()]
 
 for index, number in enumerate(numbers[25:], 25):

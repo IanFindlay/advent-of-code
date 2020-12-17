@@ -25,7 +25,7 @@ def potential_fields(rules_dict: dict, number: int) -> set:
     return valid_fields
 
 
-with open('input.txt', 'r') as f:
+with open('inputs/2020_16.txt', 'r') as f:
     rules, my_ticket, nearby = [row.strip() for row in f.read().split('\n\n')]
 
 # Parse Field Rules

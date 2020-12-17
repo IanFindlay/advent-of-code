@@ -3,7 +3,7 @@
 """Advent of Code 2020 Day 01 - Report Repair."""
 
 
-with open ('input.txt', 'r') as expense_report:
+with open ('inputs/2020_01.txt', 'r') as expense_report:
     entries = set([int(line) for line in expense_report.readlines()])
 
 for entry in entries:

@@ -3,7 +3,7 @@
 """Advent of Code 2020 Day 11 - Seating System."""
 
 
-with open ('input.txt', 'r') as f:
+with open ('inputs/2020_11.txt', 'r') as f:
     floorplan = [row.strip() for row in f.readlines()]
 
 num_rows = len(floorplan)

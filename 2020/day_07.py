@@ -2,21 +2,38 @@
 
 """Advent of Code 2020 Day 07 - Handy Haversacks."""
 
+
 import re
 
+
 class Bag:
-    """."""
+    """A Class that represents a bag."""
 
     def __init__(self, colour, contains):
-        """."""
+        """Initialisation of the class.
+
+        Args:
+            colour (str): Colour of the bag.
+            contains (list): List of tuples of (number of bags, colour of bag)
+                representing how many of each inner bag this Bag must contain.
+
+        """
         self.colour = colour
         self.contains = contains
+
+        #: bool: Whether this bag is flagged as containing a 'shiny gold' bag
         self.leads_to_shiny_gold = False
 
-        self.contents = self.process_contents()
+        #: dictionary: A dictionary of contained bags - colour: number of bags
+        self.contents = self.__process_contents()
 
-    def process_contents(self):
-        """."""
+    def __process_contents(self):
+        """Process what bag contains into dict.
+
+            Returns:
+                dict: Contained bags formatted colour: number of bags.
+
+        """
         contents = {}
         for contained_bag in self.contains:
             number, colour = contained_bag
@@ -28,7 +45,7 @@ class Bag:
         return contents
 
 
-with open ('input.txt', 'r') as f:
+with open ('inputs/2020_07.txt', 'r') as f:
     luggage_rules = [rule.strip() for rule in f.readlines()]
 
 bag_regex = re.compile('(\d)*?\s?(\w*\s\w*)\sbags?')
@@ -57,7 +74,7 @@ while True:
 
 
 # Answer One
-print("Number of bag colours that can eventually contain shiny:",
+print("Number of bag colours that eventually contain shiny:",
        bags_that_can_contain_shiny)
 
 bags_within_gold = 0

@@ -5,7 +5,7 @@
 import re
 
 
-with open ('input.txt', 'r') as password_database:
+with open ('inputs/2020_02.txt', 'r') as password_database:
     lines = [line for line in password_database.readlines()]
 
 line_regex = re.compile('(\d*)-(\d*)\s(\w):\s(\w*)')

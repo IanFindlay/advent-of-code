@@ -7,7 +7,7 @@ from itertools import product
 import re
 
 
-with open ('input.txt', 'r') as f:
+with open ('inputs/2020_14.txt', 'r') as f:
     rows = [row.strip() for row in f.readlines()]
 
 instructions = []
