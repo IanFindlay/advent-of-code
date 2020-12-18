@@ -53,7 +53,6 @@ def do_maths(maths: list) -> int:
 
     return num_1
 
-
 with open('inputs/2020_18.txt', 'r') as f:
     rows = [row.split() for row in f.readlines()]
 
@@ -84,7 +83,7 @@ for row in rows:
 
     parsed_rows.append(parsed_row)
 
-rows = parsed_rows
+rows = parsed_rows.copy()
 total = 0
 for row in rows:
     result = do_maths(row)
@@ -92,3 +91,21 @@ for row in rows:
 
 # Answer One
 print("Sum of the lines' values:", total)
+
+total = 0
+for row in rows:
+    mod_row = ['(']
+    for item in row:
+        if item in ('(', ')'):
+            mod_row.extend([item, item])
+        elif item == '*':
+            mod_row.extend([')', '*', '('])
+        else:
+            mod_row.append(item)
+
+    mod_row.append(')')
+    result = do_maths(mod_row)
+    total += result
+
+# Answer Two
+print("Sum of the lines' values after new rules:", total)
