@@ -2,78 +2,69 @@
 
 """Advent of Code 2020 Day 19 - Monster Messages."""
 
+
 import re
 
-def cycle_rules(rules: dict, resolved_parts: dict) -> dict:
-    """."""
-    for rule_num, rule in rules.items():
-        for index, char in enumerate(rule):
 
-            if type(char) != list and char in resolved_parts:
-                rules[rule_num][index] = resolved_parts[char]
+def convert_to_regex(rules_dict: dict, rule_num: int, depth: int=0) -> str:
+    """Convert rule to its regex equivalent and return it.
 
-            elif char == '"a"':
-                resolved_parts[rule_num] = 'a'
-                rules[rule_num] = 'a'
+    Args:
+        rules_dict: Dictionary of rule_num: rule.
+        rule_num: Key for rules_dict corresponding to rule to be converted.
+        depth: Number of recursive calls to the function. Defaults to 0 and
+               used to set a limit on processing of loops.
 
-            elif char == '"b"':
-                resolved_parts[rule_num] = 'b'
-                rules[rule_num] = 'b'
+    Returns:
+        The regex string equivalent of the rule at key rule_num in rules_dict
+        (to a capped depth).
 
-        if check_rule_solved(resolved_parts, rule):
-            resolved_parts[rule_num] = rule
+    """
+    if depth > 15:
+        return ''
 
-    return (rules, resolved_parts)
+    if rules_dict[rule_num] in ('a', 'b'):
+        return rules_dict[rule_num]
 
+    rules = []
+    for branches in rules_dict[rule_num].split('|'):
+        branch_answer = ''
+        for branch_num in branches.split():
+            branch_re = convert_to_regex(rules_dict, branch_num, depth + 1)
+            branch_answer += branch_re
+        rules.append(branch_answer)
 
-def check_rule_solved(resolved_parts: list, rule: list):
-    """."""
-    for char in rule:
-        if type(char) == list:
-            if not check_rule_solved(resolved_parts, char):
-                return False
-        elif char not in ('a', 'b', '|') and char not in resolved_parts:
-            return False
-
-    return True
+    return '(' + '|'.join(rules) + ')'
 
 
-def convert_list_to_regex(to_conv: list):
-    """."""
-    regex = ''
-    for char in to_conv:
-        if type(char) == list:
-            regex += '('
-            regex += convert_list_to_regex(char)
-            regex += ')'
-        else:
-            regex += char
+rules, messages = open('inputs/2020_19.txt').read().split('\n\n')
+rules_dict = {}
+for line in rules.split("\n"):
+    rule_num, rule = [x.strip() for x in line.split(':')]
+    if rule[0] == '"':
+        rule = rule.strip('"')
+    rules_dict[rule_num] = rule
 
-    return regex
+regex = re.compile(convert_to_regex(rules_dict, '0'))
 
-
-with open('inputs/2020_19.txt', 'r') as f:
-    rows = [row.split() for row in f.readlines()]
-
-rules = {}
-for row in rows:
-    if not row:
-        break
-
-    rule_num = row[0][:-1]
-    rules[rule_num] = row[1:]
-
-resolved_parts = {}
-while True:
-    rules, resolved_parts = cycle_rules(rules, resolved_parts)
-    if check_rule_solved(resolved_parts, rules['0']):
-        break
-
-match = 0
-regex = re.compile(convert_list_to_regex(rules['0']))
-for message in rows[len(rules) + 1:]:
-    if regex.fullmatch(message[0]):
-        match += 1
+matches = 0
+for message in messages.split():
+    if regex.fullmatch(message):
+        matches += 1
 
 # Answer One
-print("Number of messages that completely match rule 0:", match)
+print("Number of messages that completely match rule 0:", matches)
+
+rules_dict["8"] = "42 | 42 8"
+rules_dict["11"] = "42 31 | 42 11 31"
+
+regex = re.compile(convert_to_regex(rules_dict, '0'))
+
+matches = 0
+for message in messages.split():
+    if regex.fullmatch(message):
+        matches += 1
+
+# Answer Two
+print("Number of messages that completely match rule 0 after update:",
+      matches)
