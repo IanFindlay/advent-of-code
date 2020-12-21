@@ -2,7 +2,7 @@
 
 ## My solutions to the [Advent of Code](https://adventofcode.com/) challenges by [Eric Wastl](https://github.com/topaz)
 
-### Overall Stars Collected (288/288):  
+### Overall Stars Collected (290/290):  
   
 * #### [2015](https://adventofcode.com/2015) - Stars Collected (50/50)  
 
@@ -14,4 +14,4 @@
 
 * #### [2019](https://adventofcode.com/2019) - Stars Collected (50/50)
 
-* #### [2020](https://adventofcode.com/2020) - Stars Collected (38/38)
+* #### [2020](https://adventofcode.com/2020) - Stars Collected (40/40)
