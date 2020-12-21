@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-"""Advent of Code 2020 Day 20 - Jurassic Jigsaw."""
+"""Advent of Code 2020 Day 21 - Allergen Assessment."""
 
 
 with open('inputs/2020_21.txt') as f:
@@ -29,7 +29,7 @@ while True:
             matched.update(ingredients)
             continue
 
-        allergens[allergen] = allergens[allergen].difference(matched)
+        allergens[allergen] = allergens[allergen] - matched
 
     if len(matched) == num_allergens:
         break
@@ -41,3 +41,10 @@ for ingredient in ingredients_list:
 
 # Answer One
 print("Number of times non-allergen ingredients appear:", non_allergen)
+
+dangerous_list = ''
+for allergen in sorted(allergens):
+    dangerous_list += allergens[allergen].pop() + ','
+
+# Answer Two
+print("Canonical dangerous ingredients list:", dangerous_list.strip(','))
