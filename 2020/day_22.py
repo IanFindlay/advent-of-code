@@ -3,8 +3,17 @@
 """Advent of Code 2020 Day 22 - Crab Combat."""
 
 
-def play_game(player_1, player_2, part_two=False):
-    """."""
+def play_game(player_1: list, player_2: list, part_two: bool=False) -> tuple:
+    """Play a game of (Recursive) Combat returning winner and their hand.
+
+    Args:
+        player_1: List of player one's card values.
+        player_2: List of player two's card values.
+
+    Return:
+        Tuple of winner's number (1/2) and their winning card values in order.
+
+    """
     prev_rounds = set()
     while player_1 and player_2:
         one_card = player_1[0]
