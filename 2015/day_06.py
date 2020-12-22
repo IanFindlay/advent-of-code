@@ -9,7 +9,7 @@ for x in range(1000):
     for y in range(1000):
         lights.append([x, y, 0])
 
-with open('input.txt') as f:
+with open('inputs/day_06.txt') as f:
     instructions = f.readlines()
 
 for instruction in instructions:
@@ -20,7 +20,7 @@ for instruction in instructions:
         action = 'off'
     if 'toggle' in instruction:
         action = 'toggle'
-    
+
     # Isolate coord pairs/coords
     coords_regex = re.compile(r'([0-9,]*) through ([0-9,]*)')
     first_coords = coords_regex.search(instruction).group(1)
@@ -41,7 +41,7 @@ for instruction in instructions:
 
             if action == 'on':
                 lights[position] = [x, y, 1]
-            
+
             elif action == 'off':
                 lights[position] = [x, y, 0]
 
@@ -58,7 +58,6 @@ for light in lights:
 
 print("Answer One =", on)
 
-
 lights = []
 
 for x in range(1000):
@@ -73,7 +72,7 @@ for instruction in instructions:
         action = 'off'
     if 'toggle' in instruction:
         action = 'toggle'
-    
+
     # Isolate coord pairs/coords
     coords_regex = re.compile(r'([0-9,]*) through ([0-9,]*)')
     first_coords = coords_regex.search(instruction).group(1)
@@ -95,7 +94,7 @@ for instruction in instructions:
             if action == 'on':
                 brightness = lights[position][2]
                 lights[position] = [x, y, brightness + 1]
-            
+
             elif action == 'off':
                 brightness = lights[position][2]
                 if brightness != 0:
@@ -110,4 +109,3 @@ for light in lights:
     overall_brightness += light[2]
 
 print("Answer Two =", overall_brightness)
-        

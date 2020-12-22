@@ -1,6 +1,6 @@
 """Advent of Code Day 10 - Elves Look, Elves Say"""
 
-           
+
 def say(number):
     """Returns a numbers 'say' equivalent."""
     numbers = []
@@ -28,9 +28,9 @@ def say(number):
         said += pair[1]
 
     return said
-    
 
-puzzle_input = '3113322113'
+with open('inputs/day_10.txt', 'r') as f:
+    puzzle_input = f.read().strip()
 
 look = puzzle_input
 cycles = 0

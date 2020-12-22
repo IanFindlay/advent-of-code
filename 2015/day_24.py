@@ -3,7 +3,7 @@
 import itertools
 
 
-with open('input.txt') as f:
+with open('inputs/day_24.txt') as f:
     weights = [int(num) for num in f]
 
 section_weight = sum(weights) // 4    # Change to 3 for Part One
@@ -14,7 +14,7 @@ smallest_combos = []
 for i in range(1, len(weights)):
     if i > smallest_section:
         break
-    
+
     combos = itertools.combinations(weights, i)
     for combo in combos:
         if sum(combo) != section_weight:

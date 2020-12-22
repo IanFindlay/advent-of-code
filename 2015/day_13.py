@@ -30,7 +30,7 @@ def calc_happiness(person, neighbour):
     return pair_happiness
 
 
-with open('input.txt') as f:
+with open('inputs/day_13.txt') as f:
     data = f.readlines()
 
 # Find all guests for iteration

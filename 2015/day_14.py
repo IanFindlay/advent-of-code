@@ -17,21 +17,21 @@ def calc_distance(speed, run_duration, rest_duration, name):
             if elapsed == run_duration:
                 running = False
                 elapsed = 0
-        
+
         else:
             elapsed += 1
             if elapsed == rest_duration:
                 running = True
                 elapsed = 0
-        
+
         splits.append(distance)
         time += 1
-    
+
     tracking.append(splits)
     return distance
 
 
-with open('input.txt') as f:
+with open('inputs/day_14.txt') as f:
     reins = f.readlines()
 
 race_duration = 2503
@@ -61,7 +61,7 @@ for second in range(1, race_duration + 1):
         if reindeer[second] > furthest:
             furthest = reindeer[second]
             leader = reindeer[0]
-    
+
     reindeers[leader] += 1
 
 # Answer Part Two

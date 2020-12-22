@@ -1,5 +1,6 @@
 """Advent of Code Day 3 - Perfectly Spherical Houses in a Vacuum"""
 
+
 def houses_visited(part_two=False):
     """Returns the number of unique houses visited."""
     visited = 1
@@ -21,7 +22,7 @@ def houses_visited(part_two=False):
             if new_coords not in visited_list:
                 visited_list.append(new_coords)
                 visited += 1
-            
+
             santa_coords = new_coords
             if part_two:
                 santa = False
@@ -39,15 +40,15 @@ def houses_visited(part_two=False):
             if new_coords not in visited_list:
                 visited_list.append(new_coords)
                 visited += 1
-            
+
             robo_coords = new_coords
             santa = True
 
     return visited
 
-with open('input.txt') as f:
-    directions = f.read()
 
+with open('inputs/day_03.txt') as f:
+    directions = f.read()
 
 # Answer Part One
 print("Number of unique houses visited =", houses_visited())

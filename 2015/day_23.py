@@ -1,6 +1,6 @@
 """Advent of Code Day 23 - Opening the Turing Lock"""
 
-with open('input.txt') as f:
+with open('inputs/day_23.txt') as f:
     instructions = [line.strip() for line in f]
 
 registers = {'a': 1, 'b': 0}     # Change a to 0 for Part One
@@ -18,7 +18,7 @@ while pos < len(instructions):
             if registers[parsed[1].strip(',')] % 2 == 0:
                 pos += int(parsed[2])
                 continue
-    
+
     elif parsed[0] == 'hlf':
         registers[parsed[1]] /= 2
 
@@ -31,8 +31,7 @@ while pos < len(instructions):
     elif parsed[0] == 'jmp':
         pos += int(parsed[1])
         continue
-    
-    pos += 1
 
+    pos += 1
 
 print("Value of Register b =", registers['b'])

@@ -3,7 +3,7 @@
 import re
 
 
-with open('input.txt') as f:
+with open('inputs/day_15.txt') as f:
     info = f.readlines()
 
 nutri_info = []
@@ -45,7 +45,7 @@ for ratio in ratios:
 
     if capacity <= 0 or durability <= 0 or flavor <= 0 or texture <= 0:
         continue
-    
+
     if calories != 500:    # Comment out for Part One
         continue
 
@@ -53,5 +53,5 @@ for ratio in ratios:
 
     if score > highest:
         highest = score
-    
+
 print("Highest Cookie Score =", highest)

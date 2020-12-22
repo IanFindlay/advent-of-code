@@ -68,7 +68,7 @@ def attempt(instruction):
     return True
 
 
-with open('input.txt') as f:
+with open('inputs/day_07.txt') as f:
     instructions = f.readlines()
 
 wires = {}
@@ -93,7 +93,7 @@ print("Answer One =", wires['a'])
 new_b = wires['a']
 wires = {'b': new_b,}
 
-with open('input.txt') as f:
+with open('inputs/day_07.txt') as f:
     instructions = f.readlines()
 
 while instructions:

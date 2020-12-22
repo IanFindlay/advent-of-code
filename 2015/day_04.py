@@ -15,11 +15,12 @@ def mine_adventcoins(part_two=False):
         else:
             if str(hexed)[0:5] == '00000':
                 return number
-        
+
         number += 1
 
 
-key = 'bgvyzdsv'
+with open('inputs/day_04.txt', 'r') as f:
+    key = f.read().strip()
 
 # Answer Part One
 print("Five leading zeroes with =", mine_adventcoins())

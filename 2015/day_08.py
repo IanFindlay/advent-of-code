@@ -21,9 +21,9 @@ def literal_memory(lines):
                     i += 2
             else:
                 i += 1
-        
+
         memory += line_memory
-    
+
     return literal - memory
 
 
@@ -40,13 +40,13 @@ def encoded_literal(lines):
                 line_encoded += 2
             else:
                 line_encoded += 1
-        
+
         encoded += line_encoded
-    
+
     return encoded - literal
 
 
-with open('input.txt') as f:
+with open('inputs/day_08.txt') as f:
     lines_list = f.readlines()
 
 # Answer One

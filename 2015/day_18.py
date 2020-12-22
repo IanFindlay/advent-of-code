@@ -54,7 +54,7 @@ def light_show(part_two=False):
     return on
 
 
-with open('input.txt') as f:
+with open('inputs/day_18.txt') as f:
     light_lines = [line.strip() for line in f]
 
 # Answer One
