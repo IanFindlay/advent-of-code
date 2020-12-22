@@ -38,7 +38,7 @@ advanced = [
          ['',   '', 'D',  '',  ''],
 ]
 
-with open('input.txt') as f:
+with open('inputs/day_02.txt') as f:
     lines = [line.strip() for line in f.readlines()]
 
 # Answer Part One

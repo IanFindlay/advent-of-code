@@ -1,6 +1,6 @@
 """Advent of Code Day 20 - Firewall Rules"""
 
-with open('input.txt') as f:
+with open('inputs/day_20.txt') as f:
     ip_ranges = [line.strip() for line in f.readlines()]
 
 blacklisted = []

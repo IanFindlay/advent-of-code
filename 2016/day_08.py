@@ -3,7 +3,7 @@
 import re
 
 
-with open('input.txt') as f:
+with open('inputs/day_08.txt') as f:
     sequence = [line.strip() for line in f.readlines()]
 
 grid = []

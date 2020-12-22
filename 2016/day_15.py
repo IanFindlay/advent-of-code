@@ -1,6 +1,6 @@
 """ Advent of Code Day 15 - Timing is Everything"""
 
-with open('input.txt') as f:
+with open('inputs/day_15.txt') as f:
     disc_info = [line.strip() for line in f.readlines()]
 
 discs = []

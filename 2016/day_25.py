@@ -89,7 +89,7 @@ op_conv = {
     'out': 5,
 }
 
-with open('input.txt') as f:
+with open('inputs/day_25.txt') as f:
     ops = [line.strip().split(' ') for line in f.readlines()]
 
 for op in ops:

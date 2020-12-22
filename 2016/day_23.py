@@ -80,7 +80,7 @@ op_conv = {
     'mul': 5
 }
 
-with open('input.txt') as f:
+with open('inputs/day_23.txt') as f:
     ops = [line.strip().split(' ') for line in f.readlines()]
 
 for op in ops:

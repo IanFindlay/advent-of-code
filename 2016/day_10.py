@@ -3,7 +3,7 @@
 import re
 
 
-with open('input.txt') as f:
+with open('inputs/day_10.txt') as f:
     instructions = [line.strip() for line in f.readlines()]
 
 target_1 = 61

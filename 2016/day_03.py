@@ -10,7 +10,7 @@ def check_triangle(lengths):
         return True
 
 
-with open('input.txt') as f:
+with open('inputs/day_03.txt') as f:
     sides_list = [line.strip() for line in f.readlines()]
 
 triangles = 0

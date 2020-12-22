@@ -74,7 +74,7 @@ def adv_decomp(compressed):
     return decompressed
 
 
-with open('input.txt') as f:
+with open('inputs/day_09.txt') as f:
     data = f.read()
 
 # Answer One

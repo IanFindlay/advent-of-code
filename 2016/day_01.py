@@ -36,7 +36,7 @@ def grid_walk(directions, part_two=False):
     return abs(x) + abs(y)
 
 
-with open('input.txt') as f:
+with open('inputs/day_01.txt') as f:
     instructions = f.read().split(', ')
 
 # Answer Part One

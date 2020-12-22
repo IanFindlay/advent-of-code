@@ -3,7 +3,7 @@
 from collections import defaultdict
 
 
-with open('input.txt') as f:
+with open('inputs/day_12.txt') as f:
     instructions = [line.strip() for line in f.readlines()]
 
 registers = defaultdict(int)
