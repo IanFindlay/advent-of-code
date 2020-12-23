@@ -4,7 +4,8 @@
 
 
 with open('inputs/2020_23.txt') as f:
-    cups = [int(x) for x in f.read().strip()]
+    arranged_cups = [int(x) for x in f.read().strip()]
+    cups = arranged_cups.copy()
 
 current_cup = cups[0]
 for _ in range(100):
@@ -45,3 +46,49 @@ while index != one_index:
 
 # Answer One
 print("Labels on the cup after cup 1:", labels)
+
+cups = {}
+for index, cup in enumerate(arranged_cups[:-1]):
+    cups[cup] = arranged_cups[index + 1]
+cups[arranged_cups[-1]] = max(cups) + 1
+for i in range(max(cups) + 1, 1000000):
+    cups[i] = i + 1
+cups[1000000] = arranged_cups[0]
+
+current_cup = arranged_cups[0]
+for _ in range(10000000):
+    removed_three = []
+    cup_to_remove = current_cup
+    for _ in range(3):
+        cup_to_remove = cups[cup_to_remove]
+        removed_three.append(cup_to_remove)
+
+    # Last cup to remove's adjacent is new current cup adjacent
+    cups[current_cup] = cups[cup_to_remove]
+
+    destination_num = current_cup - 1
+    min_circle = [x for x in range(1, 4) if x not in removed_three]
+    max_circle = [x for x in range(999997, 1000001) if x not in removed_three]
+    if destination_num < min_circle[0]:
+        destination_num = max_circle[-1]
+    elif destination_num in removed_three:
+        while True:
+            destination_num -= 1
+            if destination_num not in removed_three:
+                break
+            if destination_num < min_circle[0]:
+                destination_num = max_circle[-1]
+                break
+
+    current_adjacent = cups[destination_num]
+    cups[destination_num] = removed_three[0]
+    cups[removed_three[1]] = removed_three[2]
+    cups[removed_three[2]] = current_adjacent
+
+    current_cup = cups[current_cup]
+
+first_cup = cups[1]
+product = first_cup * cups[first_cup]
+
+# Answer Two
+print("Product of the two cups immediately clockwise from cup 1:", product)
