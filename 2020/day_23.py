@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-"""Advent of Code 2020 Day 22 - Crab Cups."""
+"""Advent of Code 2020 Day 23 - Crab Cups."""
 
 
 with open('inputs/2020_23.txt') as f:
