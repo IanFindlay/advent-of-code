@@ -44,7 +44,7 @@ def plot_stars(stars):
 
 if __name__ == '__main__':
 
-    with open('input.txt') as f:
+    with open('inputs/day_10.txt') as f:
         lines = f.readlines()
 
     min_x, min_y = 0, 0

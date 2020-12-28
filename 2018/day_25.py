@@ -40,7 +40,7 @@ def manhattan_distance(point_1, point_2):
 
 def main():
     """Use disjoint-set structure to turn points into constellations."""
-    with open('input.txt') as f:
+    with open('inputs/day_25.txt') as f:
         lines = [[int(x) for x in l.strip().split(',')] for l in f.readlines()]
 
     # Initialise each point and check against previous to see if union needed

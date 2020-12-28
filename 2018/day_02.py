@@ -39,7 +39,7 @@ def one_off(ids):
 
 if __name__ == '__main__':
 
-    with open('input.txt') as f:
+    with open('inputs/day_02.txt') as f:
         ids = f.readlines()
 
     # Answer One

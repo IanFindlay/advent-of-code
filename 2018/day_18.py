@@ -1,7 +1,7 @@
 """Advent of Code Day 18 - Settlers of The North Pole"""
 
 
-with open('input.txt') as f:
+with open('inputs/day_18.txt') as f:
     rows = [[x for x in list(y.strip())] for y in f.readlines()]
 
 area = {}

@@ -205,7 +205,7 @@ Approach:
 
 def main():
     """Run opcodes with registers initialised to 0 to identify halt values."""
-    with open('input.txt') as f:
+    with open('inputs/day_21.txt') as f:
         lines = [x.strip() for x in f.readlines()]
         start_ip = int(lines[0].split()[1])
         opcodes = []

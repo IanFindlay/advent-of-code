@@ -1,7 +1,7 @@
 """Advent of Code Day 13 - Cart Madness."""
 
 
-with open('input.txt') as f:
+with open('inputs/day_13.txt') as f:
      track = [[x for x in list(line.rstrip())] for line in f.readlines()]
 
 # Find carts, set next_turn to 0 (left) and replace track beneath it

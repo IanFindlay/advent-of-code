@@ -72,7 +72,7 @@ def consistent_sleeper(sleep_tracker):
 
 if __name__ == '__main__':
 
-    with open('input.txt') as f:
+    with open('inputs/day_04.txt') as f:
         records = f.read().split('\n')
         records.sort()
 
