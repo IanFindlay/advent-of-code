@@ -6,7 +6,7 @@ import itertools
 
 def main(part_two=False):
     """Orchestrate the BFS search."""
-    with open('input.txt') as f:
+    with open('inputs/day_11.txt') as f:
         info = [line.strip() for line in f]
 
     # Initialise starting node

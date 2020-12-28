@@ -118,7 +118,7 @@ def navigate_split(key_paths):
     return shortest
 
 
-with open('input.txt') as f:
+with open('inputs/day_18.txt') as f:
     input_map = [[value for value in row.strip()] for row in f.read().split()]
 
 scan = {}

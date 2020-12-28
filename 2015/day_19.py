@@ -3,7 +3,7 @@
 import re
 
 
-with open('input.txt') as f:
+with open('inputs/day_19.txt') as f:
     calibration = [line.strip() for line in f]
 
 mol = calibration[-1]

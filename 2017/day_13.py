@@ -24,7 +24,7 @@ def severity(layers, delay):
         return delay
 
 
-with open('input.txt') as f:
+with open('inputs/day_13.txt') as f:
     firewall = f.read()
 
 delay = 0

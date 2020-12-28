@@ -47,7 +47,7 @@ def node_value(node):
 
 if __name__ == '__main__':
 
-    with open('input.txt') as f:
+    with open('inputs/day_08.txt') as f:
         data = [int(x) for x in f.read().split()]
 
     # Process nodes from root and map nodes to their metadata and children

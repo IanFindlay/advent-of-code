@@ -74,7 +74,7 @@ def parse_instructions_opcode(value):
     return (opcode, list(reversed(modes)))
 
 
-with open('input.txt', 'r') as f:
+with open('inputs/day_05.txt', 'r') as f:
     program = [int(x) for x in f.read().split(',')]
 
 # Answer One

@@ -3,7 +3,7 @@
 import re
 
 
-with open('input.txt') as f:
+with open('inputs/day_22.txt') as f:
     data = [line.strip() for line in f.readlines()[2:]]
 
 viable = 0

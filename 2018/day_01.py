@@ -1,7 +1,7 @@
 """Advent of Code Day 1 - Chronal Calibration"""
 
 
-with open('input.txt') as f:
+with open('inputs/day_01.txt') as f:
     shifts = [int(x) for x in f.readlines()]
 
 # Answer One

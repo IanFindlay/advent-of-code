@@ -3,7 +3,7 @@
 import itertools
 import re
 
-with open('input.txt') as f:
+with open('inputs/day_09.txt') as f:
     routes = [route.strip() for route in f]
 
 # Parse routes and make list of places for permutation
@@ -14,7 +14,7 @@ for route in routes:
     destination = info[2]
     places.add(start)
     places.add(destination)
-    
+
 # Generate journey permutations
 permutations = list(itertools.permutations(places))
 
@@ -40,15 +40,15 @@ for permutation in permutations:
             distance = alt_regex.search(regex_routes).group(1)
 
         overall_distance += int(distance)
-        
+
         i += 1
-    
+
     if overall_distance < shortest:
         shortest = overall_distance
-    
+
     if overall_distance > longest:
         longest = overall_distance
-    
+
 print("Answer One: The Shortest Route Has a Distance of {}".format(shortest))
 
 print("Answer Two: The Longest Route Has a Distance of {}".format(longest))

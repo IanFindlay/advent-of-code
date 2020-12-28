@@ -105,7 +105,7 @@ def parse_instruction(value):
 
 # Create defaultdict out of input for memory access
 intcode_dict = defaultdict(int)
-with open('input.txt', 'r') as f:
+with open('inputs/day_09.txt', 'r') as f:
     i = 0
     for instruction in f.read().split(','):
         intcode_dict[i] = int(instruction)

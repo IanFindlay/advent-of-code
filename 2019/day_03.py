@@ -46,7 +46,7 @@ def wire_path(wire):
     return wired, steps
 
 
-with open('input.txt') as f:
+with open('inputs/day_03.txt') as f:
     wire_paths = [path.split(',') for path in f.read().split()]
 
 wire_path_1, num_steps_1 = wire_path(wire_paths[0])

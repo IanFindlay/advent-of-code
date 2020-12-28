@@ -125,7 +125,7 @@ def function_dispatch(registers, assigned, opcode):
 
 def main():
     """Parse input, run and then decode instructions."""
-    with open('input.txt') as f:
+    with open('inputs/day_16.txt') as f:
         lines = [x.strip() for x in f.readlines()]
 
     cpu_regex = re.compile(r'\[(\d+), (\d+), (\d+), (\d+)\]')

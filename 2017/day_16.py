@@ -61,7 +61,7 @@ def dance(moves, dances):
     return programs
 
 
-with open('input.txt') as f:
+with open('inputs/day_16.txt') as f:
     moves = f.read()
 
 # Answer One

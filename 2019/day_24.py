@@ -3,7 +3,7 @@
 from copy import deepcopy
 
 
-with open('input.txt') as f:
+with open('inputs/day_24.txt') as f:
     original_tiles = [list(line) for line in f.read().split()]
 
 tiles = deepcopy(original_tiles)

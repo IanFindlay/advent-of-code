@@ -5,7 +5,7 @@ import re
 
 def parse_bots():
     """Return dictionary of Nanobots (coords mapped to radii)."""
-    with open('input.txt') as f:
+    with open('inputs/day_23.txt') as f:
         lines = [x.strip() for x in f.readlines()]
 
     nano_regex = re.compile(r'<(-?\d+),(-?\d+),(-?\d+)>,\s+r=(\d+)')

@@ -20,7 +20,7 @@ def captcha_halfway(numbers):
     return total * 2
 
 
-with open('input.txt') as f:
+with open('inputs/day_01.txt') as f:
     captcha = f.read().strip()
 
 # Answer One

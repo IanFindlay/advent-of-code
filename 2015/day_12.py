@@ -3,7 +3,7 @@
 import re
 import json
 
-with open('input.txt') as f:
+with open('inputs/day_12.txt') as f:
     document = f.read()
 
 # Part One

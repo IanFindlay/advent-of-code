@@ -97,7 +97,7 @@ def equality_rr(registers, opcode):
 def main():
     """Run the program until its completion."""
 
-    with open('input.txt') as f:
+    with open('inputs/day_19.txt') as f:
         lines = [x.strip() for x in f.readlines()]
 
     start_ip = int(lines[0].split()[1])

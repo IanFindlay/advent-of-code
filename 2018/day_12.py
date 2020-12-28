@@ -30,7 +30,7 @@ def generations(pots, notes):
         pots[change[0]] = change[1]
 
 
-with open('input.txt') as f:
+with open('inputs/day_12.txt') as f:
     lines = f.readlines()
 
 initial_state = list(lines[0].split()[2])

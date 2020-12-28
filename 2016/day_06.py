@@ -1,7 +1,7 @@
 """ Advent of Code Day 6 - Signals and Noise"""
 
 
-with open('input.txt', 'r') as f:
+with open('inputs/day_06.txt', 'r') as f:
     rows = [row.strip() for row in f.readlines()]
 
 flipped = zip(*rows)

@@ -2,7 +2,7 @@
 
 import re
 
-with open('input.txt') as f:
+with open('inputs/day_05.txt') as f:
     strings = f.readlines()
 
 # Answer One Regexes

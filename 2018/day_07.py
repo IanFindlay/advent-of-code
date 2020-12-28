@@ -65,7 +65,7 @@ def build_time(steps):
 
 if __name__ == '__main__':
 
-    with open('input.txt') as f:
+    with open('inputs/day_07.txt') as f:
         lines = f.readlines()
 
     # Make dict associating each step with its requirements

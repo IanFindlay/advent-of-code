@@ -1,9 +1,8 @@
 """ Advent of Code Day 1 - Not Quite Lisp"""
 
 def direction(part_two=False):
-    with open('input.txt') as f:
+    with open('inputs/day_01.txt') as f:
         instructions = f.read()
-    
     level = 0
     position = 0
     for char in instructions:

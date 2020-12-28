@@ -1,9 +1,8 @@
 """Advent of Code Day 4 - High-Entropy Passphrases"""
 
-import os
 
 # Open list, read it and split by newline
-pass_txt = open('{0}/4-input.txt'.format(os.getcwd()))
+pass_txt = open('inputs/day_04.txt')
 lines = pass_txt.read()
 pass_list = lines.split('\n')
 

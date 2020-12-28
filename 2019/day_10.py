@@ -4,7 +4,7 @@
 from math import atan2, degrees, pi
 
 
-with open("input.txt", "r") as f:
+with open("inputs/day_10.txt", "r") as f:
     space = [list(row) for row in f.read().strip().split('\n')]
 
 space_dict = {}

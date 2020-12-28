@@ -43,7 +43,7 @@ def traverse_maze(network, part_two=False):
 
 if __name__ == '__main__':
 
-    with open('input.txt') as f:
+    with open('inputs/day_19.txt') as f:
         network = [line.strip('\n') for line in f.readlines()]
 
     # Answer One

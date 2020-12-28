@@ -54,7 +54,7 @@ def decrypt_name(room):
     return 0
 
 
-with open('input.txt', 'r') as f:
+with open('inputs/day_04.txt', 'r') as f:
     rooms = [line.strip() for line in f.readlines()]
 
 # Answer One

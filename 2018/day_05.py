@@ -16,7 +16,7 @@ def react_polymer(polymer):
 
 if __name__ == '__main__':
 
-    with open('input.txt') as f:
+    with open('inputs/day_05.txt') as f:
         polymer = f.read()
 
     reduced_polymer = react_polymer(polymer)

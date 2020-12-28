@@ -5,7 +5,7 @@ import collections
 
 def create_map():
     """Create a coordinate dictionary and find the origin and numbers to cross."""
-    with open('input.txt') as f:
+    with open('inputs/day_24.txt') as f:
         data = [line.strip() for line in f.readlines()[1:-1]]
 
     layout = {}

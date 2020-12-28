@@ -3,7 +3,7 @@
 import re
 
 
-with open('input.txt') as f:
+with open('inputs/day_16.txt') as f:
     sue_list = f.readlines()
 
 

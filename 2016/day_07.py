@@ -48,7 +48,7 @@ def check_ssl(address):
                 return True
 
 
-with open('input.txt') as f:
+with open('inputs/day_07.txt') as f:
     addresses = [address.strip() for address in f.readlines()]
 
 tls = 0

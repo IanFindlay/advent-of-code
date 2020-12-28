@@ -57,7 +57,7 @@ def all_close(max_side, area_origins, limit):
 
 if __name__ == '__main__':
 
-    with open('input.txt') as f:
+    with open('inputs/day_06.txt') as f:
         coordinates = f.readlines()
 
     # Build origins dict and find required side length to capture all origins

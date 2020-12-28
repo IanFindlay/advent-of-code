@@ -70,7 +70,7 @@ if __name__ == '__main__':
     registers = {'a': 0, 'b': 0, 'c': 0, 'd': 0,
                  'e': 0, 'f': 0, 'g': 0, 'h': 0,}
 
-    with open('input.txt') as f:
+    with open('inputs/day_23.txt') as f:
         data = [line.strip() for line in f.readlines()]
 
     print("Number of times 'mul' is invoked:", coprocessor(data))

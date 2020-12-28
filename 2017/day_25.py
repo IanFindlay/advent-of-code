@@ -52,7 +52,7 @@ def run_turing(start_state, steps):
 
 if __name__ == '__main__':
 
-    with open('input.txt') as f:
+    with open('inputs/day_25.txt') as f:
         blueprints = f.read()
 
     sections = blueprints.strip().split('\n\n')

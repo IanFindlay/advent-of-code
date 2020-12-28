@@ -55,7 +55,7 @@ if __name__ == '__main__':
 
     cloth = coordinate_cloth(1000)
 
-    with open('input.txt') as f:
+    with open('inputs/day_03.txt') as f:
         claims = f.readlines()
 
     map_claims(claims, cloth)

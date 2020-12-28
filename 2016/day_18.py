@@ -1,6 +1,6 @@
 """Advent of Code Day 18 - Like a Rogue"""
 
-with open('input.txt') as f:
+with open('inputs/day_18.txt') as f:
     start = f.read().strip()
 
 def map_traps(prev_pat, row_limit):

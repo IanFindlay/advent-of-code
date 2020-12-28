@@ -3,7 +3,7 @@
 
 def build_units(elf_power):
     """Build Unit objects for units in arena and place them in the arena."""
-    with open('input.txt') as f:
+    with open('inputs/day_15.txt') as f:
         arena = [list(row.strip()) for row in f.readlines()]
 
     units = []

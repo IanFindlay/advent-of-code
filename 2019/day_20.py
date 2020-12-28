@@ -59,7 +59,7 @@ def maze_bfs(maze, start, end, portals, recursive=False):
     return False
 
 
-with open('input.txt') as f:
+with open('inputs/day_20.txt') as f:
     input_map = [line.strip('\n') for line in f.readlines()]
 
 maze_dict = {}

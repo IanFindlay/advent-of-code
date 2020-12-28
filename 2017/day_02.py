@@ -44,7 +44,7 @@ def divisible_cheksum(string):
     return total
 
 
-with open('input.txt') as f:
+with open('inputs/day_02.txt') as f:
     rows = f.read()
 
 # Answer One

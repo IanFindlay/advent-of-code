@@ -2,7 +2,7 @@
 
 import itertools
 
-with open('input.txt') as f:
+with open('inputs/day_17.txt') as f:
     containers = [int(container) for container in f]
 
 num_needed = len(containers)

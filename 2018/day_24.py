@@ -178,7 +178,7 @@ def make_attacks(attacks, groups):
 
 def main():
     """Build armies, fight unboosted then boost immune side until victory."""
-    with open('input.txt') as file:
+    with open('inputs/day_24.txt') as file:
         armies = [line.strip() for line in file.readlines() if line != '\n']
 
     groups = build_groups(armies)

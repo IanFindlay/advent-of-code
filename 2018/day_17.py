@@ -66,7 +66,7 @@ def hit_block(start):
 
 
 # Parse input
-with open('input.txt') as f:
+with open('inputs/day_17.txt') as f:
     lines = [x.strip() for x in f.readlines()]
 
 max_y, min_y = 0, 1000

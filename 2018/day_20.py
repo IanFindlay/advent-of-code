@@ -29,7 +29,7 @@ def cardinal_moves(coords, char, facility):
 
 def main():
     """Generate facility through regex, tracking distance to each room."""
-    with open('input.txt') as f:
+    with open('inputs/day_20.txt') as f:
         regex = f.read().strip()
 
     coords = (0, 0)

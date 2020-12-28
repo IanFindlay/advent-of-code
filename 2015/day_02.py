@@ -33,8 +33,7 @@ def calculate_ribbon():
     print(feet)
 
 
-
-with open('input.txt') as f:
+with open('inputs/day_02.txt') as f:
     areas = f.readlines()
 
 
@@ -43,7 +42,3 @@ calculate_paper()
 
 # Answer Part Two
 calculate_ribbon()
-
-
-
-

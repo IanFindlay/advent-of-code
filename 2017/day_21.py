@@ -5,7 +5,7 @@ import re
 
 def build_dict():
     """Create dictionary version of enhancement book with rotated forms in."""
-    with open('input.txt') as f:
+    with open('inputs/day_21.txt') as f:
         data = [line.strip() for line in f.readlines()]
 
     dictionary = {}
