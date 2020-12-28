@@ -160,7 +160,7 @@ def droid_bfs(intcode, explore_full=False):
 
 
 intcode_dict = defaultdict(int)
-with open('input.txt') as f:
+with open('inputs/day_15.txt') as f:
     i = 0
     for instruction in f.read().split(','):
         intcode_dict[i] = int(instruction)

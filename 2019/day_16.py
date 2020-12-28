@@ -26,7 +26,7 @@ def fft_phase(numbers, offset=0):
     return output
 
 
-with open('input.txt') as f:
+with open('inputs/day_16.txt') as f:
     input_list = [int(x) for x in list(f.read().strip())]
 
 num_list = input_list.copy()

@@ -33,7 +33,7 @@ def decode_image(layers, height, width):
     return final_image
 
 
-with open('input.txt', 'r') as f:
+with open('inputs/day_08.txt', 'r') as f:
     digits = [int(x) for x in list(f.read().strip())]
 
 height, width = (6, 25)

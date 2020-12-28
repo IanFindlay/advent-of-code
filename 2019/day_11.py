@@ -154,7 +154,7 @@ def paint_hull(intcode, starting_colour):
 
 # Create defaultdict out of input for memory access
 intcode_dict = defaultdict(int)
-with open('input.txt', 'r') as f:
+with open('inputs/day_11.txt', 'r') as f:
     i = 0
     for instruction in f.read().split(','):
         intcode_dict[i] = int(instruction)

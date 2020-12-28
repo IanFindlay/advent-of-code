@@ -133,7 +133,7 @@ def move_paddle(tiles_dict):
 
 
 intcode_dict = defaultdict(int)
-with open('input.txt', 'r') as f:
+with open('inputs/day_13.txt', 'r') as f:
     i = 0
     for instruction in f.read().split(','):
         intcode_dict[i] = int(instruction)

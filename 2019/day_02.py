@@ -34,7 +34,7 @@ def find_gravity_assist_inputs(memory, desired_output):
     return False
 
 
-with open('input.txt', 'r') as f:
+with open('inputs/day_02.txt', 'r') as f:
     integers = [int(opcode) for opcode in f.read().split(',')]
 
 # Answer One

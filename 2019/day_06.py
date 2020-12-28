@@ -1,7 +1,7 @@
 """Advent of Code 2019 Day 6 - Universal Orbit Map."""
 
 
-with open('input.txt', 'r') as f:
+with open('inputs/day_06.txt', 'r') as f:
     orbits = f.read().split()
 
 objects_dict = {}

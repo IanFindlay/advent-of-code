@@ -98,7 +98,7 @@ def parse_instructions_opcode(value):
     return (opcode, list(reversed(modes)))
 
 
-with open('input.txt', 'r') as f:
+with open('inputs/day_07.txt', 'r') as f:
     program = [int(x) for x in f.read().split(',')]
 
 phase_options = [0, 1, 2, 3, 4]

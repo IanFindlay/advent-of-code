@@ -119,7 +119,7 @@ def reset_drone(drone_instance, code, coords):
 
 
 intcode_dict = defaultdict(int)
-with open('input.txt') as f:
+with open('inputs/day_19.txt') as f:
     i = 0
     for instruction in f.read().split(','):
         intcode_dict[i] = int(instruction)

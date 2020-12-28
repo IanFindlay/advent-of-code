@@ -44,7 +44,7 @@ def prime_factors(n):
     return tuple(factors)
 
 
-with open('input.txt', 'r') as f:
+with open('inputs/day_12.txt', 'r') as f:
     scan = f.read().strip().split('\n')
 
 original_moon_positions = {}

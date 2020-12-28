@@ -24,7 +24,7 @@ def deal_with_increment(cards, increment):
 
 
 
-with open('input.txt') as f:
+with open('inputs/day_22.txt') as f:
     shuffle = [line.strip() for line in f.readlines()]
 
 deck = list(range(10007))

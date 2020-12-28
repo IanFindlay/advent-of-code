@@ -9,7 +9,7 @@ def calculate_recursive_fuel(fuel_mass):
     return new_fuel_mass + calculate_recursive_fuel(new_fuel_mass)
 
 
-with open ('input.txt', 'r') as f:
+with open ('inputs/day_01.txt', 'r') as f:
     masses = [int(module_mass) for module_mass in f.readlines()]
 
 naive_fuel_sum = 0

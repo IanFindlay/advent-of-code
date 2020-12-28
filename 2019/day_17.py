@@ -112,7 +112,7 @@ def parse_instruction(value):
 
 
 intcode_dict = defaultdict(int)
-with open('input.txt') as f:
+with open('inputs/day_17.txt') as f:
     i = 0
     for instruction in f.read().split(','):
         intcode_dict[i] = int(instruction)

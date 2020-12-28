@@ -28,7 +28,7 @@ def create_fuel(reactions, fuel_wanted):
     return needed
 
 
-with open('input.txt') as f:
+with open('inputs/day_14.txt') as f:
     recipies = [line.strip() for line in f.readlines()]
 
 reactions = {}
