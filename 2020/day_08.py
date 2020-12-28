@@ -41,7 +41,7 @@ def run_boot_code(instructions: list) -> tuple:
         visited_indicies.add(current_index)
 
 
-with open ('inputs/2020_08.txt', 'r') as boot_code:
+with open ('inputs/day_08.txt', 'r') as boot_code:
     instructions = [instruction for instruction in boot_code.readlines()]
 
 # Answer One

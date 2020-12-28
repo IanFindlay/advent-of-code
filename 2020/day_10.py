@@ -3,7 +3,7 @@
 """Advent of Code 2020 Day 10 - Adapter Array."""
 
 
-with open ('inputs/2020_10.txt', 'r') as adapters:
+with open ('inputs/day_10.txt', 'r') as adapters:
     outputs = [int(number.strip()) for number in adapters.readlines()]
 
 outputs.append(max(outputs) + 3)

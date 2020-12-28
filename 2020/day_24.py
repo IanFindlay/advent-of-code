@@ -3,7 +3,7 @@
 """Advent of Code 2020 Day 24 - Lobby Layout."""
 
 
-with open('inputs/2020_24.txt') as f:
+with open('inputs/day_24.txt') as f:
     instructions = [line.strip() for line in f.readlines()]
 
 tiles = {}

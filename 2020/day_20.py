@@ -165,7 +165,7 @@ def check_for_monster(x, y, mon_coords, seas):
 
     return True
 
-with open('inputs/2020_20.txt') as f:
+with open('inputs/day_20.txt') as f:
     raw_tiles = f.read().split('\n\n')
 
 tiles = []

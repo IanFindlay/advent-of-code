@@ -3,7 +3,7 @@
 """Advent of Code 2020 Day 12 - Rain Risk."""
 
 
-with open ('inputs/2020_12.txt', 'r') as f:
+with open ('inputs/day_12.txt', 'r') as f:
     instructions = [row.strip() for row in f.readlines()]
 
 coords = [0, 0]

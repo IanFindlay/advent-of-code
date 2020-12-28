@@ -32,7 +32,7 @@ def count_trees_on_slope(area: list, right_step: int, down_step: int) -> int:
     return trees
 
 
-with open ('inputs/2020_03.txt', 'r') as password_database:
+with open ('inputs/day_03.txt', 'r') as password_database:
     rows = [line for line in password_database.readlines()]
 
 trees = count_trees_on_slope(rows, 3, 1)

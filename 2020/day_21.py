@@ -3,7 +3,7 @@
 """Advent of Code 2020 Day 21 - Allergen Assessment."""
 
 
-with open('inputs/2020_21.txt') as f:
+with open('inputs/day_21.txt') as f:
     rows = [line.strip() for line in f.readlines()]
 
 allergens = {}

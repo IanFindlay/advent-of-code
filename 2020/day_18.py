@@ -53,7 +53,7 @@ def do_maths(maths: list) -> int:
 
     return num_1
 
-with open('inputs/2020_18.txt', 'r') as f:
+with open('inputs/day_18.txt', 'r') as f:
     rows = [row.split() for row in f.readlines()]
 
 parsed_rows = []

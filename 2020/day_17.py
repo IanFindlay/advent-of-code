@@ -74,7 +74,7 @@ def neighbouring_coords(coords: tuple, part_two=False) -> list:
     return neighbours
 
 
-with open('inputs/2020_17.txt', 'r') as f:
+with open('inputs/day_17.txt', 'r') as f:
     rows = [[char for char in row.strip()] for row in f.readlines()]
 
 active_cubes = set()

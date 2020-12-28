@@ -45,7 +45,7 @@ class Bag:
         return contents
 
 
-with open ('inputs/2020_07.txt', 'r') as f:
+with open ('inputs/day_07.txt', 'r') as f:
     luggage_rules = [rule.strip() for rule in f.readlines()]
 
 bag_regex = re.compile('(\d)*?\s?(\w*\s\w*)\sbags?')

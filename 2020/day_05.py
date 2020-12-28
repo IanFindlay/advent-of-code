@@ -34,7 +34,7 @@ def decode_binary_space_partition(code: str) -> tuple:
     return (row, col)
 
 
-with open ('inputs/2020_05.txt', 'r') as scanned:
+with open ('inputs/day_05.txt', 'r') as scanned:
     seat_codes = [seat_code.strip() for seat_code in scanned.readlines()]
 
 seats = set()

@@ -3,7 +3,7 @@
 """Advent of Code 2020 Day 23 - Crab Cups."""
 
 
-with open('inputs/2020_23.txt') as f:
+with open('inputs/day_23.txt') as f:
     arranged_cups = [int(x) for x in f.read().strip()]
     cups = arranged_cups.copy()
 

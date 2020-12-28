@@ -3,7 +3,7 @@
 """Advent of Code 2020 Day 13 - Shuttle Search."""
 
 
-with open ('inputs/2020_13.txt', 'r') as f:
+with open ('inputs/day_13.txt', 'r') as f:
     rows = [row.strip() for row in f.readlines()]
 
 early_time = int(rows[0])

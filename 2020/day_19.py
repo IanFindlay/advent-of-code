@@ -37,7 +37,7 @@ def convert_to_regex(rules_dict: dict, rule_num: int, depth: int=0) -> str:
     return '(' + '|'.join(rules) + ')'
 
 
-rules, messages = open('inputs/2020_19.txt').read().split('\n\n')
+rules, messages = open('inputs/day_19.txt').read().split('\n\n')
 rules_dict = {}
 for line in rules.split("\n"):
     rule_num, rule = [x.strip() for x in line.split(':')]

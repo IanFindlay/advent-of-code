@@ -53,7 +53,7 @@ def play_game(player_1: list, player_2: list, part_two: bool=False) -> tuple:
         return (2, player_2)
 
 
-with open('inputs/2020_22.txt') as f:
+with open('inputs/day_22.txt') as f:
     player_1, player_2 = [line for line in f.read().split('\n\n')]
     player_1 = [int(x) for x in player_1.split('\n')[1:]]
     player_2 = [int(x) for x in player_2.split('\n')[1:-1]]

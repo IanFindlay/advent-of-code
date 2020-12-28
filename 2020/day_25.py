@@ -3,7 +3,7 @@
 """Advent of Code 2020 Day 25 - Combo Breaker."""
 
 
-with open('inputs/2020_25.txt') as f:
+with open('inputs/day_25.txt') as f:
     card_key, door_key = [int(line.strip()) for line in f.readlines()]
 
 num = 1
