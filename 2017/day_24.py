@@ -38,7 +38,7 @@ def start_bridges(part_two=False):
 
 if __name__ == '__main__':
 
-    with open('input.txt') as f:
+    with open('inputs/day_24.txt') as f:
         parts = [tuple(map(int, line.split("/"))) for line in f]
 
     info = []   # Keep track of bridge strengths and lengths

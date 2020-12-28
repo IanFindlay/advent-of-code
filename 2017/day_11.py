@@ -51,6 +51,6 @@ def path(steps_string):
     print('The furthest from the centre reached was', furthest, 'steps away.')
 
 
-with open('input.txt') as f:
+with open('inputs/day_11.txt') as f:
     steps_string = f.read()
     path(steps_string)

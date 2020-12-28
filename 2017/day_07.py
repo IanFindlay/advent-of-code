@@ -45,7 +45,7 @@ def find_fix(program):
 
 if __name__ == '__main__':
 
-    with open('input.txt', 'r') as f:
+    with open('inputs/day_07.txt', 'r') as f:
         data = f.readlines()
 
         initial_info = base_dict(data)

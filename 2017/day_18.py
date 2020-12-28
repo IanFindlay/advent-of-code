@@ -150,7 +150,7 @@ def coord_progs():
 
 if __name__ == '__main__':
 
-    with open('input.txt') as f:
+    with open('inputs/day_18.txt') as f:
         instructions = [line.strip() for line in f.readlines()]
     registers = collections.defaultdict(int,)
 

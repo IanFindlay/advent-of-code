@@ -44,6 +44,6 @@ def clean(stream):
     print('Answer Two:', cleaned)
 
 
-with open('input.txt') as f:
+with open('inputs/day_09.txt') as f:
     stream = f.read()
     clean(stream)

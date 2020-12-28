@@ -86,7 +86,7 @@ def evolved():
 
 if __name__ == '__main__':
 
-    with open('input.txt') as f:
+    with open('inputs/day_22.txt') as f:
         grid = [line.strip() for line in f.readlines()]
 
     grid_dict = make_dict()

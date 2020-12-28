@@ -6,7 +6,7 @@ import collections
 
 def make_dict():
     """Make a dictionary out of the particle data."""
-    with open('input.txt') as f:
+    with open('inputs/day_20.txt') as f:
         data = [line.strip() for line in f.readlines()]
 
     particles = {}

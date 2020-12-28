@@ -42,8 +42,8 @@ def jumps_taken(offsets):
     return steps
 
 
-with open('input.txt') as f:
-    offsets = f.read()
+with open('inputs/day_05.txt') as f:
+    offsets = f.read().strip()
 
 
 # Answer One

@@ -5,7 +5,7 @@ import re
 
 def make_dict():
     """Create a dictionary of pipes and their connections."""
-    with open('input.txt') as f:
+    with open('inputs/day_12.txt') as f:
         survey = [line for line in f.readlines()]
     pipes = {}
     for info in survey:

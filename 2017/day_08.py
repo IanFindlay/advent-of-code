@@ -106,7 +106,7 @@ def run_register(instructions, highest_ever=None):
         return(registers[highest])
 
 
-with open('input.txt') as f:
+with open('inputs/day_08.txt') as f:
     registers = f.read()
 
 # Answer One:
