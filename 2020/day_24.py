@@ -36,6 +36,7 @@ print("Number of black tiles:", len(tiles))
 
 for _ in range(100):
     new_tiles = {}
+    checked = set()
     for coords in tiles:
         y, x, z = coords
         black_adjacent = 0
@@ -43,6 +44,10 @@ for _ in range(100):
             next_to_coords = (next_to[0] + y, next_to[1] + x, next_to[2] + z)
             if next_to_coords in tiles:
                 black_adjacent += 1
+
+            elif next_to_coords in checked:
+                pass
+
             else:
                 double_black_adjacent = 0
                 for double_next_to in directions.values():
@@ -58,8 +63,12 @@ for _ in range(100):
                 if double_black_adjacent == 2:
                     new_tiles[next_to_coords] = 1
 
+                checked.add(next_to_coords)
+
         if black_adjacent in (1, 2):
             new_tiles[coords] = 1
+
+        checked.add(coords)
 
     tiles = new_tiles
 
