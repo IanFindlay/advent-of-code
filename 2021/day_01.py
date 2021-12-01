@@ -6,25 +6,13 @@
 with open('inputs/day_01.txt', 'r') as readings:
     depths = [int(number.strip()) for number in readings.readlines()]
 
-increases = 0
-previous = depths[0]
-for depth in depths[1:]:
-    if depth > previous:
-        increases += 1
-
-    previous = depth
+increased = sum([1 for i in range(1, len(depths)) if depths[i] > depths[i-1]])
 
 # Answer One
-print("Number of times the depth increases:", increases)
+print("Number of times the depth increases:", increased)
 
-increases = 0
-previous = sum(depths[0:3])
-for index, depth in enumerate(depths[1:]):
-    depth_window_sum = sum(depths[index: index + 3])
-    if depth_window_sum > previous:
-        increases += 1
 
-    previous = depth_window_sum
+increased = sum([1 for i in range(1, len(depths)) if depths[i] > depths[i-3]])
 
 # Answer Two
-print("Number of times the sliding window increases:", increases)
+print("Number of times the sliding window increases:", increased)
