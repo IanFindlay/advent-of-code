@@ -14,6 +14,6 @@
 
 * #### [2019](https://adventofcode.com/2019) - Stars Collected (50/50)
 
-* #### [2020](https://adventofcode.com/2020) - Stars Collected (50/50)
+* #### [2020](https://adventofcode.com/2020) - Stars Collected (50/50) > > > [Blog Posts](https://blog.findlayian.com/tags/aoc-2020)
 	
-* #### [2021](https://adventofcode.com/2021) - Stars Collected (04/04)
+* #### [2021](https://adventofcode.com/2021) - Stars Collected (04/04) > > > [Blog Posts](https://blog.findlayian.com/tags/aoc-2021)
