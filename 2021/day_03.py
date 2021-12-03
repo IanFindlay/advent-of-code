@@ -25,7 +25,8 @@ for column in binary_columns:
     else:
         gamma += '1'
 
-epsilon = ''.join(['1' if bit == '0' else '0' for bit in gamma])
+epsilon = ''.join(map(lambda bit: '1' if bit == '0' else '0', gamma))
+print(epsilon)
 
 # Answer One
 print("Submarine power consumption:", int(gamma, 2) * int(epsilon, 2))
