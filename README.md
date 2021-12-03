@@ -2,9 +2,9 @@
 
 ## My solutions to the [Advent of Code](https://adventofcode.com/) challenges by [Eric Wastl](https://github.com/topaz)
 
-### Overall Stars Collected (304/304):  
+### Overall Stars Collected (306/306):  
   
-* #### [2015](https://adventofcode.com/2015) - Stars Collected (50/50)  
+* #### [2015](https://adventofcode.com/2015) - Stars Collected (50/50)
 
 * #### [2016](https://adventofcode.com/2016) - Stars Collected (50/50)
 
@@ -16,4 +16,4 @@
 
 * #### [2020](https://adventofcode.com/2020) - Stars Collected (50/50) > > > [Blog Posts](https://blog.findlayian.com/tags/aoc-2020)
 	
-* #### [2021](https://adventofcode.com/2021) - Stars Collected (04/04) > > > [Blog Posts](https://blog.findlayian.com/tags/aoc-2021)
+* #### [2021](https://adventofcode.com/2021) - Stars Collected (06/06) > > > [Blog Posts](https://blog.findlayian.com/tags/aoc-2021)
