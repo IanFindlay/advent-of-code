@@ -41,8 +41,9 @@ while len(oxy_binaries) > 1:
         oxy_criteria += '0'
 
     oxy_binaries = list(filter(
-            lambda binary: binary.startswith(oxy_criteria), oxy_binaries))
-
+            lambda binary: binary.startswith(oxy_criteria), oxy_binaries
+            )
+        )
     oxy_columns = convert_to_columns(oxy_binaries)
 
     i += 1
@@ -58,8 +59,9 @@ while len(co2_binary) > 1:
         co2_criteria += '1'
 
     co2_binary = list(filter(
-            lambda binary: binary.startswith(co2_criteria), co2_binary))
-
+            lambda binary: binary.startswith(co2_criteria), co2_binary
+            )
+        )
     co2_columns = convert_to_columns(co2_binary)
 
     i += 1
