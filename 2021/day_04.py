@@ -16,7 +16,7 @@ def mark_cards(cards, number):
 
 
 def check_for_winner(cards):
-    """Return indicies of winning cards i.e. has a completed row or column."""
+    """Return indices of winning cards i.e. has a completed row or column."""
     winners = []
     for card_num, card in enumerate(cards):
         row_winner = False
@@ -56,9 +56,9 @@ completed_cards = []
 for ball in balls:
     cards = mark_cards(cards, ball)
 
-    winning_indicies = check_for_winner(cards)
-    if winning_indicies:
-        for index in reversed(winning_indicies):
+    winning_indices = check_for_winner(cards)
+    if winning_indices:
+        for index in reversed(winning_indices):
             completed_cards.append((cards[index], ball))
             del cards[index]
 
