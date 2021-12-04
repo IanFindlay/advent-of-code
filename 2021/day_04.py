@@ -18,22 +18,23 @@ def mark_cards(cards, number):
 
 
 def check_for_winner(cards):
-    for card in cards:
+    winners = set()
+    for card_num, card in enumerate(cards):
         for row in card:
-            if set(row) == set([None]):
-                return card
+            if len(set(row)) == 1:
+                winners.add(card_num)
 
-    for card in cards:
-        for col_index in range(len(cards[0])):
+        for col_index in range(len(card[0])):
             column = []
             for row in card:
                 column.append(row[col_index])
-            if set(column) == set([None]):
-                return card
+            if len(set(column)) == 1:
+                winners.add(card_num)
 
+    if winners:
+        return winners
 
     return False
-
 
 
 with open('inputs/day_04.txt', 'r') as aoc_input:
@@ -51,20 +52,41 @@ for part in sections:
     for row in rows:
         cards[-1].append([int(x) for x in re.findall(r'\d\d?', row)])
 
-winner = False
-while not winner:
-    for ball in balls:
-        cards = mark_cards(cards, ball)
-        winner = check_for_winner(cards)
-        if winner:
+num_cards = len(cards)
+
+ball = 0
+winning_cards = []
+for ball in balls:
+    cards = mark_cards(cards, ball)
+
+    winning_indicies = check_for_winner(cards)
+    if winning_indicies is not False:
+        for index in winning_indicies:
+            winning_cards.append((cards[index].copy(), ball))
+
+        cards_copy = []
+        for card_index, card in enumerate(cards):
+            if card_index not in winning_indicies:
+                cards_copy.append(card)
+
+
+        cards = cards_copy
+
+        if len(cards) == 0:
             break
 
-print("Winning_card:", winner)
-print("Ball", ball)
-
-remaining_sum = 0
-for row in winner:
-    remaining_sum += sum([x for x in row if x != None])
+winning_card, winning_ball = winning_cards[0]
+winner_sum = 0
+for row in winning_card:
+    winner_sum += sum([x for x in row if x != None])
 
 # Answer One
-print("Final score of winning board:", remaining_sum * ball)
+print("Final score of winning card:", winner_sum * winning_ball)
+
+losing_card, losing_ball = winning_cards[-1]
+losing_sum = 0
+for row in losing_card:
+    losing_sum += sum([x for x in row if x != None])
+
+# Answer Two
+print("Final score of losing card:", losing_sum * losing_ball)
