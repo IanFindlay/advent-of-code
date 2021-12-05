@@ -49,10 +49,10 @@ for line in lines:
 
         coord_value = coords_dict.get(coords, '.')
 
-        if type(coord_value) == int:
-            coords_dict[coords] += 1
-        else:
+        if coord_value == '.':
             coords_dict[coords] = 1
+        else:
+            coords_dict[coords] += 1
 
         current_y += 1
 
@@ -60,7 +60,54 @@ dangerous_zones = 0
 for coords, value in coords_dict.items():
     if value > 1:
         dangerous_zones += 1
-        print(coords, value)
 
 # Answer One
 print("Number of dangerous zones:", dangerous_zones)
+
+for line in lines:
+    x_coords, y_coords = zip(line[0], line[1])
+    x_coords = [int(x) for x in x_coords]
+    y_coords = [int(x) for x in y_coords]
+
+    start_x, end_x = x_coords
+    start_y, end_y = y_coords
+
+    current_x = start_x
+    current_y = start_y
+
+    # Already been processed in part one
+    if start_x == end_x or start_y == end_y:
+        continue
+
+    while True:
+
+        coords = (current_x, current_y)
+
+        coord_value = coords_dict.get(coords, '.')
+
+        if coord_value == '.':
+            coords_dict[coords] = 1
+        else:
+            coords_dict[coords] += 1
+
+        if current_x == end_x:
+            break
+
+        if current_x < end_x:
+            current_x += 1
+        else:
+            current_x -= 1
+
+        if current_y < end_y:
+            current_y += 1
+        else:
+            current_y -= 1
+
+
+dangerous_zones = 0
+for coords, value in coords_dict.items():
+    if value > 1:
+        dangerous_zones += 1
+
+# Answer Two
+print("Number of dangerous zones including diagonals:", dangerous_zones)
