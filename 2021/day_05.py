@@ -28,10 +28,7 @@ for line in lines:
             if current_x == end_x:
                 break
 
-            if current_x < end_x:
-                current_x += 1
-            else:
-                current_x -= 1
+            current_x += 1 if current_x < end_x else -1
 
     if initial_x == end_x:
 
@@ -45,10 +42,7 @@ for line in lines:
             if current_y == end_y:
                 break
 
-            if current_y < end_y:
-                current_y += 1
-            else:
-                current_y -= 1
+            current_y += 1 if current_y < end_y else -1
 
 dangerous_zones = sum([1 if x > 1 else 0 for x in coords_dict.values()])
 
@@ -73,16 +67,9 @@ for line in lines:
         if current_x == end_x:
             break
 
-        if current_x < end_x:
-            current_x += 1
-        else:
-            current_x -= 1
+        current_x += 1 if current_x < end_x else -1
 
-        if current_y < end_y:
-            current_y += 1
-        else:
-            current_y -= 1
-
+        current_y += 1 if current_y < end_y else -1
 
 dangerous_zones = sum([1 if x > 1 else 0 for x in coords_dict.values()])
 
