@@ -65,24 +65,17 @@ for coords, value in coords_dict.items():
 print("Number of dangerous zones:", dangerous_zones)
 
 for line in lines:
-    x_coords, y_coords = zip(line[0], line[1])
-    x_coords = [int(x) for x in x_coords]
-    y_coords = [int(x) for x in y_coords]
-
-    start_x, end_x = x_coords
-    start_y, end_y = y_coords
-
-    current_x = start_x
-    current_y = start_y
+    current_x = int(line[0][0])
+    current_y = int(line[0][1])
+    end_x = int(line[1][0])
+    end_y = int(line[1][1])
 
     # Already been processed in part one
-    if start_x == end_x or start_y == end_y:
+    if current_x == end_x or current_y == end_y:
         continue
 
     while True:
-
         coords = (current_x, current_y)
-
         coord_value = coords_dict.get(coords, '.')
 
         if coord_value == '.':
