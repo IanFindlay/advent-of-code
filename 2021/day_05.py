@@ -7,18 +7,17 @@ import re
 
 with open('inputs/day_05.txt', 'r') as aoc_input:
     lines = [re.findall(r'(\d*),(\d*)', x) for x in aoc_input.readlines()]
+    lines = [[(int(x), int(y)) for x, y in tup] for tup in lines]
 
 coords_dict = {}
 for line in lines:
-    current_x = int(line[0][0])
-    current_y = int(line[0][1])
-    end_x = int(line[1][0])
-    end_y = int(line[1][1])
-
+    current_x = line[0][0]
+    current_y = line[0][1]
+    end_x = line[1][0]
+    end_y = line[1][1]
     initial_x = current_x
 
     while True:
-
         if current_y != end_y:
             break
 
@@ -39,7 +38,6 @@ for line in lines:
             current_x -= 1
 
     while True:
-
         if initial_x != end_x:
             break
 
@@ -68,10 +66,10 @@ for coords, value in coords_dict.items():
 print("Number of dangerous zones:", dangerous_zones)
 
 for line in lines:
-    current_x = int(line[0][0])
-    current_y = int(line[0][1])
-    end_x = int(line[1][0])
-    end_y = int(line[1][1])
+    current_x = line[0][0]
+    current_y = line[0][1]
+    end_x = line[1][0]
+    end_y = line[1][1]
 
     # Already been processed in part one
     if current_x == end_x or current_y == end_y:
