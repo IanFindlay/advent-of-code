@@ -2,7 +2,6 @@
 
 """Advent of Code 2021 Day 5 - Hydrothermal Venture"""
 
-
 import re
 
 
@@ -68,7 +67,6 @@ for line in lines:
             break
 
         current_x += 1 if current_x < end_x else -1
-
         current_y += 1 if current_y < end_y else -1
 
 dangerous_zones = sum([1 if x > 1 else 0 for x in coords_dict.values()])
