@@ -10,25 +10,19 @@ with open('inputs/day_05.txt', 'r') as aoc_input:
 
 coords_dict = {}
 for line in lines:
-    x_coords, y_coords = zip(line[0], line[1])
-    x_coords = [int(x) for x in x_coords]
-    y_coords = [int(x) for x in y_coords]
+    current_x = int(line[0][0])
+    current_y = int(line[0][1])
+    end_x = int(line[1][0])
+    end_y = int(line[1][1])
 
-    start_x = min(x_coords)
-    end_x = max(x_coords)
-    start_y = min(y_coords)
-    end_y = max(y_coords)
+    initial_x = current_x
 
-    current_x = start_x
-    current_y = start_y
+    while True:
 
-    while current_x <= end_x:
-
-        if start_y != end_y:
+        if current_y != end_y:
             break
 
         coords = (current_x, current_y)
-
         coord_value = coords_dict.get(coords, '.')
 
         if coord_value == '.':
@@ -36,17 +30,20 @@ for line in lines:
         else:
             coords_dict[coords] += 1
 
-        current_x += 1
+        if current_x == end_x:
+            break
 
-    current_x = start_x
+        if current_x < end_x:
+            current_x += 1
+        else:
+            current_x -= 1
 
-    while current_y <= end_y:
+    while True:
 
-        if start_x != end_x:
+        if initial_x != end_x:
             break
 
         coords = (current_x, current_y)
-
         coord_value = coords_dict.get(coords, '.')
 
         if coord_value == '.':
@@ -54,7 +51,13 @@ for line in lines:
         else:
             coords_dict[coords] += 1
 
-        current_y += 1
+        if current_y == end_y:
+            break
+
+        if current_y < end_y:
+            current_y += 1
+        else:
+            current_y -= 1
 
 dangerous_zones = 0
 for coords, value in coords_dict.items():
