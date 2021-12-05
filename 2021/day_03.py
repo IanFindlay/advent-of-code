@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-"""Advent of Code 2021 Day 03 - Binary Diagnostic"""
+"""Advent of Code 2021 Day 3 - Binary Diagnostic"""
 
 
 def convert_to_columns(binary_values):

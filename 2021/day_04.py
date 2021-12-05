@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-"""Advent of Code 2021 Day 04 - Giant Squid"""
+"""Advent of Code 2021 Day 4 - Giant Squid"""
 
 
 import re

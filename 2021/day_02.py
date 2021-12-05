@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-"""Advent of Code 2021 Day 02 - Dive!"""
+"""Advent of Code 2021 Day 2 - Dive!"""
 
 
 with open('inputs/day_02.txt', 'r') as aoc_input:

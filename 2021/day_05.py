@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-"""Advent of Code 2021 Day 05 - Hydrothermal Venture"""
+"""Advent of Code 2021 Day 5 - Hydrothermal Venture"""
 
 
 import re

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-"""Advent of Code 2021 Day 01 - Sonar Sweep"""
+"""Advent of Code 2021 Day 1 - Sonar Sweep"""
 
 
 with open('inputs/day_01.txt', 'r') as readings:
