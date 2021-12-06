@@ -4,11 +4,10 @@
 
 
 with open('inputs/day_06.txt','r') as aoc_input:
-    lanternfish = [int(x) for x in aoc_input.read().split(',')]
+    lanternfish_initial = [int(x) for x in aoc_input.read().split(',')]
 
-lanternfish_copy = lanternfish.copy()
-
-for n in range(80):
+lanternfish = lanternfish_initial.copy()
+for _ in range(80):
     lanternfish = [x - 1 for x in lanternfish]
 
     i = len(lanternfish) - 1
@@ -23,10 +22,10 @@ for n in range(80):
 print("Number of Lanternfish after 80 days:", len(lanternfish))
 
 lanternfish_dict = {0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0}
-for fish in lanternfish_copy:
+for fish in lanternfish_initial:
     lanternfish_dict[fish] += 1
 
-for n in range(256):
+for _ in range(256):
     new_fish_dict = {0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0}
     for key in lanternfish_dict.keys():
         new_fish_dict[key - 1] = lanternfish_dict[key]
