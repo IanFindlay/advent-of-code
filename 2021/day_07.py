@@ -7,25 +7,24 @@ with open('inputs/day_07.txt', 'r') as aoc_input:
     crabs = [int(x) for x in aoc_input.read().strip().split(',')]
 
 least_fuel = None
-for horizontal_position in range(max(crabs)):
-
-    alignment_cost = sum([abs(x - horizontal_position) for x in crabs])
-    if not least_fuel or alignment_cost < least_fuel:
-        least_fuel = alignment_cost
+for position in range(max(crabs)):
+    fuel_cost = sum([abs(x - position) for x in crabs])
+    if not least_fuel or fuel_cost < least_fuel:
+        least_fuel = fuel_cost
 
 # Part One
 print("Fuel cost to align to least expensive position:", least_fuel)
 
 least_fuel = None
-for horizontal_position in range(max(crabs)):
+for position in range(max(crabs)):
 
-    alignment_cost = 0
+    fuel_cost = 0
     for crab in crabs:
-        movement = abs(crab - horizontal_position)
-        alignment_cost += movement * (movement + 1) // 2
+        movement = abs(crab - position)
+        fuel_cost += movement * (movement + 1) // 2
 
-    if not least_fuel or alignment_cost < least_fuel:
-        least_fuel = alignment_cost
+    if not least_fuel or fuel_cost < least_fuel:
+        least_fuel = fuel_cost
 
-# Part One
-print("Fuel cost to align to least expensive position:", least_fuel)
+# Part Two
+print("Actual fuel cost to align to least expensive position:", least_fuel)
