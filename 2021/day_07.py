@@ -15,3 +15,17 @@ for horizontal_position in range(max(crabs)):
 
 # Part One
 print("Fuel cost to align to least expensive position:", least_fuel)
+
+least_fuel = None
+for horizontal_position in range(max(crabs)):
+
+    alignment_cost = 0
+    for crab in crabs:
+        movement = abs(crab - horizontal_position)
+        alignment_cost += movement * (movement + 1) // 2
+
+    if not least_fuel or alignment_cost < least_fuel:
+        least_fuel = alignment_cost
+
+# Part One
+print("Fuel cost to align to least expensive position:", least_fuel)
