@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-"""Advent of Code 2021 Day 7 - The Treachery of Wales"""
+"""Advent of Code 2021 Day 7 - The Treachery of Whales"""
 
 
 with open('inputs/day_07.txt', 'r') as aoc_input:
