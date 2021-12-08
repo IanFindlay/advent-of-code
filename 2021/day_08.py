@@ -69,7 +69,7 @@ for display in displays:
     mappings[9].add(segment_c)
     patterns.remove(mappings[9])
 
-    # 0 is only mapping left patterns
+    # 0 is only pattern left
     mappings[0] = patterns.pop()
 
     output_value = ''
