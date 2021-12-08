@@ -4,88 +4,79 @@
 
 
 with open('inputs/day_08.txt', 'r') as aoc_input:
-    displays = {}
-    for num, line in enumerate(aoc_input.readlines()):
-        patterns, outputs = line.split('|')
-        patterns = patterns.strip().split(' ')
-        outputs = outputs.strip().split(' ')
-        displays[num] = (patterns, outputs, {}, {})
+    displays = []
+    for display in aoc_input.readlines():
+        patterns, outputs = display.split('|')
+        patterns = [set(pattern) for pattern in patterns.strip().split(' ')]
+        outputs = [set(pattern) for pattern in outputs.strip().split(' ')]
+        displays.append((patterns, outputs, {}))
 
-
-unique = 0
-for key, value in displays.items():
-    outputs = value[1]
-    for output in outputs:
-        if len(output) in (2, 3, 4, 7):
-            unique += 1
+unique = (2, 3, 4, 7)
+total = 0
+for display in displays:
+    total += sum(map(lambda x: 1 if len(x) in unique else 0, display[1]))
 
 # Answer One
-print("Number of times 1, 4, 7 or 8 appear in output values:", unique)
+print("Number of times 1, 4, 7 or 8 appear in output values:", total)
 
 output_sum = 0
-for key, value in displays.items():
-    patterns, outputs, mappings, segments = value
-    unsolved = [set(pattern) for pattern in patterns]
+for display in displays:
+    patterns, outputs, mappings = display
 
     for pattern in patterns:
         if len(pattern) == 2:
-            mappings[1] = set(pattern)
-            unsolved.remove(set(pattern))
+            mappings[1] = pattern
         elif len(pattern) == 3:
-            mappings[7] = set(pattern)
-            unsolved.remove(set(pattern))
+            mappings[7] = pattern
         elif len(pattern) == 4:
-            mappings[4] = set(pattern)
-            unsolved.remove(set(pattern))
+            mappings[4] = pattern
         elif len(pattern) == 7:
-            mappings[8] = set(pattern)
-            unsolved.remove(set(pattern))
+            mappings[8] = pattern
 
-    # Difference between 1 and 7 gets the top 'a' row
-    segments['a'] = mappings[7].difference(mappings[1]).pop()
+    for n in (1, 4, 7, 8):
+        patterns.remove(mappings[n])
 
-    # 3 is 5 letter that contains all of 7
-    for pattern in unsolved:
-        if len(pattern) == 5:
-            if len(set(mappings[7]).intersection(pattern)) == 3:
-                mappings[3] = pattern
-                unsolved.remove(pattern)
-                break
-
-    # 6 only 6 letter without all of 7 in it
-    for pattern in unsolved:
+    # 6 only 6 letter signal without all of 7 in it also yields segment c
+    segment_c = None
+    for pattern in patterns:
         if len(pattern) == 6:
             diff_to_7 = mappings[7].difference(pattern)
-            if diff_to_7:
+            if  diff_to_7:
                 mappings[6] = pattern
-                segments['c'] = diff_to_7.pop()
-                unsolved.remove(pattern)
+                patterns.remove(pattern)
+                segment_c = diff_to_7.pop()
+                break
 
-    # 5 is 5 letters without 'c' in whereas 2 has it in
-    for pattern in unsolved:
+    # 3 is 5 letter signal that contains all of 7
+    for pattern in patterns:
+        if len(pattern) == 5 and len(mappings[7].intersection(pattern)) == 3:
+            mappings[3] = pattern
+            patterns.remove(pattern)
+            break
+
+    # 5 letter signals left (2 and 5) differ in terms of 'c' segment
+    for pattern in patterns:
         if len(pattern) == 5:
-            if segments['c'] in pattern:
+            if segment_c in pattern:
                 mappings[2] = pattern
             else:
                 mappings[5] = pattern
+    patterns.remove(mappings[2])
+    patterns.remove(mappings[5])
 
-    unsolved.remove(mappings[2])
-    unsolved.remove(mappings[5])
+    # 9 is 5 but with 'c' segment
+    mappings[9] = mappings[5].copy()
+    mappings[9].add(segment_c)
+    patterns.remove(mappings[9])
 
-    # 9 is 5 but with c
-    expected_9 = mappings[5].copy()
-    expected_9.add(segments['c'])
-    for pattern in unsolved:
-        if pattern == expected_9:
-            mappings[9] = pattern
-        else:
-            mappings[0] = pattern
+    # 0 is only mapping left patterns
+    mappings[0] = patterns.pop()
 
     output_value = ''
     for output in outputs:
-        for key, value in mappings.items():
-            if value == set(output):
-                output_value += str(key)
+        for digit, pattern in mappings.items():
+            if pattern == output:
+                output_value += str(digit)
 
     output_sum += int(output_value)
 
