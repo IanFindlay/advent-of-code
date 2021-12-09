@@ -4,12 +4,12 @@
 
 
 with open('inputs/day_09.txt', 'r') as aoc_input:
-    lines = [line.strip() for line in aoc_input.readlines()]
+    rows = [line.strip() for line in aoc_input.readlines()]
 
 height_map = {}
-for y, column in enumerate(lines):
-    for x, row in enumerate(column):
-        height_map[(x, y)] = int(row)
+for y, row in enumerate(rows):
+    for x, height in enumerate(row):
+        height_map[(x, y)] = int(height)
 
 low_points = []
 low_points_sum = 0
@@ -27,15 +27,14 @@ for coords, height in height_map.items():
         low_points_sum += height + 1
 
 # Answer One
-print("Sum of risk levels of low points", low_points_sum)
+print("Sum of risk levels of low points:", low_points_sum)
 
 basin_sizes = []
 for low_point in low_points:
     part_of_basin = set([low_point])
+
     coords_to_check_stack = [low_point]
-
     while coords_to_check_stack:
-
         x, y = coords_to_check_stack.pop()
         adjacent = ((x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1))
         for neighbour in adjacent:
