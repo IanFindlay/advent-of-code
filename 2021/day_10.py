@@ -6,31 +6,24 @@
 with open('inputs/day_10.txt', 'r') as aoc_input:
     lines = [line.strip() for line in aoc_input.readlines()]
 
-opening_chars = ('(', '{', '<', '[')
 match_dict = {'(': ')', '{': '}', '<': '>', '[': ']'}
-illegal_char_points = {')': 3, ']': 57, '}': 1197, '>': 25137}
 
-corrupted = []
+corrupted_chars = []
 i = len(lines)
 while i >= 0:
     i -= 1
     open_chunk_symbols = []
-    line_corrupted = False
     for char in lines[i]:
-        if char in opening_chars:
+        if char in match_dict.keys():
             open_chunk_symbols.append(char)
-        else:
-            if char != match_dict[open_chunk_symbols.pop()]:
-                line_corrupted = True
+        elif char != match_dict[open_chunk_symbols.pop()]:
+                corrupted_chars.append(char)
                 del lines[i]
+                break
 
-
-        if line_corrupted:
-            corrupted.append(char)
-            break
-
+illegal_char_points = {')': 3, ']': 57, '}': 1197, '>': 25137}
 syntax_error_score = 0
-for char in corrupted:
+for char in corrupted_chars:
     syntax_error_score += illegal_char_points[char]
 
 # Answer One
@@ -40,7 +33,7 @@ completion_strings = []
 for line in lines:
     open_chunk_symbols = []
     for char in line:
-        if char in opening_chars:
+        if char in match_dict.keys():
             open_chunk_symbols.append(char)
         else:
             open_chunk_symbols.pop()
