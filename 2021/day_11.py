@@ -2,12 +2,6 @@
 
 """Advent of Code 2021 Day 11 - Dumbo Octopus"""
 
-def print_octopi():
-    for y, row in enumerate(lines):
-        row_str = ''
-        for x, _ in enumerate(row):
-            row_str += str(octopi[(x, y)])
-        print(row_str)
 
 with open('inputs/day_11.txt', 'r') as aoc_input:
     lines = [line.strip() for line in aoc_input.readlines()]
@@ -18,7 +12,9 @@ for y, row in enumerate(lines):
         octopi[(x, y)] = int(level)
 
 num_flashes = 0
-for _ in range(100):
+step = 1
+synchronised = False
+while not synchronised:
 
     flashed = set()
     for coords, level in octopi.items():
@@ -49,5 +45,14 @@ for _ in range(100):
         octopi[coords] = 0
         num_flashes += 1
 
-# Answer One
-print("Total flashes after 100 steps:", num_flashes)
+    if step == 100:
+        # Answer One
+        print("Total flashes after 100 steps:", num_flashes)
+
+    if len(set(octopi.values())) == 1:
+        break
+
+    step += 1
+
+# Answer Two
+print("First step where all octopi are synchronised:", step)
