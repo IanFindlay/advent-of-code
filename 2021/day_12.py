@@ -41,5 +41,39 @@ while current_paths:
         current_paths.append(new_path)
 
 # Answer One
-print("Number of paths through cave system visiting small caves only once:",
-        len(paths))
+print("Number of paths through cave system:", len(paths))
+
+paths = set()
+current_paths = []
+for to_cave in connections['start']:
+    current_paths.append((('start', to_cave), False))
+
+while current_paths:
+    path, revisited = current_paths.pop()
+    current_cave = path[-1]
+    for connected_cave in connections[current_cave]:
+        new_path_revisited = revisited
+
+        # Can't go back to start
+        if connected_cave == 'start':
+            continue
+
+        # Can't revisit small caves more than once for one of them
+        if connected_cave in path:
+            if connected_cave.lower() == connected_cave:
+                if new_path_revisited:
+                    continue
+                else:
+                    new_path_revisited = True
+
+        new_path = path + (connected_cave,)
+
+        # Check if at end and unique path
+        if connected_cave == 'end' and new_path not in paths:
+            paths.add(new_path)
+            continue
+
+        current_paths.append(((new_path), new_path_revisited))
+
+# Answer Two
+print("Number of paths through cave system:", len(paths))
