@@ -17,18 +17,14 @@ for fold in folds.strip().split('\n'):
     index = int(index)
 
     folded = {}
-    for dot in dot_dict.keys():
+    for dot in dot_dict:
         x, y = dot
 
         if axis == 'y':
-            # Distance from fold to dot gives new y value
-            difference = index - y
             new_y = index + (index - y) if y > index else y
             folded[(x, new_y)] = '#'
 
         elif axis == 'x':
-            # Distance from fold to dot gives new y value
-            difference = index - x
             new_x = index + (index - x) if x > index else x
             folded[(new_x, y)] = '#'
 
@@ -39,8 +35,8 @@ for fold in folds.strip().split('\n'):
 
     dot_dict = folded
 
-max_x = max(dot_dict.keys(), key=lambda x:x[0])[0]
-max_y = max(dot_dict.keys(), key=lambda x:x[1])[1]
+max_x = max(dot_dict.keys())[0]
+max_y = max(dot_dict.keys(), key=lambda x: x[1])[1]
 
 # Answer Two
 print("Eight letter code to activate the thermal imaging system:", end='\n\n')
