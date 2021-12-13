@@ -36,3 +36,17 @@ for fold in folds.strip().split('\n'):
         # Answer One
         print("Number of dots visible after first fold:", len(folded))
         part_one = True
+
+    dot_dict = folded
+
+max_x = max(dot_dict.keys(), key=lambda x:x[0])[0]
+max_y = max(dot_dict.keys(), key=lambda x:x[1])[1]
+
+# Answer Two
+print("Eight letter code to activate the thermal imaging system:", end='\n\n')
+for y in range(max_y + 1):
+    row = ''
+    for x in range(max_x + 1):
+        row += dot_dict.get((x, y), ' ')
+    print(row)
+print()
