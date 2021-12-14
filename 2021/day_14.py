@@ -25,7 +25,6 @@ element_count = {}
 for element in polymer:
      element_count[element] = element_count.get(element, 0) + 1
 
-
 most_minus_least = max(element_count.values()) - min(element_count.values())
 
 # Answer One
@@ -40,9 +39,6 @@ for index, element in enumerate(polymer[:-1]):
 for _ in range(40):
     new_pairs = {}
     for pair in pairs:
-        if pairs[pair] == 0:
-            continue
-
         element_one, element_two = pair
         to_insert = reactions[pair]
         first_new = f'{element_one}{to_insert}'
@@ -55,8 +51,7 @@ for _ in range(40):
 
 element_count = {}
 for pair, count in pairs.items():
-    element_one, element_two = pair
-    element_count[element_one] = element_count.get(element_one, 0) + count
+    element_count[pair[0]] = element_count.get(pair[0], 0) + count
 
 # Last element stays same throughout but isn't counted in above
 element_count[polymer[-1]] += 1
