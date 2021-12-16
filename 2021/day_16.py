@@ -11,6 +11,7 @@ class Packet:
         self.type = int(self.binary[3:6], 2)
 
         if self.type == 4:
+            self.subs = []
             self.value = self.process_literal()
         else:
             self.subs = self.process_subpackets()
@@ -64,11 +65,9 @@ class Packet:
 
     def sum_versions(self):
         version_sum = self.version
-        if self.type == 4:
-            return version_sum
-
-        for subpacket in self.subs:
-            version_sum += subpacket.sum_versions()
+        if self.subs:
+            for subpacket in self.subs:
+                version_sum += subpacket.sum_versions()
 
         return version_sum
 
