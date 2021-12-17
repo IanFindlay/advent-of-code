@@ -15,6 +15,7 @@ def take_shot(x_vel, y_vel, x_max, y_min, target_area_coords):
 
         if x_vel != 0:
             x_vel -= 1 if x_vel > 0 else -1
+
         y_vel -= 1
 
         if probe_y < y_min or probe_x > x_max:
@@ -50,11 +51,7 @@ while x_vel <= x_max:
     x_vel += 1
 
 hits.sort(key=lambda x: x[1])
-triangle_size = hits[-1][1]
-max_height = 0
-while triangle_size:
-    max_height += triangle_size
-    triangle_size -= 1
+max_height = sum(range(1, hits[-1][1] + 1))
 
 # Answer One
 print("Highest y position reached:", max_height)
