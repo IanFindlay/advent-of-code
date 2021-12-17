@@ -56,4 +56,5 @@ max_height = sum(range(1, hits[-1][1] + 1))
 # Answer One
 print("Highest y position reached:", max_height)
 
+# Answer Two
 print("Number of initial velocity values that hit target area:", len(hits))
