@@ -40,8 +40,8 @@ x_vel = 0
 while x_vel <= x_max:
 
     y_vel = abs(y_min)
-    while y_vel > y_min:
-        shot = take_shot(x_vel, y_vel, x_max, y_max, target_area_coords)
+    while y_vel >= y_min:
+        shot = take_shot(x_vel, y_vel, x_max, y_min, target_area_coords)
         if shot:
             hits.append((x_vel, y_vel))
 
@@ -58,3 +58,5 @@ while triangle_size:
 
 # Answer One
 print("Highest y position reached:", max_height)
+
+print("Number of initial velocity values that hit target area:", len(hits))
