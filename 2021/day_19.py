@@ -26,39 +26,58 @@ class Scanner:
         return beacons
 
     def create_scan(self):
-        beacon_x_vals = [coords[0] for coords in self.beacons.keys()]
-        beacon_x_vals.append(0)
-        beacon_y_vals = [coords[1] for coords in self.beacons.keys()]
-        beacon_y_vals.append(0)
-        scan = []
-        for y in range(max(beacon_y_vals), min(beacon_y_vals) - 1, -1):
-            row = []
-            for x in range(min(beacon_x_vals), max(beacon_x_vals) + 1):
-                if (x, y) in self.beacons.keys():
-                    row.append(self.beacons[(x,y)])
-                elif (x, y) == (0, 0):
-                    row.append('S')
-                else:
-                    row.append('.')
-
-            scan.append(row)
+        self.find_scan_borders()
+        scan = {}
+        for z in range(self.min_z, self.max_z + 1):
+            for y in range(self.max_y, self.min_y - 1, -1):
+                for x in range(self.min_x, self.max_x + 1):
+                    if (x, y, z) in self.beacons.keys():
+                        scan[(x, y, z)] = self.beacons[(x, y, z)]
+                    elif (x, y, z) == (0, 0, 0):
+                        scan[(x, y, z)] = 'S'
+                    else:
+                        scan[(x, y, z)] = '.'
 
         return scan
 
-    def print_scan(self):
-        print(f'Scan of Scanner {self.number}:\n')
-        for row in self.scan:
-            print(''.join(['B' if isinstance(x, Beacon) else x for x in row]))
+    def find_scan_borders(self):
+        beacon_x_vals = [coords[0] for coords in self.beacons.keys()]
+        beacon_x_vals.append(0)
+        self.min_x, self.max_x = min(beacon_x_vals), max(beacon_x_vals)
 
+        beacon_y_vals = [coords[1] for coords in self.beacons.keys()]
+        self.min_y, self.max_y = min(beacon_y_vals), max(beacon_y_vals)
+        beacon_y_vals.append(0)
+
+        beacon_z_vals = [coords[2] for coords in self.beacons.keys()]
+        self.min_z, self.max_z = min(beacon_z_vals), max(beacon_z_vals)
+
+
+    def print_scan(self):
+        for d, z in enumerate(range(self.min_z, self.max_z + 1), self.min_z):
+            print(f'Current Depth: {d}\n')
+            for y in range(self.max_y, self.min_y - 1, -1):
+                row = ''
+                for x in range(self.min_x, self.max_x + 1):
+                    if (x, y, z) in self.beacons.keys():
+                        row += 'B'
+                    elif (x, y, z) == (0, 0, 0):
+                        row += 'S'
+                    else:
+                        row += '.'
+
+                print(row)
+
+            print()
 
 
 class Beacon:
 
     def __init__(self, relative_coords):
-        self.relative_x, self.relative_y = relative_coords
+        self.relative_x, self.relative_y, self.relative_z = relative_coords
 
     def __str__(self):
-        return f'{self.relative_x}, {self.relative_y}'
+        return f'{self.relative_x}, {self.relative_y}, {self.relative_z}'
 
 
 with open('../inputs/day_19.txt', 'r') as aoc_input:
@@ -69,11 +88,11 @@ for scanner in scan_in:
     num = int(scanner[0].strip(' --').split(' ')[-1])
     beacons = []
     for beacon in scanner[1:]:
-        x, y = [int(x) for x in beacon.split(',')]
-        beacons.append(((x, y)))
+        x, y, z = [int(x) for x in beacon.split(',')]
+        beacons.append(((x, y, z)))
 
     scanners.append(Scanner(num, beacons))
 
-for scanner in scanners:
+for scanner in scanners[:1]:
     print(scanner)
     scanner.print_scan()
