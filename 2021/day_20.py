@@ -63,9 +63,7 @@ for step in range(2):
 
     image_coords = new_image
 
-lit = [1 for x in image_coords if x == '#']
 # Answer One
-
-print("Number of pixels lit in resulting image:", sum(lit))
+print("Number of pixels lit in resulting image:", len(image_coords))
 
 # 5469 too high
