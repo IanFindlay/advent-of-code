@@ -3,7 +3,7 @@
 """Advent of Code 2021 Day 20 - Trench Map"""
 
 
-with open('../inputs/day_20.txt', 'r') as aoc_input:
+with open('inputs/day_20.txt', 'r') as aoc_input:
     algo, image = [x.strip() for x in aoc_input.read().split('\n\n')]
 
 def print_image(image_coords):
@@ -26,16 +26,15 @@ def get_image_ranges(image_coords):
 
     return (min_x, max_x, min_y, max_y)
 
+
 image_coords = set()
 for row_num, row in enumerate(image.split('\n')):
     for col_num, value in enumerate(row):
         if value == '#':
             image_coords.add((col_num, row_num))
 
-print_image(image_coords)
-input()
-
 """Actual input has algo[0] mapped to # so the infinite matters"""
+explored = set()
 for step in range(2):
     min_x, max_x, min_y, max_y = get_image_ranges(image_coords)
 
@@ -43,6 +42,9 @@ for step in range(2):
     for y in range(min_y, max_y + 1):
 
         for x in range(min_x, max_x + 1):
+
+            if not step % 2:
+                explored.add((x, y))
 
             pixels = [
                     (x - 1, y - 1), (x, y - 1 ), (x + 1, y - 1),
@@ -52,18 +54,16 @@ for step in range(2):
 
             binary = ''
             for pixel in pixels:
-                binary += '1' if pixel in image_coords else '0'
+                if step % 2 and pixel not in explored:
+                    binary += '1'
+                else:
+                    binary += '1' if pixel in image_coords else '0'
 
             new_value = algo[int(binary, 2)]
             if new_value == '#':
                 new_image.add((x, y))
 
-    print_image(new_image)
-    input()
-
     image_coords = new_image
 
 # Answer One
 print("Number of pixels lit in resulting image:", len(image_coords))
-
-# 5469 too high
