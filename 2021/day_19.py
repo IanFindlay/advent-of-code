@@ -10,7 +10,6 @@ class Scanner:
         self.coords = (0, 0, 0)
         self.create_beacons(beacon_coords)
         self.beacons_set = self.create_beacons_set()
-        self.orientations = self.generate_orientations()
 
     def __str__(self):
         printout = f'Scanner - {self.number}:\n\n'
@@ -30,102 +29,51 @@ class Scanner:
     def create_beacons_set(self):
         return set([x.actual_coords for x in self.beacons])
 
-    def generate_orientations(self):
-        orientations = []
-        orientations.append(self.beacons_set)
+    def reorientate(self):
+        def x_axis():
+            new_beacons_set = set()
+            for beacon in self.beacons_set:
+                x, y, z = beacon
+                new_beacons_set.add((x, -z, y))
+            self.beacons_set = new_beacons_set
+            self.create_beacons(new_beacons_set)
 
-        def clockwise(coords):
-            x, y, z = coords
-            return (y, -x, z)
 
-        def right_rotation(coords):
-            x, y, z = coords
-            return (z, y, -x)
+        def y_axis():
+            new_beacons_set = set()
+            for beacon in self.beacons_set:
+                x, y, z = beacon
+                new_beacons_set.add((-z, y, x))
+            self.beacons_set = new_beacons_set
+            self.create_beacons(new_beacons_set)
 
-        def backwards_rotation(coords):
-            x, y, z = coords
-            return (x, z, -y)
+        def z_axis():
+            new_beacons_set = set()
+            for beacon in self.beacons_set:
+                x, y, z = beacon
+                new_beacons_set.add((y, -x, z))
+            self.beacons_set = new_beacons_set
+            self.create_beacons(new_beacons_set)
 
-        for _ in range(4):
+        # Initial state is an orientation
+        yield
 
+        for _ in range(3):
+            z_axis()
+            yield
             for _ in range(3):
-                for beacon in self.beacons:
-                    beacon.actual_coords = clockwise(beacon.actual_coords)
+                x_axis()
+                yield
 
-                orientations.append(self.create_beacons_set())
+                for _ in range(3):
+                    y_axis()
+                    yield
 
-            # Reset to start then turn it and run through it again
-            for beacon in self.beacons:
-                beacon.actual_coords = clockwise(beacon.actual_coords)
+                # y back to normal
+                y_axis()
 
-            for beacon in self.beacons:
-                beacon.actual_coords = right_rotation(beacon.actual_coords)
-
-            orientations.append(self.create_beacons_set())
-
-        # Reset to start
-        for beacon in self.beacons:
-            beacon.actual_coords = right_rotation(beacon.actual_coords)
-
-        # Backwards and rotations but some aren't needed...
-
-        for beacon in self.beacons:
-            beacon.actual_coords = backwards_rotation(beacon.actual_coords)
-        orientations.append(self.create_beacons_set())
-
-        # All 3 right rotations should still be needed from here
-        for _ in range(3):
-            for beacon in self.beacons:
-                beacon.actual_coords = right_rotation(beacon.actual_coords)
-            orientations.append(self.create_beacons_set())
-
-        # Reset right
-        for beacon in self.beacons:
-            beacon.actual_coords = right_rotation(beacon.actual_coords)
-
-        # Next backward as it's same as 1st right rotations
-        for beacon in self.beacons:
-            beacon.actual_coords = backwards_rotation(beacon.actual_coords)
-
-        for beacon in self.beacons:
-            beacon.actual_coords = backwards_rotation(beacon.actual_coords)
-        orientations.append(self.create_beacons_set())
-
-        # Final three rights
-        for _ in range(3):
-            for beacon in self.beacons:
-                beacon.actual_coords = right_rotation(beacon.actual_coords)
-            orientations.append(self.create_beacons_set())
-
-        return orientations
-
-    def print_scan(self):
-        self.find_scan_borders()
-        for d, z in enumerate(range(self.min_z, self.max_z + 1), self.min_z):
-            print(f'Current Depth: {d}\n')
-            for y in range(self.max_y, self.min_y - 1, -1):
-                row = ''
-                for x in range(self.min_x, self.max_x + 1):
-                    if (x, y, z) in self.beacons_set:
-                        row += 'B'
-                    elif (x, y, z) == (0, 0, 0):
-                        row += 'S'
-                    else:
-                        row += '.'
-                print(row)
-            print()
-
-    def find_scan_borders(self):
-        beacon_x_vals = [beacon.actual_coords[0] for beacon in self.beacons]
-        beacon_x_vals.append(0)
-        self.min_x, self.max_x = min(beacon_x_vals), max(beacon_x_vals)
-
-        beacon_y_vals = [beacon.actual_coords[1] for beacon in self.beacons]
-        self.min_y, self.max_y = min(beacon_y_vals), max(beacon_y_vals)
-        beacon_y_vals.append(0)
-
-        beacon_z_vals = [beacon.actual_coords[2] for beacon in self.beacons]
-        self.min_z, self.max_z = min(beacon_z_vals), max(beacon_z_vals)
+            # Back to original
+            x_axis()
 
     def update_position(self, new_coords):
         self.coords = new_coords
@@ -136,22 +84,15 @@ class Scanner:
 
     def compare_to_other_scanner(self, other_scanner):
 
-        for orientation in self.orientations:
-
-            # Load orientation
-            self.create_beacons(orientation)
-
-            # Set this scanner position to 0
-            self.update_position((0, 0, 0))
-
-            # Set other beacon to match beacon
+        for _ in other_scanner.reorientate():
             for beacon in self.beacons:
-                x, y ,z = beacon.actual_coords
+                x, y, z = beacon.actual_coords
 
                 for other_beacon in other_scanner.beacons:
 
                     other_x, other_y, other_z = other_beacon.relative_coords
 
+                    # Move scanner so beacons align
                     other_scanner.update_position(
                             (x - other_x, y - other_y, z - other_z)
                     )
@@ -161,10 +102,13 @@ class Scanner:
                     )
 
                     if len(match) >= 12:
-                        for coords in match:
-                            print(coords)
-                        print("Scanner Position", other_scanner.coords)
-                        return True
+                        other_beacons = other_scanner.beacons
+                        rel_coords = [x.relative_coords for x in other_beacons]
+                        scanner_copy = Scanner(other_scanner.number,
+                                rel_coords)
+                        scanner_copy.update_position(other_scanner.coords)
+                        return scanner_copy
+
 
 class Beacon:
 
@@ -203,4 +147,31 @@ for scanner in scan_in:
 
     scanners.append(Scanner(num, beacons))
 
-scanners[0].compare_to_other_scanner(scanners[1])
+located_scanner_numbers = set([0])
+located_scanners = [scanners[0]]
+for scanner in scanners:
+
+    if scanner.number not in located_scanner_numbers:
+        continue
+
+    for other_scanner in scanners:
+
+        if scanner == other_scanner:
+            continue
+
+        if other_scanner.number in located_scanner_numbers:
+            continue
+
+        comparison = scanner.compare_to_other_scanner(other_scanner)
+        if not comparison:
+            continue
+
+        print("Matched")
+        located_scanner_numbers.add(other_scanner.number)
+        located_scanners.append(comparison)
+
+unique_beacons = set()
+for scanner in located_scanners:
+         unique_beacons = unique_beacons.union(scanner.beacons_set)
+
+print(len(unique_beacons))
