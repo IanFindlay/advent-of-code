@@ -48,25 +48,69 @@ class Player:
         return die_value
 
 
-with open('inputs/day_21.txt', 'r') as aoc_input:
-    one_start, two_start = [
-            int(x.strip().split()[-1]) for x in aoc_input.readlines()
-    ]
+game = Game([Player(1, 5), Player(2, 10)])
 
-game = Game([Player(1, one_start), Player(2, two_start)])
-
-winner = None
 while True:
     turn_result = game.next_turn()
     if turn_result:
         break
 
-rolls_taken = game.num_rolls
+rolls = game.num_rolls
 loser_score = 0
 for player in game.players:
     if player != game.winner:
         loser_score = player.score
 
 # Answer One
-print("Product of losing score and number of rolls:",
-        rolls_taken * loser_score)
+print(f'Product of losing score and number of rolls: {rolls * loser_score}')
+
+three_roll_sums = []
+for one in (1, 2, 3):
+    for two in (1, 2, 3):
+        for three in (1, 2, 3):
+            three_roll_sums.append(one + two + three)
+
+# 1 pos, 1 score, 2 pos, 2 score, turn
+game_initial = (5, 0, 10, 0, 1)
+player_one_wins = 0
+player_two_wins = 0
+games = {game_initial: 1}
+while True:
+    new_games = {}
+    for game, universes in games.items():
+
+        player_num = game[4]
+
+        if player_num == 1:
+            pos, score  = game[0], game[1]
+        else:
+            pos, score  = game[2], game[3]
+
+        for roll_sum in three_roll_sums:
+            new_position = (pos + roll_sum) % 10
+            if not new_position:
+                new_position = 10
+
+            new_score = score + new_position
+
+            if new_score >= 21:
+                if player_num == 1:
+                    player_one_wins += universes
+                else:
+                    player_two_wins += universes
+
+            else:
+                if player_num == 1:
+                    new_value = (new_position, new_score, game[2], game[3], 2)
+                else:
+                    new_value = (game[0], game[1], new_position, new_score, 1)
+
+                new_games[new_value] = new_games.get(new_value, 0) + universes
+
+    games = new_games
+
+    if not games:
+        break
+
+# Answer Two
+print(f'Most universes won: {max(player_one_wins, player_two_wins)}')
