@@ -64,7 +64,6 @@ class Scanner:
             self.marker = (y, -x, z)
 
         orientations = []
-        # Initial state is an orientation
         orientations.append(
                 Scanner(self.number, self.beacons_set, copy=True)
         )
@@ -75,6 +74,15 @@ class Scanner:
                     Scanner(self.number, self.beacons_set, copy=True)
             )
             orientations[-1].marker = self.marker
+
+            for _ in range(3):
+                y_axis()
+                orientations.append(
+                        Scanner(self.number, self.beacons_set, copy=True)
+                )
+                orientations[-1].marker = self.marker
+
+            y_axis()
 
             for _ in range(3):
                 x_axis()
@@ -98,36 +106,6 @@ class Scanner:
 
         # Back to original
         z_axis()
-
-        for _ in range(3):
-            y_axis()
-            orientations.append(
-                    Scanner(self.number, self.beacons_set, copy=True)
-            )
-            orientations[-1].marker = self.marker
-
-            for _ in range(3):
-                z_axis()
-                orientations.append(
-                        Scanner(self.number, self.beacons_set, copy=True)
-                )
-                orientations[-1].marker = self.marker
-
-                for _ in range(3):
-                    x_axis()
-                    orientations.append(
-                            Scanner(self.number, self.beacons_set, copy=True)
-                    )
-                    orientations[-1].marker = self.marker
-
-                # Reset y
-                x_axis()
-
-            # Reset x
-            z_axis()
-
-        # Back to original
-        y_axis()
 
         unique_orientations = []
         marker_set = set()
