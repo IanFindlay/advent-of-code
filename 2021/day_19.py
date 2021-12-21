@@ -5,11 +5,13 @@
 
 class Scanner:
 
-    def __init__(self, number, beacon_coords):
+    def __init__(self, number, beacon_coords, copy=False):
         self.number = number
         self.coords = (0, 0, 0)
         self.create_beacons(beacon_coords)
         self.beacons_set = self.create_beacons_set()
+        if not copy:
+            self.orientations = self.generate_orientations()
 
     def __str__(self):
         printout = f'Scanner - {self.number}:\n\n'
@@ -29,7 +31,7 @@ class Scanner:
     def create_beacons_set(self):
         return set([x.actual_coords for x in self.beacons])
 
-    def reorientate(self):
+    def generate_orientations(self):
         def x_axis():
             new_beacons_set = set()
             for beacon in self.beacons_set:
@@ -37,7 +39,6 @@ class Scanner:
                 new_beacons_set.add((x, -z, y))
             self.beacons_set = new_beacons_set
             self.create_beacons(new_beacons_set)
-
 
         def y_axis():
             new_beacons_set = set()
@@ -55,25 +56,40 @@ class Scanner:
             self.beacons_set = new_beacons_set
             self.create_beacons(new_beacons_set)
 
+        orientations = []
         # Initial state is an orientation
-        yield
+        orientations.append(
+                Scanner(self.number, self.beacons_set, copy=True)
+        )
 
         for _ in range(3):
             z_axis()
-            yield
+            orientations.append(
+                    Scanner(self.number, self.beacons_set, copy=True)
+            )
+
             for _ in range(3):
                 x_axis()
-                yield
+                orientations.append(
+                        Scanner(self.number, self.beacons_set, copy=True)
+                )
 
                 for _ in range(3):
                     y_axis()
-                    yield
+                    orientations.append(
+                            Scanner(self.number, self.beacons_set, copy=True)
+                    )
 
-                # y back to normal
+                # Reset y
                 y_axis()
 
-            # Back to original
+            # Reset x
             x_axis()
+
+        # Back to original
+        z_axis()
+
+        return orientations
 
     def update_position(self, new_coords):
         self.coords = new_coords
@@ -84,29 +100,29 @@ class Scanner:
 
     def compare_to_other_scanner(self, other_scanner):
 
-        for _ in other_scanner.reorientate():
+        for orientation in other_scanner.orientations:
             for beacon in self.beacons:
                 x, y, z = beacon.actual_coords
 
-                for other_beacon in other_scanner.beacons:
+                for other_beacon in orientation.beacons:
 
                     other_x, other_y, other_z = other_beacon.relative_coords
 
                     # Move scanner so beacons align
-                    other_scanner.update_position(
+                    orientation.update_position(
                             (x - other_x, y - other_y, z - other_z)
                     )
 
                     match = self.beacons_set.intersection(
-                            other_scanner.beacons_set
+                            orientation.beacons_set
                     )
 
                     if len(match) >= 12:
-                        other_beacons = other_scanner.beacons
+                        other_beacons = orientation.beacons
                         rel_coords = [x.relative_coords for x in other_beacons]
-                        scanner_copy = Scanner(other_scanner.number,
+                        scanner_copy = Scanner(orientation.number,
                                 rel_coords)
-                        scanner_copy.update_position(other_scanner.coords)
+                        scanner_copy.update_position(orientation.coords)
                         return scanner_copy
 
 
@@ -149,29 +165,30 @@ for scanner in scan_in:
 
 located_scanner_numbers = set([0])
 located_scanners = [scanners[0]]
-for scanner in scanners:
+num_scanners = len(scanners)
+print(f'Progress: {len(located_scanners)}/{num_scanners}\n')
+while len(located_scanner_numbers) != num_scanners:
+    for scanner in located_scanners:
 
-    if scanner.number not in located_scanner_numbers:
-        continue
+        for other_scanner in scanners:
 
-    for other_scanner in scanners:
+            if scanner == other_scanner:
+                continue
 
-        if scanner == other_scanner:
-            continue
+            if other_scanner.number in located_scanner_numbers:
+                continue
 
-        if other_scanner.number in located_scanner_numbers:
-            continue
+            comparison = scanner.compare_to_other_scanner(other_scanner)
+            if not comparison:
+                continue
 
-        comparison = scanner.compare_to_other_scanner(other_scanner)
-        if not comparison:
-            continue
-
-        print("Matched")
-        located_scanner_numbers.add(other_scanner.number)
-        located_scanners.append(comparison)
+            located_scanner_numbers.add(other_scanner.number)
+            located_scanners.append(comparison)
+            print(f'Progress: {len(located_scanners)}/{num_scanners}\n')
 
 unique_beacons = set()
 for scanner in located_scanners:
          unique_beacons = unique_beacons.union(scanner.beacons_set)
 
-print(len(unique_beacons))
+# Answer One
+print("Number of beacons:", len(unique_beacons))
