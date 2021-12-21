@@ -9,16 +9,15 @@ class Game:
         self.players = players
         self.num_players = len(players)
         self.player_index = 0
-        self.next_die = 1
         self.num_rolls = 0
-        self.winner = False
+        self.next_die = 1
 
     def next_turn(self):
         player = self.players[self.player_index]
         self.next_die = player.take_turn(self.next_die)
         self.num_rolls += 3
         if player.score >= 1000:
-            self.winner = player
+            self.loser = self.players[1 if self.player_index == 0 else 0]
             return True
 
         self.player_index = (self.player_index + 1) % self.num_players
@@ -26,8 +25,7 @@ class Game:
 
 class Player:
 
-    def __init__(self, id_num, position):
-        self.id = id_num
+    def __init__(self, position):
         self.position = position
         self.score = 0
 
@@ -35,20 +33,16 @@ class Player:
         roll_sum = 0
         for _ in range(3):
             roll_sum += die_value
-            die_value = (die_value + 1) % 100
-            if not die_value:
-                die_value = 100
+            die_value = die_value % 100 + 1
 
         self.position = (self.position + roll_sum) % 10
-        if not self.position:
-            self.position = 10
 
-        self.score += self.position
+        self.score += self.position + 1
 
         return die_value
 
 
-game = Game([Player(1, 5), Player(2, 10)])
+game = Game([Player(4), Player(9)])   # Input is 5, 10 but -1 make % 10 better
 
 while True:
     turn_result = game.next_turn()
@@ -56,13 +50,10 @@ while True:
         break
 
 rolls = game.num_rolls
-loser_score = 0
-for player in game.players:
-    if player != game.winner:
-        loser_score = player.score
 
 # Answer One
-print(f'Product of losing score and number of rolls: {rolls * loser_score}')
+print("Product of losing score and number of rolls:",
+        f"{game.num_rolls * game.loser.score}")
 
 three_roll_sums = []
 for one in (1, 2, 3):
@@ -70,17 +61,15 @@ for one in (1, 2, 3):
         for three in (1, 2, 3):
             three_roll_sums.append(one + two + three)
 
-# 1 pos, 1 score, 2 pos, 2 score, turn
-game_initial = (5, 0, 10, 0, 1)
 player_one_wins = 0
 player_two_wins = 0
+game_initial = (4, 0, 9, 0, 1)  # 1 pos, 1 score, 2 pos, 2 score, turn
 games = {game_initial: 1}
-while True:
+while games:
     new_games = {}
     for game, universes in games.items():
 
         player_num = game[4]
-
         if player_num == 1:
             pos, score  = game[0], game[1]
         else:
@@ -88,10 +77,8 @@ while True:
 
         for roll_sum in three_roll_sums:
             new_position = (pos + roll_sum) % 10
-            if not new_position:
-                new_position = 10
 
-            new_score = score + new_position
+            new_score = score + new_position + 1
 
             if new_score >= 21:
                 if player_num == 1:
@@ -108,9 +95,6 @@ while True:
                 new_games[new_value] = new_games.get(new_value, 0) + universes
 
     games = new_games
-
-    if not games:
-        break
 
 # Answer Two
 print(f'Most universes won: {max(player_one_wins, player_two_wins)}')
