@@ -241,3 +241,21 @@ for scanner in located_scanners:
 
 # Answer One
 print("Number of beacons:", len(unique_beacons))
+
+largest_distance = 0
+for scanner in located_scanners:
+
+    x, y, z = scanner.coords
+
+    for other_scanner in located_scanners:
+
+        other_x, other_y, other_z = other_scanner.coords
+
+        manhattan_distance = x - other_x + y - other_y + z - other_z
+
+        if manhattan_distance > largest_distance:
+
+            largest_distance = manhattan_distance
+
+# Answer Two
+print("Largest Manhattan distance between two scanners:", largest_distance)
