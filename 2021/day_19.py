@@ -7,6 +7,7 @@ class Scanner:
 
     def __init__(self, number, beacon_coords, copy=False):
         self.number = number
+        self.marker = (1, 2, 3)
         self.coords = (0, 0, 0)
         self.create_beacons(beacon_coords)
         self.beacons_set = self.create_beacons_set()
@@ -39,6 +40,8 @@ class Scanner:
                 new_beacons_set.add((x, -z, y))
             self.beacons_set = new_beacons_set
             self.create_beacons(new_beacons_set)
+            x, y, z = self.marker
+            self.marker = (x, -z, y)
 
         def y_axis():
             new_beacons_set = set()
@@ -47,6 +50,8 @@ class Scanner:
                 new_beacons_set.add((-z, y, x))
             self.beacons_set = new_beacons_set
             self.create_beacons(new_beacons_set)
+            x, y, z = self.marker
+            self.marker = (-z, y, x)
 
         def z_axis():
             new_beacons_set = set()
@@ -55,6 +60,8 @@ class Scanner:
                 new_beacons_set.add((y, -x, z))
             self.beacons_set = new_beacons_set
             self.create_beacons(new_beacons_set)
+            x, y, z = self.marker
+            self.marker = (y, -x, z)
 
         orientations = []
         # Initial state is an orientation
@@ -67,18 +74,21 @@ class Scanner:
             orientations.append(
                     Scanner(self.number, self.beacons_set, copy=True)
             )
+            orientations[-1].marker = self.marker
 
             for _ in range(3):
                 x_axis()
                 orientations.append(
                         Scanner(self.number, self.beacons_set, copy=True)
                 )
+                orientations[-1].marker = self.marker
 
                 for _ in range(3):
                     y_axis()
                     orientations.append(
                             Scanner(self.number, self.beacons_set, copy=True)
                     )
+                    orientations[-1].marker = self.marker
 
                 # Reset y
                 y_axis()
@@ -89,7 +99,46 @@ class Scanner:
         # Back to original
         z_axis()
 
-        return orientations
+        for _ in range(3):
+            y_axis()
+            orientations.append(
+                    Scanner(self.number, self.beacons_set, copy=True)
+            )
+            orientations[-1].marker = self.marker
+
+            for _ in range(3):
+                z_axis()
+                orientations.append(
+                        Scanner(self.number, self.beacons_set, copy=True)
+                )
+                orientations[-1].marker = self.marker
+
+                for _ in range(3):
+                    x_axis()
+                    orientations.append(
+                            Scanner(self.number, self.beacons_set, copy=True)
+                    )
+                    orientations[-1].marker = self.marker
+
+                # Reset y
+                x_axis()
+
+            # Reset x
+            z_axis()
+
+        # Back to original
+        y_axis()
+
+        unique_orientations = []
+        marker_set = set()
+        for orientation in orientations:
+            marker = orientation.marker
+            if marker in marker_set:
+                continue
+            marker_set.add(marker)
+            unique_orientations.append(orientation)
+
+        return unique_orientations
 
     def update_position(self, new_coords):
         self.coords = new_coords
@@ -150,7 +199,7 @@ class Beacon:
         self.actual_coords = (actual_x, actual_y, actual_z)
 
 
-with open('../inputs/day_19.txt', 'r') as aoc_input:
+with open('inputs/day_19.txt', 'r') as aoc_input:
     scan_in = [x.strip().split('\n') for x in aoc_input.read().split('\n\n')]
 
 scanners = []
