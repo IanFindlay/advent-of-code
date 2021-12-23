@@ -3,7 +3,9 @@
 """Advent of Code 2021 Day 23 - Amphipod"""
 
 
-with open('inputs/day_23.txt', 'r') as aoc_input:
+# Need to refactor so it can solve both parts this has now been
+# hardcoded for the second
+with open('inputs/day_23_2.txt', 'r') as aoc_input:
     lines = [line.strip('\n') for line in aoc_input.readlines()]
 
 open_space = set()
@@ -24,8 +26,10 @@ for y, line in enumerate(lines):
 rooms.sort()
 
 target_rooms = {
-        'A': (rooms[0], rooms[1]), 'B': (rooms[2], rooms[3]),
-        'C': (rooms[4], rooms[5]), 'D': (rooms[6], rooms[7])
+        'A': (rooms[0], rooms[1], rooms[2], rooms[3]),
+        'B': (rooms[4], rooms[5], rooms[6], rooms[7]),
+        'C': (rooms[8], rooms[9], rooms[10], rooms[11]),
+        'D': (rooms[12], rooms[13], rooms[14], rooms[15])
 }
 
 rooms_set = set(rooms)
@@ -35,7 +39,7 @@ for room in target_rooms.values():
     x, y = room[0]
     doorways.add((x, y - 1))
 
-# Form 9 d tuple representing initial state
+# Form tuple representing initial state
 initial_state = []
 for kind in ('A', 'B', 'C', 'D'):
     sorted_coords = sorted(amphipods[kind])
@@ -44,8 +48,10 @@ for kind in ('A', 'B', 'C', 'D'):
 initial_state = tuple(initial_state)
 
 index_to_kind = {
-        0: 'A', 1: 'A', 2: 'B', 3:'B',
-        4: 'C', 5: 'C', 6: 'D', 7: 'D'
+        0: 'A', 1: 'A', 2: 'A', 3:'A',
+        4: 'B', 5: 'B', 6: 'B', 7: 'B',
+        8: 'C', 9: 'C', 10: 'C', 11: 'C',
+        12: 'D', 13: 'D', 14: 'D', 15: 'D'
 }
 
 def calculate_cost(start, end, kind):
@@ -55,21 +61,6 @@ def calculate_cost(start, end, kind):
     distance = abs(x - other_x) + abs(y - other_y)
 
     return distance * energy_cost[kind]
-
-
-def print_state(state, lines):
-    for y in range(len(lines)):
-        row = ''
-        for x in range(len(lines[0])):
-            coords = (x, y)
-            if coords in state:
-                row += index_to_kind[state.index(coords)]
-            elif coords in open_space or coords in rooms:
-                row += '.'
-            else:
-                row += '#'
-        print(row)
-    print()
 
 
 def path_to_target(state, start, end):
@@ -96,7 +87,6 @@ def path_to_target(state, start, end):
 lowest_energy = None
 states_seen = {initial_state: 0}
 stack = [[initial_state, 0]]
-counter = 0
 while stack:
 
     state, cost = stack.pop()
@@ -115,6 +105,7 @@ while stack:
     if completed:
         if not lowest_energy or cost < lowest_energy:
             lowest_energy = cost
+            print("Success", cost)
             continue
 
     for num, amphipod in enumerate(state):
@@ -122,11 +113,17 @@ while stack:
         kind = index_to_kind[num]
 
         # Already finished
-        if amphipod == target_rooms[kind][1]:
+        finished = False
+        if amphipod in target_rooms[kind]:
+            finished = True
+            for space in target_rooms[kind]:
+                if space in state:
+                    index_to_check = state.index(space)
+                    if index_to_kind[index_to_check] != kind:
+                        finished= False
+
+        if finished:
             continue
-        if amphipod == target_rooms[kind][0]:
-            if index_to_kind[state.index(target_rooms[kind][1])] == kind:
-                continue
 
         moves = []
         # Already in open_space so only final position
@@ -134,12 +131,16 @@ while stack:
 
             open_slot = None
             # Check lowest coord as that is preferential
-            if target_rooms[kind][1] not in state:
-                open_slot = target_rooms[kind][1]
-            elif target_rooms[kind][0] not in state:
-                occupier = state.index(target_rooms[kind][1])
-                if index_to_kind[occupier] == kind:
-                    open_slot = target_rooms[kind][0]
+            if target_rooms[kind][-1] not in state:
+                open_slot = target_rooms[kind][-1]
+            else:
+                open_slot = False
+                for slot in target_rooms[kind]:
+                    if slot not in state:
+                        open_slot = slot
+                    elif index_to_kind[state.index(slot)] != kind:
+                        open_slot = False
+                        break
 
             if open_slot:
                 if not path_to_target(state, amphipod, open_slot):
@@ -178,7 +179,6 @@ while stack:
             stack.append([state_copy, new_cost])
 
     stack.sort(key=lambda x: x[1])
-    counter += 1
 
 # Answer One
 print(f'Least energy required to organise the amphipods: {lowest_energy}')
