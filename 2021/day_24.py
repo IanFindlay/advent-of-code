@@ -3,7 +3,7 @@
 """Advent of Code 2021 Day 24 - Arithmetic Logic Unit"""
 
 
-def check_validity(w, z, block_num, to_validate):
+def check_validity(w, z, block_num, to_validate, part_two=False):
     to_validate = to_validate.copy()
     to_validate.append(w)
 
@@ -16,8 +16,7 @@ def check_validity(w, z, block_num, to_validate):
     if z % 26 + x_value != w and x_value < 0:
         return False
 
-    # Calculate z to get new digit to validate / validate all digits in
-    # to_validate if it will equal zero and block_num is 13
+    # Calculate z to get new z value / final validation value
     x = z
     x %= 26
     z //= z_value
@@ -32,23 +31,25 @@ def check_validity(w, z, block_num, to_validate):
     y = y * x
     z += y
 
-    """
-    print(f'Block {block_num}')
-    print(f'w is {w}, z calculated as {z}')
-    print(f'Using these values: z = {z_value}, x = {x_value}, y = {y_value}')
-    """
-
     if block_num == 13:
         if z == 0:
             return to_validate
         else:
             return False
 
-    # For all model nums still valid try next digit with next block
-    for i in range(9, 0, -1):
-        validity_check = check_validity(i, z, block_num + 1, to_validate)
-        if type(validity_check) is list:
-            return validity_check
+    # Digits are valid but model number not yet complete so recursion
+    if not part_two:
+        for i in range(9, 0, -1):
+            validity_check = check_validity(i, z, block_num + 1, to_validate)
+            if type(validity_check) is list:
+                return validity_check
+    else:
+        for i in range(1, 10):
+            validity_check = check_validity(i, z, block_num + 1,
+                                            to_validate, part_two=True)
+
+            if type(validity_check) is list:
+                return validity_check
 
     return False
 
@@ -87,9 +88,9 @@ So all instances of div z 26 must meet the criteria of:
 
     Whatever z is for that block % 26 + what add x is going to be == inp w
 
-inp based on model number and we want highest so:
+inp based on model number and we want highest so 9 down to 1 inclusive
 
-    for first digit 9 to 1 inclusive:
+Part Two we want lowest so do 1 up to 9 inclusive instead
 
 """
 
@@ -119,3 +120,13 @@ for i in range(9, 0, -1):
 
 # Answer One
 print(f'Largest model number accepted by MONAD: {highest_valid}')
+
+lowest_valid = None
+for i in range(1, 10):
+    validity_check = check_validity(i, 0, 0, [], part_two=True)
+    if type(validity_check) is list:
+        lowest_valid = ''.join(map(str, validity_check))
+        break
+
+# Answer One
+print(f'Lowest model number accepted by MONAD: {lowest_valid}')
