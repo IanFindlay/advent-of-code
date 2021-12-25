@@ -15,7 +15,7 @@ for y, row in enumerate(lines):
         elif value == 'v':
             south_cucumbers.add((x, y))
 
-step = 0
+steps = 0
 while True:
     new_east = set()
     new_south = set()
@@ -42,13 +42,12 @@ while True:
         else:
             new_south.add(coords)
 
-    step += 1
+    steps += 1
     if new_east == east_cucumbers and new_south == south_cucumbers:
         break
 
     east_cucumbers = new_east
     south_cucumbers = new_south
 
-
 # Answer One
-print(f'First step on which no seas cucumbers move: {step}')
+print(f'First step on which no sea cucumbers move: {steps}')
