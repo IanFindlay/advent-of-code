@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -30,29 +31,30 @@ type Rock interface {
 	checkForCollision(map[Coord]bool) bool
 }
 
+type Cache struct {
+	rocksSettled int
+	maxY         int
+}
+
+type CycleInfo struct {
+	start      int
+	startY     int
+	length     int
+	yIncrease  int
+	maxYValues []int
+}
+
 func main() {
 	file, _ := os.ReadFile("input.txt")
 	jetPattern := strings.Split(strings.TrimSpace(string(file)), "")
 	rocks := getRocks()
-	settledRocks := map[Coord]bool{}
 
-	highestRockY := -1
-	jetIndex := 0
-	rockIndex := 0
-	numSettledRocks := 0
-	for numSettledRocks < 2022 {
-		rock := rocks[rockIndex]
-		rock.moveToStartPosition(highestRockY)
-		jetIndex = rock.moveUntilSettled(jetPattern, jetIndex, settledRocks)
-		numSettledRocks++
-		rockIndex = (rockIndex + 1) % 5
-		if rock.topEdgeY > highestRockY {
-			highestRockY = rock.topEdgeY
-		}
-	}
-
-	unitsTall := highestRockY + 1
+	unitsTall := simulate2022Rocks(rocks, jetPattern)
 	fmt.Println("Answer One:", unitsTall)
+
+	cycleInfo := simulateUntilCycle(rocks, jetPattern)
+	finalMaxY := getToEndStateUsingCycle(cycleInfo)
+	fmt.Println("Answer Two:", finalMaxY)
 }
 
 func getRocks() []RockPattern {
@@ -126,6 +128,26 @@ func getRocks() []RockPattern {
 	}
 
 	return rocks
+}
+
+func simulate2022Rocks(rocks []RockPattern, jetPattern []string) int {
+	settledRocks := map[Coord]bool{}
+	maxY := -1
+	jetIndex := 0
+	rockIndex := 0
+	numSettledRocks := 0
+	for numSettledRocks < 2022 {
+		rock := rocks[rockIndex]
+		rock.moveToStartPosition(maxY)
+		jetIndex = rock.moveUntilSettled(jetPattern, jetIndex, settledRocks)
+		numSettledRocks++
+		rockIndex = (rockIndex + 1) % 5
+		if rock.topEdgeY > maxY {
+			maxY = rock.topEdgeY
+		}
+	}
+
+	return maxY + 1
 }
 
 func (rock *RockPattern) moveToStartPosition(highestY int) {
@@ -204,15 +226,7 @@ func (rock *RockPattern) moveRight() {
 }
 
 func (rock *RockPattern) collides(settledRocks map[Coord]bool) bool {
-	if rock.leftEdgeX == -1 {
-		return true
-	}
-
-	if rock.rightEdgeX == 7 {
-		return true
-	}
-
-	if rock.bottomEdgeY == -1 {
+	if rock.leftEdgeX == -1 || rock.rightEdgeX == 7 || rock.bottomEdgeY == -1 {
 		return true
 	}
 
@@ -223,4 +237,70 @@ func (rock *RockPattern) collides(settledRocks map[Coord]bool) bool {
 	}
 
 	return false
+}
+
+func simulateUntilCycle(rocks []RockPattern, jetPattern []string) CycleInfo {
+	settledRocks := map[Coord]bool{}
+	maxY := -1
+	colHeights := [7]int{0, 0, 0, 0, 0, 0, 0}
+	jetIndex := 0
+	rockIndex := 0
+	numSettledRocks := 0
+	cache := map[string]bool{}
+	cacheKeyToCache := map[string]Cache{}
+	maxYValues := []int{}
+	for {
+		rock := rocks[rockIndex]
+		rock.moveToStartPosition(maxY)
+		jetIndex = rock.moveUntilSettled(jetPattern, jetIndex, settledRocks)
+		numSettledRocks++
+		rockIndex = (rockIndex + 1) % 5
+		if rock.topEdgeY > maxY {
+			maxY = rock.topEdgeY
+		}
+		maxYValues = append(maxYValues, maxY)
+
+		for _, coord := range rock.coords {
+			settledHeight := coord.y
+			if colHeights[coord.x] < settledHeight {
+				colHeights[coord.x] = settledHeight
+			}
+		}
+
+		cacheList := [9]int{0, 0, 0, 0, 0, 0, 0, 0, 0}
+		for index := range colHeights {
+			cacheList[index] = maxY - colHeights[index]
+		}
+		cacheList[7] = rockIndex
+		cacheList[8] = jetIndex
+
+		cacheKey := ""
+		for _, value := range cacheList {
+			cacheKey += strconv.Itoa(value)
+		}
+		if cache[cacheKey] {
+			cacheValues := cacheKeyToCache[cacheKey]
+			cycleStart := cacheValues.rocksSettled
+			cycleLen := numSettledRocks - cacheValues.rocksSettled
+			cycleYChange := maxY - cacheValues.maxY
+			startY := cacheValues.maxY
+			return CycleInfo{
+				start: cycleStart, startY: startY, length: cycleLen,
+				yIncrease: cycleYChange, maxYValues: maxYValues,
+			}
+		}
+		cache[cacheKey] = true
+		cacheKeyToCache[cacheKey] = Cache{numSettledRocks, maxY}
+	}
+}
+
+func getToEndStateUsingCycle(cycleInfo CycleInfo) int {
+	numRocksToSim := 1000000000000
+	simsAfterCycleStart := numRocksToSim - cycleInfo.start
+	numCycles := simsAfterCycleStart / cycleInfo.length
+	remainingRocks := simsAfterCycleStart - (numCycles * cycleInfo.length)
+	yAfterCycles := cycleInfo.startY + (cycleInfo.yIncrease * numCycles)
+	finishingIndex := cycleInfo.start + remainingRocks
+	yIncreaseFromCycleStartToFinished := cycleInfo.maxYValues[finishingIndex] - cycleInfo.startY
+	return yAfterCycles + yIncreaseFromCycleStartToFinished
 }
