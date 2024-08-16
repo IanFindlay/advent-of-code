@@ -8,12 +8,13 @@ import (
 )
 
 type Node struct {
-	value int
-	prev  *Node
-	next  *Node
+	initialIdx int
+	value      int
+	prev       *Node
+	next       *Node
 }
 
-type NodeOps interface {
+type NodeMover interface {
 	moveNode()
 	findNewNextNode()
 	cut()
@@ -23,32 +24,27 @@ type NodeOps interface {
 func main() {
 	file, _ := os.ReadFile("input.txt")
 	numStrs := strings.Split(strings.TrimSpace(string(file)), "\n")
-	headNode, nodes := buildNodes(numStrs)
+	numNodes := len(numStrs)
 
-	for idx := range numStrs {
-		node := nodes[idx]
-		node.moveNode()
-	}
-
-	values := nodesToValueList(headNode)
-	lenValues := len(values)
-
-	positionsToCheck := [3]int{1000, 2000, 3000}
-	groveCoords := 0
-	for _, position := range positionsToCheck {
-		groveCoords += values[position%lenValues]
-	}
-
+	headNode, nodes := buildNodes(numStrs, 1)
+	mix(1, numNodes, nodes)
+	groveCoords := calcGroveCoords(headNode, numStrs, 1)
 	fmt.Println("Answer One:", groveCoords)
+
+	decryptionKey := 811589153
+	headNode, nodes = buildNodes(numStrs, decryptionKey)
+	mix(10, numNodes, nodes)
+	groveCoords = calcGroveCoords(headNode, numStrs, decryptionKey)
+	fmt.Println("Answer Two:", groveCoords)
 }
 
-func buildNodes(numStrs []string) (*Node, map[int]*Node) {
+func buildNodes(numStrs []string, decryptionKey int) (*Node, map[int]*Node) {
 	lenNums := len(numStrs)
 	nodes := map[int]*Node{}
 	headNode := &Node{}
 	for idx, numStr := range numStrs {
 		num, _ := strconv.Atoi(numStr)
-		node := &Node{value: num}
+		node := &Node{initialIdx: idx, value: (num * decryptionKey) % (lenNums - 1)}
 		if idx != 0 {
 			node.prev = nodes[idx-1]
 			if idx < lenNums {
@@ -66,19 +62,33 @@ func buildNodes(numStrs []string) (*Node, map[int]*Node) {
 	return headNode, nodes
 }
 
-func (node *Node) moveNode() {
-	newNext := node.findNewNextNode()
-	if newNext == node {
-		return
+func mix(numMixes int, numNodes int, nodes map[int]*Node) {
+	for numMixes > 0 {
+		idx := 0
+		for idx < numNodes {
+			node := nodes[idx]
+			node.moveNode(numNodes)
+			idx++
+		}
+		numMixes--
 	}
+}
+
+func (node *Node) moveNode(numNodes int) {
 	node.cut()
+	newNext := node.findNewNextNode(numNodes)
 	node.insertBefore(newNext)
 }
 
-func (node *Node) findNewNextNode() *Node {
+func (node *Node) cut() {
+	node.prev.next = node.next
+	node.next.prev = node.prev
+}
+
+func (node *Node) findNewNextNode(numNodes int) *Node {
 	numMoves := node.value
 	if node.value < 0 {
-		numMoves = -node.value
+		numMoves = -numMoves
 	}
 	targetNode := node
 	for numMoves > 0 {
@@ -88,22 +98,14 @@ func (node *Node) findNewNextNode() *Node {
 			targetNode = targetNode.prev
 		}
 
-		// Moving through its own position doesn't count as an actual move
-		if targetNode != node {
-			numMoves--
-		}
+		numMoves--
 	}
 
-	if node.value > 0 && targetNode != node {
+	if node.value >= 0 {
 		targetNode = targetNode.next
 	}
 
 	return targetNode
-}
-
-func (node *Node) cut() {
-	node.prev.next = node.next
-	node.next.prev = node.prev
 }
 
 func (node *Node) insertBefore(newNext *Node) {
@@ -113,11 +115,25 @@ func (node *Node) insertBefore(newNext *Node) {
 	node.next.prev = node
 }
 
-func nodesToValueList(headNode *Node) []int {
+func calcGroveCoords(headNode *Node, numStrs []string, decryptionKey int) int {
+	values := nodesToValueList(headNode, numStrs, decryptionKey)
+	lenValues := len(values)
+
+	positionsToCheck := [3]int{1000, 2000, 3000}
+	groveCoords := 0
+	for _, position := range positionsToCheck {
+		groveCoords += values[position%lenValues]
+	}
+
+	return groveCoords
+}
+
+func nodesToValueList(headNode *Node, numStrs []string, decryptionKey int) []int {
 	values := []int{}
 	currentNode := headNode
 	for {
-		values = append(values, currentNode.value)
+		value, _ := strconv.Atoi(numStrs[currentNode.initialIdx])
+		values = append(values, value*decryptionKey)
 		currentNode = currentNode.next
 		if currentNode == headNode {
 			break
